@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 async function FetchAllCars() {
 	try {
 		const response = await GetAllVisibleCars();
-		console.log(response);
 		if (response[0].id) {
 			return response;
 		}
@@ -27,7 +26,7 @@ async function fetchAllBrands() {
 }
 async function CarBrowser() {
 	const cars = await FetchAllCars();
-	const brands = await FetchAllBrands();
+	const brands = await fetchAllBrands();
 	return (
 		<div className={styles.container}>
 			<CarBrowserComp car={cars} brands={brands} />

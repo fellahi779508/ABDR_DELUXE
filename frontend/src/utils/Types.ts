@@ -92,3 +92,17 @@ export type VisibleCar = {
 
 	color: string;
 };
+export type CreateOrder = {
+	name: string;
+	phone: string;
+	address: string;
+	carId: number;
+};
+export type Order = {
+	id: number;
+	name: string;
+	price: number;
+	address: string;
+	status: string;
+	cars: Car[];
+};

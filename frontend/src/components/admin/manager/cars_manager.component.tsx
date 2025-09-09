@@ -253,6 +253,7 @@ function CarManager() {
 									<Image
 										src={
 											car.images.find((img) => img.isPrimary === true)?.url ??
+											car.images[0]?.url ??
 											"/images/placeholder.png"
 										}
 										alt={`${car.serie.brand.name} ${car.serie.name}`}

@@ -5,8 +5,10 @@ import {
   BeforeInsert,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Image } from 'src/image/image.entity';
@@ -43,10 +45,11 @@ export class Car {
   }
   @ManyToOne(() => Serie, (serie) => serie.cars, { onDelete: 'CASCADE' })
   serie: Serie;
-  @ManyToOne(() => Order, (order) => order.cars, { nullable: true })
+  @OneToOne(() => Order, (order) => order.cars, { nullable: true })
+  @JoinColumn({ name: 'orderId' })
   order: Order;
   @OneToMany(() => Image, (image) => image.car, {
-    cascade: ['insert'],
+    cascade: true,
     eager: false,
   })
   images: Image[];

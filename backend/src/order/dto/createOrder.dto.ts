@@ -10,7 +10,7 @@ export class CreateOrderDto {
   @IsString()
   @IsNotEmpty()
   address: string;
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  carId: number[] | number;
+  carId: string;
 }

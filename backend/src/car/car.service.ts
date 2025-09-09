@@ -37,9 +37,17 @@ export class CarService {
     return car;
   }
   async DeleteCar(id: string) {
-    const car = await this.carRepo.findOne({ where: { id } });
+    const car = await this.carRepo.findOne({
+      where: { id },
+      relations: ['images'],
+    });
     if (!car) {
       throw new NotFoundException('Car not found');
+    }
+    if (car.images.length > 0) {
+      car.images.forEach((image) => {
+        this.ImageService.removeImage(image.id);
+      });
     }
     return await this.carRepo.remove(car);
   }

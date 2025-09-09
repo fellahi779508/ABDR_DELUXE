@@ -1,0 +1,136 @@
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	padding: 2rem;
+	background-color: var(--background);
+	font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		sans-serif;
+}
+
+.orderForm {
+	background: var(--surface);
+	border-radius: var(--radius);
+	padding: 2.5rem;
+	box-shadow: var(--shadow);
+	width: 100%;
+	max-width: 500px;
+	border: 1px solid var(--border);
+}
+
+.title {
+	color: var(--text);
+	font-size: 1.8rem;
+	font-weight: 700;
+	margin-bottom: 2rem;
+	text-align: center;
+	position: relative;
+	padding-bottom: 0.8rem;
+}
+
+.title::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 60px;
+	height: 4px;
+	background-color: var(--primary);
+	border-radius: 2px;
+}
+
+.inputFields {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	margin-bottom: 2rem;
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.field label {
+	color: var(--text);
+	font-weight: 600;
+	font-size: 1rem;
+}
+
+.field input {
+	padding: 0.8rem 1rem;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	font-size: 1rem;
+	transition: var(--transition);
+	background-color: var(--background);
+	color: var(--text);
+}
+
+.field input:focus {
+	outline: none;
+	border-color: var(--primary);
+	box-shadow: 0 0 0 3px var(--primary-hover);
+}
+
+.totalField {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1.2rem;
+	background-color: var(--background);
+	border-radius: var(--radius);
+	margin-top: 1rem;
+}
+
+.totalLabel {
+	color: var(--text);
+	font-weight: 600;
+	font-size: 1.1rem;
+}
+
+.totalAmount {
+	color: var(--primary);
+	font-weight: 700;
+	font-size: 1.4rem;
+}
+
+.submitButton {
+	width: 100%;
+	padding: 1rem;
+	background-color: var(--primary);
+	color: white;
+	border: none;
+	border-radius: var(--radius);
+	font-size: 1.1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: var(--transition);
+}
+
+.submitButton:hover {
+	background-color: var(--primary-hover);
+	transform: translateY(-2px);
+}
+
+.submitButton:active {
+	transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+	.container {
+		padding: 1rem;
+	}
+
+	.orderForm {
+		padding: 1.5rem;
+	}
+
+	.title {
+		font-size: 1.5rem;
+	}
+}

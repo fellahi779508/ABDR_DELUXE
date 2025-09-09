@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 import { cookies } from "next/headers";
 import { api } from "./api";
-import { CreateCar, UpdateCar } from "./Types";
+import { CreateCar, CreateOrder, UpdateCar } from "./Types";
+import { cssTransition } from "react-toastify";
+import { ChartColumnStacked } from "lucide-react";
+import { notFound } from "next/navigation";
 type Car = {
 	Année: string;
 	Boite: string;
@@ -69,7 +73,6 @@ export async function GetAllCars() {
 	}
 }
 export async function UpdateGroupCarById(id: string, data: Car[]) {
-	console.log(data);
 	const token = (await cookies()).get("access_token")?.value;
 	try {
 		for (const car of data) {
@@ -92,7 +95,6 @@ export async function UpdateGroupCarById(id: string, data: Car[]) {
 	}
 }
 export async function DeleteCarById(id: string) {
-	console.log(id);
 	try {
 		const response = await api.delete(`/car/${id}`);
 		if (response) {
@@ -196,7 +198,6 @@ export async function UploadPrimaryImage(id: string, image: File) {
 
 		return response.data;
 	} catch (error) {
-		console.error("Upload error:", error);
 		return null;
 	}
 }
@@ -269,7 +270,6 @@ export async function UpdateCarVisibility(id: string, isVisible: boolean) {
 			return "updated";
 		}
 	} catch (error) {
-		console.error(error);
 		return "error";
 	}
 }
@@ -312,4 +312,39 @@ export async function DeleteSerieById(id) {
 	} catch (error) {
 		return error.response;
 	}
+}
+export async function CreateNewOrder(data: any) {
+	try {
+		const carId = (await cookies()).get("carId")?.value;
+		if (!carId) return;
+		const order = { ...data, carId: carId };
+		console.log(order);
+		const response = await api.post(`/order`, order);
+		if (response) {
+			console.log(response);
+			(await cookies()).delete("carId");
+			return true;
+		}
+	} catch (error) {
+		console.error(error.response);
+		return false;
+	}
+}
+export async function GetAllOrders() {
+	try {
+		const response = await api.get(`/order?page=0&limit=0`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		return error.response;
+	}
+}
+export async function SetCarIdCookie(id: string, price: number) {
+	const coockie = (await cookies()).set("carId", id);
+	const Price = (await cookies()).set("price", price.toString());
+	if (coockie && Price) {
+		return "ok";
+	}
+	return "error";
 }

@@ -6,6 +6,7 @@ import {
   Headers,
   Param,
   ParseIntPipe,
+  Post,
   Put,
   Query,
   UseGuards,
@@ -13,10 +14,15 @@ import {
 import { OrderService } from './order.service';
 import { Status } from 'src/utils/enums';
 import { AuthGuard } from '../utils/guards/auth.guard';
+import { CreateOrderDto } from './dto/createOrder.dto';
 @Controller('order')
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class OrderController {
   constructor(private readonly service: OrderService) {}
+  @Post()
+  async createNewOrder(@Body() dto: CreateOrderDto) {
+    return await this.service.createNewOrder(dto);
+  }
   @Get()
   async getAllOrders(
     @Query('page', ParseIntPipe) page: number,

@@ -14,6 +14,8 @@ import {
 	Zap,
 } from "lucide-react";
 import Link from "next/link";
+import { SetCarIdCookie } from "@/utils/Admin";
+import { useRouter } from "next/navigation";
 
 type CarDetailsProps = {
 	slug: string;
@@ -28,7 +30,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 	);
 	const [startIndex, setStartIndex] = useState(0);
 	const [selectedImageIndex, setSelectedImageIndex] = useState(
-		images[0].sortOrder + 1
+		images[0]?.sortOrder + 1 || 0
 	);
 	const [isFavorite, setIsFavorite] = useState(false);
 
@@ -48,6 +50,11 @@ function CarDetailsComponent(param: CarDetailsProps) {
 			minimumFractionDigits: 0,
 		}).format(price);
 	};
+	const router = useRouter();
+	async function handleBuy() {
+		await SetCarIdCookie(data.id, data.price);
+		router.push("/order");
+	}
 
 	return (
 		<div className={styles.main}>
@@ -232,7 +239,12 @@ function CarDetailsComponent(param: CarDetailsProps) {
 					</div>
 
 					<div className={styles.actions}>
-						<button className={`${styles.btn} ${styles.primary_btn}`}>
+						<button
+							className={`${styles.btn} ${styles.primary_btn}`}
+							onClick={async () => {
+								handleBuy();
+							}}
+						>
 							Contact Seller
 						</button>
 						<button className={`${styles.btn} ${styles.secondary_btn}`}>

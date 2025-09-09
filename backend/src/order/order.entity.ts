@@ -4,18 +4,19 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
 export class Order {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
   @Column()
   name: string;
   @Column()
-  price: number;
+  phone: string;
   @Column()
   address: string;
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -24,10 +25,10 @@ export class Order {
   updatedAt: Date;
   @Column({ enum: ['pending', 'new', 'cancelled', 'accepted'], default: 'new' })
   status: string;
-  @OneToMany(() => Car, (car) => car.order, {
+  @OneToOne(() => Car, (car) => car.order, {
     cascade: true,
     eager: true,
     nullable: true,
   })
-  cars: Car[];
+  cars: Car;
 }
