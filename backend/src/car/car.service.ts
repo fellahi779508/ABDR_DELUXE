@@ -92,4 +92,11 @@ export class CarService {
     car.isVisible = visibility;
     return this.carRepo.save(car);
   }
+  async GetCarsOfSerie(id: number) {
+    const cars = await this.carRepo.find({ where: { serie: { id } } });
+    if (!cars) {
+      return [];
+    }
+    return cars;
+  }
 }

@@ -51,6 +51,10 @@ export class CarController {
   getAllVisibleCars() {
     return this.service.getAllVisibleCars();
   }
+  @Get('serie/:serieId')
+  getCarsOfSerie(@Param('serieId', ParseIntPipe) serieId: number) {
+    return this.service.GetCarsOfSerie(serieId);
+  }
   @Get(':id')
   GetCarById(@Param('id') id: string) {
     return this.service.GetCarById(id);

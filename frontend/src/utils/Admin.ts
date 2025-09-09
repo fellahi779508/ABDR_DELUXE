@@ -286,3 +286,16 @@ export async function GetAllVisibleCars() {
 		return error;
 	}
 }
+export async function GetCarsOfSerie(SerieId: number) {
+	console.log(SerieId);
+	try {
+		const response = await api.get(`/car/serie/${SerieId}`);
+		if (response) {
+			console.log(response.data);
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return error;
+	}
+}

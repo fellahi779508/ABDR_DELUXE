@@ -1,6 +1,6 @@
 import CarBrowserComp from "@/components/browser-page/car-browser.component";
 import styles from "@/styles/car-browser.module.css";
-import { GetAllVisibleCars } from "@/utils/Admin";
+import { FetchAllBrands, GetAllVisibleCars } from "@/utils/Admin";
 import { AxiosResponse } from "axios";
 import { notFound } from "next/navigation";
 async function FetchAllCars() {
@@ -15,11 +15,22 @@ async function FetchAllCars() {
 	}
 	return {} as AxiosResponse;
 }
+async function fetchAllBrands() {
+	try {
+		const response = await FetchAllBrands();
+		if (response.length > 0) {
+			return response;
+		}
+	} catch (error) {
+		return error;
+	}
+}
 async function CarBrowser() {
 	const cars = await FetchAllCars();
+	const brands = await FetchAllBrands();
 	return (
 		<div className={styles.container}>
-			<CarBrowserComp car={cars} />
+			<CarBrowserComp car={cars} brands={brands} />
 		</div>
 	);
 }
