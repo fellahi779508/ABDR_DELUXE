@@ -1,0 +1,284 @@
+/* selectedCar_images.module.css */
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.7);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+	padding: 1rem;
+}
+
+.container {
+	background-color: var(--background);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	width: 100%;
+	max-width: 1200px;
+	max-height: 90vh;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1.5rem;
+	border-bottom: 1px solid var(--border);
+	background-color: var(--surface);
+}
+
+.header h2 {
+	margin: 0;
+	color: var(--text);
+	font-size: 1.5rem;
+}
+
+.closeButton {
+	background: none;
+	border: none;
+	color: var(--text-secondary);
+	cursor: pointer;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: var(--transition);
+}
+
+.closeButton:hover {
+	background-color: var(--border);
+	color: var(--text);
+}
+
+.loading,
+.empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 3rem;
+	color: var(--text-secondary);
+}
+
+.spinner {
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.actions {
+	padding: 1rem 1.5rem;
+	border-bottom: 1px solid var(--border);
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+}
+
+.uploadButton {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem 1rem;
+	background-color: var(--primary);
+	color: white;
+	border: none;
+	border-radius: var(--radius);
+	cursor: pointer;
+	transition: var(--transition);
+}
+
+.uploadButton:hover:not(:disabled) {
+	background-color: var(--primary-hover);
+}
+
+.uploadButton:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+.deleteAllButton {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem 1rem;
+	background-color: hsl(0, 70%, 45%);
+	color: white;
+	border: none;
+	border-radius: var(--radius);
+	cursor: pointer;
+	transition: var(--transition);
+}
+
+.deleteAllButton:hover:not(:disabled) {
+	background-color: hsl(0, 70%, 35%);
+}
+
+.deleteAllButton:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+.gallery {
+	padding: 1.5rem;
+	overflow-y: auto;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 1.5rem;
+}
+
+.imageContainer {
+	position: relative;
+	border-radius: var(--radius);
+	overflow: hidden;
+	box-shadow: var(--shadow);
+	transition: var(--transition);
+}
+
+.imageContainer:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.primaryBadge {
+	position: absolute;
+	top: 0.5rem;
+	left: 0.5rem;
+	background-color: var(--primary);
+	color: white;
+	padding: 0.25rem 0.5rem;
+	border-radius: var(--radius);
+	font-size: 0.75rem;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+}
+
+.imageWrapper {
+	position: relative;
+	width: 100%;
+	height: 200px;
+}
+
+.image {
+	object-fit: cover;
+}
+
+.imageActions {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	display: flex;
+	gap: 0.5rem;
+	z-index: 2;
+}
+
+.primaryButton {
+	background-color: rgba(255, 255, 255, 0.9);
+	border: none;
+	border-radius: 50%;
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	color: var(--text-secondary);
+	transition: var(--transition);
+}
+
+.primaryButton:hover:not(:disabled) {
+	background-color: white;
+	color: var(--accent);
+	transform: scale(1.1);
+}
+
+.primaryButton:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+.primaryActive {
+	color: var(--accent);
+}
+
+.deleteButton {
+	background-color: rgba(255, 255, 255, 0.9);
+	border: none;
+	border-radius: 50%;
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	color: hsl(0, 70%, 45%);
+	transition: var(--transition);
+}
+
+.deleteButton:hover:not(:disabled) {
+	background-color: white;
+	color: hsl(0, 70%, 35%);
+	transform: scale(1.1);
+}
+
+.deleteButton:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+	.gallery {
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+		gap: 1rem;
+		padding: 1rem;
+	}
+
+	.imageWrapper {
+		height: 150px;
+	}
+
+	.header {
+		padding: 1rem;
+	}
+
+	.actions {
+		padding: 0.75rem 1rem;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.uploadButton,
+	.deleteAllButton {
+		width: 100%;
+		justify-content: center;
+	}
+
+	.imageActions {
+		top: 0.25rem;
+		right: 0.25rem;
+	}
+
+	.primaryButton,
+	.deleteButton {
+		width: 28px;
+		height: 28px;
+	}
+}

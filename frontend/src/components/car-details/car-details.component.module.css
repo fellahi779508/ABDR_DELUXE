@@ -1,0 +1,521 @@
+/* Enhanced modern CSS */
+
+.main {
+	display: flex;
+	width: 100%;
+	min-height: 100vh;
+	flex-direction: column;
+	padding: 5rem;
+	gap: 2rem;
+	font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		sans-serif;
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem 0;
+}
+
+.header_actions {
+	display: flex;
+	gap: 0.5rem;
+}
+.link {
+	color: var(--primary);
+	text-decoration: none;
+}
+.link:hover {
+	text-decoration: underline;
+}
+
+.icon_btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	cursor: pointer;
+	transition: var(--transition);
+}
+
+.icon_btn:hover {
+	background: var(--background);
+	box-shadow: var(--shadow);
+}
+
+.icon_btn.favorite {
+	color: var(--accent);
+	background: rgba(239, 68, 68, 0.1);
+}
+
+.title_container {
+	padding: 1rem 0;
+}
+
+.title {
+	font-size: 2.2rem;
+	font-weight: 700;
+	color: var(--text);
+	margin: 0 0 0.5rem 0;
+	line-height: 1.2;
+}
+
+.car_meta {
+	display: flex;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+.meta_item {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.9rem;
+	color: var(--text-secondary);
+}
+
+.details_container {
+	display: grid;
+	grid-template-columns: 1.2fr 0.8fr;
+	gap: 2rem;
+	width: 100%;
+	color: var(--text);
+}
+
+.section {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	width: 100%;
+}
+
+.main_image_container {
+	width: 100%;
+	aspect-ratio: 16/9;
+	background-color: var(--surface);
+	border-radius: var(--radius);
+	overflow: hidden;
+	box-shadow: var(--shadow);
+	transition: var(--transition);
+	border: 1px solid var(--border);
+	position: relative;
+}
+
+.main_image {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+.main_image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.5s ease;
+}
+
+.main_image:hover img {
+	transform: scale(1.03);
+}
+
+.mini_images_container {
+	display: flex;
+	gap: 0.8rem;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+
+.mini_image {
+	width: 80px;
+	height: 80px;
+	background-color: var(--surface);
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: var(--shadow);
+	transition: var(--transition);
+	border: 2px solid transparent;
+	cursor: pointer;
+	flex-shrink: 0;
+	position: relative;
+}
+
+.mini_image:hover,
+.mini_image.active {
+	border-color: var(--primary);
+	transform: translateY(-5px);
+}
+
+.mini_image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.image_index {
+	position: absolute;
+	bottom: 15px;
+	right: 15px;
+	background: rgba(0, 0, 0, 0.7);
+	color: white;
+	padding: 0.4rem 0.8rem;
+	border-radius: 20px;
+	font-size: 0.8rem;
+	z-index: 10;
+}
+
+.price_section {
+	padding: 1.5rem 0;
+	border-bottom: 1px solid var(--border);
+}
+
+.price {
+	font-size: 2.2rem;
+	font-weight: 700;
+	color: var(--primary);
+	margin-bottom: 0.5rem;
+}
+s .price_note {
+	color: var(--success);
+	font-weight: 500;
+	font-size: 0.9rem;
+}
+
+.feature_highlights {
+	display: flex;
+	gap: 1rem;
+	padding: 1.5rem 0;
+	border-bottom: 1px solid var(--border);
+}
+
+.feature {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.8rem 1.2rem;
+	background: var(--surface);
+	border-radius: var(--radius);
+	font-weight: 500;
+}
+
+.details_card {
+	background: var(--surface);
+	border-radius: var(--radius);
+	padding: 1.5rem;
+	box-shadow: var(--shadow);
+}
+
+.details_title {
+	font-size: 1.2rem;
+	font-weight: 600;
+	margin: 0 0 1.2rem 0;
+	color: var(--text);
+	position: relative;
+	padding-bottom: 0.8rem;
+}
+
+.details_title::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 40px;
+	height: 3px;
+	background-color: var(--primary);
+	border-radius: 3px;
+}
+
+.details {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.detail_item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.8rem 0;
+}
+
+.detail_item:not(:last-child) {
+	border-bottom: 1px solid var(--border);
+}
+
+.detail_label {
+	font-weight: 500;
+	color: var(--text-secondary);
+}
+
+.detail_value {
+	font-weight: 600;
+	color: var(--text);
+}
+
+.actions {
+	display: flex;
+	gap: 1rem;
+	width: 100%;
+}
+
+.btn {
+	padding: 1rem 1.5rem;
+	border-radius: var(--radius);
+	border: none;
+	font-size: 1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: var(--transition);
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.primary_btn {
+	background-color: var(--primary);
+	color: white;
+}
+
+.primary_btn:hover {
+	background-color: var(--primary-hover);
+	transform: translateY(-2px);
+	box-shadow: var(--shadow);
+}
+
+.secondary_btn {
+	background-color: transparent;
+	color: var(--primary);
+	border: 2px solid var(--primary);
+}
+
+.secondary_btn:hover {
+	background-color: rgba(37, 99, 235, 0.1);
+	transform: translateY(-2px);
+	box-shadow: var(--shadow);
+}
+
+.left_arrow,
+.right_arrow {
+	cursor: pointer;
+	background-color: var(--surface);
+	border-radius: 50%;
+	width: 36px;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--text);
+	padding: 0.3rem;
+	transition: var(--transition);
+	position: absolute;
+	z-index: 2;
+	box-shadow: var(--shadow);
+	border: 1px solid var(--border);
+}
+
+.left_arrow {
+	left: -18px;
+}
+
+.right_arrow {
+	right: -18px;
+}
+
+.left_arrow:hover,
+.right_arrow:hover {
+	background-color: var(--primary);
+	color: white;
+	transform: scale(1.1);
+}
+
+.specs_section,
+.description_section {
+	background: var(--surface);
+	border-radius: var(--radius);
+	padding: 2rem;
+	box-shadow: var(--shadow);
+}
+
+.section_title {
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: var(--text);
+	margin: 0 0 1.5rem 0;
+	position: relative;
+	padding-bottom: 0.8rem;
+}
+
+.section_title::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 50px;
+	height: 4px;
+	background-color: var(--primary);
+	border-radius: 2px;
+}
+
+.specs_grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 1.2rem;
+}
+
+.spec_item {
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem;
+	background: var(--background);
+	border-radius: 10px;
+	border: 1px solid var(--border);
+}
+
+.spec_label {
+	font-weight: 500;
+	color: var(--text-secondary);
+}
+
+.spec_value {
+	font-weight: 600;
+	color: var(--text);
+}
+
+.description {
+	line-height: 1.7;
+	color: var(--text-secondary);
+	font-size: 1.05rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+	.details_container {
+		grid-template-columns: 1fr;
+		max-width: 800px;
+		margin: 0 auto;
+	}
+}
+
+@media (max-width: 968px) {
+	.main {
+		padding: 1.5rem;
+	}
+
+	.title {
+		font-size: 1.8rem;
+	}
+
+	.feature_highlights {
+		flex-wrap: wrap;
+	}
+}
+
+@media (max-width: 768px) {
+	.main {
+		padding: 1rem;
+		gap: 1.5rem;
+	}
+
+	.header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1rem;
+	}
+
+	.details_container {
+		padding: 0.5rem;
+		gap: 1.5rem;
+	}
+
+	.title {
+		font-size: 1.6rem;
+	}
+
+	.price {
+		font-size: 1.8rem;
+	}
+
+	.car_meta {
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.actions {
+		flex-direction: column;
+	}
+
+	.specs_grid {
+		grid-template-columns: 1fr;
+	}
+
+	.mini_image {
+		width: 60px;
+		height: 60px;
+	}
+
+	.left_arrow,
+	.right_arrow {
+		width: 30px;
+		height: 30px;
+	}
+
+	.left_arrow {
+		left: -15px;
+	}
+
+	.right_arrow {
+		right: -15px;
+	}
+}
+
+@media (max-width: 480px) {
+	.main {
+		padding: 0.8rem;
+	}
+
+	.title {
+		font-size: 1.4rem;
+	}
+
+	.price {
+		font-size: 1.6rem;
+	}
+
+	.specs_section,
+	.description_section {
+		padding: 1.5rem;
+	}
+
+	.mini_images_container {
+		gap: 0.5rem;
+	}
+
+	.mini_image {
+		width: 40px;
+		height: 40px;
+	}
+}
+
+/* Animation for favorite button */
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.icon_btn.favorite {
+	animation: pulse 0.5s ease;
+}
