@@ -62,13 +62,14 @@
 	height: 10px;
 	border-radius: 15px;
 	transition: background-color 0.3s ease-in-out 0s,
-		transform 0.2s ease-in-out 0s;
+		transform 0.2s ease-in-out 0s, color 0.3s ease-in-out 0s;
 	cursor: pointer;
 	border: 1px solid var(--border);
 }
 .option:hover {
 	background-color: var(--primary);
 	transform: translateY(-20px);
+	color: white;
 }
 @media (max-width: 768px) {
 	.Admin_options {

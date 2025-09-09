@@ -216,11 +216,9 @@ export async function UploadImages(id: string, image: File[]) {
 			}
 		);
 		if (response) {
-			console.log(response.data);
 			return response.data;
 		}
 	} catch (error) {
-		console.error("Upload error:", error);
 		return null;
 	}
 }
@@ -268,7 +266,6 @@ export async function UpdateCarVisibility(id: string, isVisible: boolean) {
 	try {
 		const response = await api.put(`/car/visibility/${id}/${isVisible}`);
 		if (response) {
-			console.log(response.data);
 			return "updated";
 		}
 	} catch (error) {
@@ -287,15 +284,32 @@ export async function GetAllVisibleCars() {
 	}
 }
 export async function GetCarsOfSerie(SerieId: number) {
-	console.log(SerieId);
 	try {
-		const response = await api.get(`/car/serie/${SerieId}`);
+		const response = await api.get(`/car/serie/${SerieId}`, {});
 		if (response) {
-			console.log(response.data);
 			return response.data;
 		}
 	} catch (error) {
-		console.error(error);
 		return error;
+	}
+}
+export async function DeleteBrandById(id) {
+	try {
+		const response = await api.delete(`/brand/${id}`);
+		if (response) {
+			return "deleted";
+		}
+	} catch (error) {
+		return error.response.data;
+	}
+}
+export async function DeleteSerieById(id) {
+	try {
+		const response = await api.delete(`/serie/${id}`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		return error.response;
 	}
 }

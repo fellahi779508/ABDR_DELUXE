@@ -41,7 +41,7 @@ export class Car {
       `${this.serie.name}-${this.finition}-${this.Année}`,
     ).toLowerCase();
   }
-  @ManyToOne(() => Serie, (serie) => serie.cars)
+  @ManyToOne(() => Serie, (serie) => serie.cars, { onDelete: 'CASCADE' })
   serie: Serie;
   @ManyToOne(() => Order, (order) => order.cars, { nullable: true })
   order: Order;

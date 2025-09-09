@@ -1,13 +1,14 @@
 "use client";
-import { Plus, X } from "lucide-react";
+import { Minus, Plus, X } from "lucide-react";
 import styles from "./addNewCar.module.css";
 import { Brand, Car, CreateCar, Serie } from "@/utils/Types";
 import { use, useEffect, useState } from "react";
 import {
 	CreateBrand,
-	CreateCar,
 	CreateCarDB,
 	Createserie,
+	DeleteBrandById,
+	DeleteSerieById,
 	FetchAllBrands,
 	FetchSeriesByBrand,
 	UploadImages,
@@ -33,6 +34,8 @@ function AddNewCar() {
 		createSerie: false,
 		createCar: false,
 		uploadImages: false,
+		deleteBrand: false,
+		deleteSerie: false,
 	});
 
 	const [car, setCar] = useState<CreateCar>({
@@ -122,6 +125,10 @@ function AddNewCar() {
 	}
 
 	async function createNewBrand(name: string) {
+		if (!name) {
+			toast.error("Please fill in all fields");
+			return;
+		}
 		setLoading((prev) => ({ ...prev, createBrand: true }));
 
 		try {
@@ -142,6 +149,10 @@ function AddNewCar() {
 	}
 
 	async function createNewSerie() {
+		if (!newSerieName || !selectedBrand) {
+			toast.error("Please fill in all fields");
+			return;
+		}
 		setLoading((prev) => ({ ...prev, createSerie: true }));
 
 		try {
@@ -209,7 +220,31 @@ function AddNewCar() {
 			setPrimaryImage(e.target.files[0]);
 		}
 	}
+	async function handleDeleteBrand(id) {
+		const response = await DeleteBrandById(id);
+		if (response === "deleted") {
+			toast.success("Brand deleted successfully");
+			setBrandOptions([]);
+			setSelectedBrand(null);
+			FetchBrands();
+		} else {
+			toast.error("Error deleting brand");
+		}
+	}
+	async function handleDeleteSerie(id) {
+		const response = await DeleteSerieById(id);
+		if (response === "deleted") {
+			toast.success("Brand deleted successfully");
 
+			setSerieOptions({
+				value: null,
+				label: null,
+			});
+			setSelectedSerie(null);
+		} else {
+			toast.error("Error deleting brand");
+		}
+	}
 	useEffect(() => {
 		FetchBrands();
 	}, []);
@@ -235,20 +270,42 @@ function AddNewCar() {
 					<div className={styles.section}>
 						<div className={styles.sectionHeader}>
 							<h3>Brand</h3>
-							<button
-								className={styles.addButton}
-								onClick={() => setIsCreatingBrand(true)}
-								disabled={loading.createBrand}
-							>
-								{loading.createBrand ? (
-									"Creating..."
-								) : (
-									<>
-										<Plus size={16} />
-										Create New Brand
-									</>
+							<div>
+								<button
+									className={styles.addButton}
+									onClick={() => setIsCreatingBrand(true)}
+									disabled={loading.createBrand}
+								>
+									{loading.createBrand ? (
+										"Creating..."
+									) : (
+										<>
+											<Plus size={16} />
+											Create New Brand
+										</>
+									)}
+								</button>
+								{selectedBrand && (
+									<button
+										className={styles.addButton}
+										style={{
+											marginTop: "10px",
+											backgroundColor: "rgba(255, 0, 10, 0.8)",
+										}}
+										onClick={() => handleDeleteBrand(selectedBrand.id)}
+										disabled={loading.createBrand}
+									>
+										{loading.deleteBrand ? (
+											"Deleteing..."
+										) : (
+											<>
+												<Minus size={16} />
+												Delete Brand
+											</>
+										)}
+									</button>
 								)}
-							</button>
+							</div>
 						</div>
 
 						{isCreatingBrand ? (
@@ -298,20 +355,42 @@ function AddNewCar() {
 					<div className={styles.section}>
 						<div className={styles.sectionHeader}>
 							<h3>Serie</h3>
-							<button
-								className={styles.addButton}
-								onClick={() => setIsCreatingSerie(true)}
-								disabled={!selectedBrand || loading.createSerie}
-							>
-								{loading.createSerie ? (
-									"Creating..."
-								) : (
-									<>
-										<Plus size={16} />
-										Create New Serie
-									</>
+							<div>
+								<button
+									className={styles.addButton}
+									onClick={() => setIsCreatingSerie(true)}
+									disabled={!selectedBrand || loading.createSerie}
+								>
+									{loading.createSerie ? (
+										"Creating..."
+									) : (
+										<>
+											<Plus size={16} />
+											Create New Serie
+										</>
+									)}
+								</button>
+								{selectedSerie && (
+									<button
+										className={styles.addButton}
+										style={{
+											marginTop: "10px",
+											backgroundColor: "rgba(255, 0, 10, 0.8)",
+										}}
+										onClick={() => handleDeleteSerie(selectedSerie.id)}
+										disabled={!selectedBrand || loading.createSerie}
+									>
+										{loading.deleteSerie ? (
+											"Deleting..."
+										) : (
+											<>
+												<Minus size={16} />
+												Delete Serie
+											</>
+										)}
+									</button>
 								)}
-							</button>
+							</div>
 						</div>
 
 						{isCreatingSerie ? (

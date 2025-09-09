@@ -25,7 +25,7 @@ export class SerieService {
     if (!serie) {
       throw new NotFoundException('Serie not found');
     }
-    await this.serieRepo.remove(serie);
+    await this.serieRepo.delete(id);
     return 'deleted';
   }
   async GetAllSeries(page: number, limit: number) {

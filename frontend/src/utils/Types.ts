@@ -15,6 +15,7 @@ export type Car = {
 	images: Images[];
 };
 export type Serie = {
+	id: number;
 	name: string;
 	brand: Brand;
 };

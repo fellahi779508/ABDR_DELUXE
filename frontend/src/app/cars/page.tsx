@@ -11,7 +11,7 @@ async function FetchAllCars() {
 			return response;
 		}
 	} catch (error) {
-		return notFound();
+		return [];
 	}
 	return {} as AxiosResponse;
 }

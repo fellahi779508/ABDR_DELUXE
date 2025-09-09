@@ -93,7 +93,10 @@ export class CarService {
     return this.carRepo.save(car);
   }
   async GetCarsOfSerie(id: number) {
-    const cars = await this.carRepo.find({ where: { serie: { id } } });
+    const cars = await this.carRepo.find({
+      where: { serie: { id } },
+      relations: ['images'],
+    });
     if (!cars) {
       return [];
     }

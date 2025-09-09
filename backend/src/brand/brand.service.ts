@@ -24,7 +24,7 @@ export class BrandService {
     if (!brand) {
       throw new NotFoundException('Brand not found');
     }
-    await this.brandRepo.remove(brand);
+    await this.brandRepo.delete(id);
     return 'deleted';
   }
   async GetAllBrands(page: number, limit: number) {

@@ -8,9 +8,6 @@ export class Brand {
   @Column()
   name: string;
 
-  //   @Column()
-  //   logo: string;
-
   @OneToMany(() => Serie, (serie) => serie.brand, {
     cascade: true,
     eager: true,

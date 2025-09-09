@@ -14,12 +14,14 @@ export class Serie {
   id: number;
   @Column()
   name: string;
-  @ManyToOne(() => Brand, (brand) => brand.series)
+  @ManyToOne(() => Brand, (brand) => brand.series, {
+    onDelete: 'CASCADE',
+  })
   brand: Brand;
   @OneToMany(() => Car, (car) => car.serie, {
-    cascade: true,
     eager: true,
     nullable: true,
+    cascade: true,
   })
   cars: Car[];
 }
