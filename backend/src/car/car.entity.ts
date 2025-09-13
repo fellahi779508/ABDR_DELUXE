@@ -45,8 +45,10 @@ export class Car {
   }
   @ManyToOne(() => Serie, (serie) => serie.cars, { onDelete: 'CASCADE' })
   serie: Serie;
-  @OneToOne(() => Order, (order) => order.cars, { nullable: true })
-  @JoinColumn({ name: 'orderId' })
+  @OneToMany(() => Order, (order) => order.cars, {
+    nullable: true,
+    cascade: true,
+  })
   order: Order;
   @OneToMany(() => Image, (image) => image.car, {
     cascade: true,

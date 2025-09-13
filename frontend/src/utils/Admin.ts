@@ -3,10 +3,9 @@
 "use server";
 import { cookies } from "next/headers";
 import { api } from "./api";
-import { CreateCar, CreateOrder, UpdateCar } from "./Types";
-import { cssTransition } from "react-toastify";
-import { ChartColumnStacked } from "lucide-react";
-import { notFound } from "next/navigation";
+import { CreateCar, UpdateCar } from "./Types";
+import { exportTraceState } from "next/dist/trace";
+
 type Car = {
 	Année: string;
 	Boite: string;
@@ -293,23 +292,23 @@ export async function GetCarsOfSerie(SerieId: number) {
 		return error;
 	}
 }
-export async function DeleteBrandById(id) {
+export async function DeleteBrandById(id: any) {
 	try {
 		const response = await api.delete(`/brand/${id}`);
 		if (response) {
 			return "deleted";
 		}
-	} catch (error) {
+	} catch (error: any) {
 		return error.response.data;
 	}
 }
-export async function DeleteSerieById(id) {
+export async function DeleteSerieById(id: any) {
 	try {
 		const response = await api.delete(`/serie/${id}`);
 		if (response) {
 			return response.data;
 		}
-	} catch (error) {
+	} catch (error: any) {
 		return error.response;
 	}
 }
@@ -325,18 +324,18 @@ export async function CreateNewOrder(data: any) {
 			(await cookies()).delete("carId");
 			return true;
 		}
-	} catch (error) {
+	} catch (error: any) {
 		console.error(error.response);
 		return false;
 	}
 }
-export async function GetAllOrders() {
+export async function GetAllOrders(page: number) {
 	try {
-		const response = await api.get(`/order?page=0&limit=0`);
+		const response = await api.get(`/order?page=${page}&limit=3`);
 		if (response) {
 			return response.data;
 		}
-	} catch (error) {
+	} catch (error: any) {
 		return error.response;
 	}
 }
@@ -347,4 +346,54 @@ export async function SetCarIdCookie(id: string, price: number) {
 		return "ok";
 	}
 	return "error";
+}
+
+export async function AcceptOrder(id: string) {
+	try {
+		const response = await api.put(`/order/accept/${id}`);
+		if (response) {
+			console.log(response);
+			return true;
+		}
+	} catch (error: any) {
+		console.error(error.response);
+		return false;
+	}
+}
+export async function CancaleOrder(id: string) {
+	try {
+		const response = await api.put(`/order/cancel/${id}`);
+		if (response) {
+			console.log(response);
+			return true;
+		}
+	} catch (error: any) {
+		console.error(error.response);
+		return false;
+	}
+}
+
+export async function CompleteOrder(id: string) {
+	try {
+		const response = await api.put(`/order/complete/${id}`);
+		if (response) {
+			console.log(response);
+			return true;
+		}
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+export async function DeleteOrderById(id: string) {
+	try {
+		const response = await api.delete(`/order/${id}`);
+		if (response) {
+			console.log(response.data);
+			return "deleted";
+		}
+	} catch (error) {
+		console.error(error.response);
+		return "error";
+	}
 }

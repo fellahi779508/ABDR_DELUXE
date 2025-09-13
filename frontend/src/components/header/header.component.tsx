@@ -4,10 +4,11 @@ import { useState } from "react";
 import styles from "./header.module.css";
 import ThemeToggle from "../ThemeProvider/themeProvider";
 import { Car, Menu, X, Phone, MapPin } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 function Header() {
+	const router = useRouter();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-
 	return (
 		<header className={`${styles.header} `}>
 			<div className={styles.top_bar}>
@@ -63,7 +64,12 @@ function Header() {
 							>
 								Contact
 							</Link>
-							<button className={styles.cta_button}>Browse Cars</button>
+							<button
+								className={styles.cta_button}
+								onClick={() => router.push("/cars")}
+							>
+								Browse Cars
+							</button>
 							<div className={styles.theme_toggle}>
 								<ThemeToggle />
 							</div>

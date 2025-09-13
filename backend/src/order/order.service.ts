@@ -27,13 +27,21 @@ export class OrderService {
 
   async getAllOrders(page: number, limit: number) {
     const skip = (page - 1) * limit;
-    return await this.orderRepo.find({
+    const [orders, count] = await this.orderRepo.findAndCount({
       skip,
       take: limit,
       relations: ['cars'],
+      order: { createdAt: 'DESC' },
     });
+    if (count === 0) {
+      return [orders, false];
+    } else {
+      const hasMore = count > skip + limit;
+      return [orders, hasMore, count];
+    }
   }
-  async getOrderById(id: number) {
+
+  async getOrderById(id: string) {
     const order = await this.orderRepo.findOne({
       where: { id },
       relations: ['cars'],
@@ -43,19 +51,54 @@ export class OrderService {
     }
     return order;
   }
-  async deleteOrder(id: number) {
+  async deleteOrder(id: string) {
     const order = await this.orderRepo.findOne({ where: { id } });
     if (!order) {
       throw new NotFoundException('Order not found');
     }
-    return await this.orderRepo.remove(order);
+    // await this.orderRepo.remove(order);
+    console.log(order.id);
+    return order.id;
   }
-  async updateOrder(status: Status, id: number) {
+  async updateOrder(status: Status, id: string) {
     const order = await this.orderRepo.findOne({ where: { id } });
     if (!order) {
       throw new NotFoundException('Order not found');
     }
     order.status = status;
+    return await this.orderRepo.save(order);
+  }
+  async acceptOrder(id: string) {
+    const order = await this.orderRepo.findOne({
+      where: { id },
+      relations: ['cars'],
+    });
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    order.status = Status.PENDING;
+    return await this.orderRepo.save(order);
+  }
+  async cancelOrder(id: string) {
+    const order = await this.orderRepo.findOne({
+      where: { id },
+      relations: ['cars'],
+    });
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    order.status = Status.CANCELLED;
+    return await this.orderRepo.save(order);
+  }
+  async completeOrder(id: string) {
+    const order = await this.orderRepo.findOne({
+      where: { id },
+      relations: ['cars'],
+    });
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    order.status = Status.COMPLETED;
     return await this.orderRepo.save(order);
   }
 }

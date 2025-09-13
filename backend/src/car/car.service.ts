@@ -49,7 +49,8 @@ export class CarService {
         this.ImageService.removeImage(image.id);
       });
     }
-    return await this.carRepo.remove(car);
+
+    return await this.carRepo.delete(id);
   }
 
   // this function is private

@@ -1,0 +1,276 @@
+.container {
+	padding: 2rem;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.title {
+	color: var(--text);
+	margin-bottom: 2rem;
+	font-size: 2rem;
+}
+
+.tabs {
+	display: flex;
+	border-bottom: 1px solid var(--border);
+	margin-bottom: 2rem;
+	gap: 0.5rem;
+}
+
+.tab {
+	background: none;
+	border: none;
+	padding: 0.75rem 1.5rem;
+	cursor: pointer;
+	color: var(--text-secondary);
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	transition: var(--transition);
+}
+
+.tab:hover {
+	color: var(--text);
+}
+
+.activeTab {
+	color: var(--primary);
+	font-weight: bold;
+}
+
+.activeTab::after {
+	content: "";
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	right: 0;
+	height: 2px;
+	background-color: var(--primary);
+}
+
+.badge {
+	background-color: var(--surface);
+	color: var(--text);
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.75rem;
+}
+
+.ordersContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	height: 70vh; /* Adjust this value as needed */
+	overflow: auto;
+}
+.emptyState {
+	text-align: center;
+	padding: 3rem;
+	color: var(--text-secondary);
+	background-color: var(--surface);
+	border-radius: var(--radius);
+}
+
+.orderCard {
+	background-color: var(--background);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	overflow: hidden;
+	transition: var(--transition);
+	margin-bottom: 2rem;
+	position: relative;
+}
+
+.orderCard:hover {
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.orderHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1.5rem;
+	background-color: var(--surface);
+	border-bottom: 1px solid var(--border);
+}
+
+.orderInfo {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.orderId {
+	margin: 0;
+	color: var(--text);
+	font-size: 1.25rem;
+}
+
+.orderDate {
+	color: var(--text-secondary);
+	font-size: 0.875rem;
+}
+
+.status {
+	padding: 0.25rem 0.75rem;
+	border-radius: 100px;
+	font-size: 0.75rem;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.status.new {
+	background-color: #e3f2fd;
+	color: #1976d2;
+}
+
+.status.pending {
+	background-color: #fff8e1;
+	color: #f57c00;
+}
+
+.status.completed {
+	background-color: #e8f5e9;
+	color: var(--success);
+}
+
+.status.declined {
+	background-color: #ffebee;
+	color: #d32f2f;
+}
+
+.orderDetails {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2rem;
+	padding: 1.5rem;
+}
+
+.customerInfo,
+.carInfo {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.customerInfo h4,
+.carInfo h4 {
+	margin: 0 0 0.5rem 0;
+	color: var(--text);
+	font-size: 1.125rem;
+}
+
+.customerInfo p,
+.carInfo p {
+	margin: 0;
+	color: var(--text-secondary);
+	display: flex;
+}
+
+.customerInfo strong,
+.carInfo strong {
+	min-width: 100px;
+	color: var(--text);
+}
+
+.orderActions {
+	padding: 1rem 1.5rem;
+	background-color: var(--surface);
+	border-top: 1px solid var(--border);
+	display: flex;
+	gap: 1rem;
+}
+
+.acceptBtn {
+	background-color: var(--primary);
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: var(--radius);
+	cursor: pointer;
+	transition: var(--transition);
+}
+
+.acceptBtn:hover {
+	background-color: var(--primary-hover);
+}
+
+.declineBtn {
+	background-color: #d32f2f;
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: var(--radius);
+	cursor: pointer;
+	transition: var(--transition);
+}
+
+.declineBtn:hover {
+	background-color: #b71c1c;
+}
+.deleteBtn {
+	background-color: #d32f2f;
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: var(--radius);
+	cursor: pointer;
+	transition: var(--transition);
+	position: absolute;
+	bottom: 10;
+	right: 10;
+}
+.deleteBtn:hover {
+	background-color: #b71c1c;
+}
+.completeBtn {
+	background-color: var(--primary);
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: var(--radius);
+	cursor: pointer;
+	transition: var(--transition);
+}
+
+.completeBtn:hover {
+	background-color: var(--primary-hover);
+}
+
+.finalStatus {
+	color: var(--text-secondary);
+	font-style: italic;
+	display: flex;
+	align-items: center;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+	.container {
+		padding: 1rem;
+	}
+
+	.tabs {
+		flex-wrap: wrap;
+	}
+
+	.orderDetails {
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+	}
+
+	.orderHeader {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1rem;
+	}
+
+	.orderActions {
+		flex-direction: column;
+	}
+}

@@ -3,6 +3,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -12,7 +14,7 @@ import {
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
   @Column()
   name: string;
   @Column()
@@ -25,10 +27,9 @@ export class Order {
   updatedAt: Date;
   @Column({ enum: ['pending', 'new', 'cancelled', 'accepted'], default: 'new' })
   status: string;
-  @OneToOne(() => Car, (car) => car.order, {
-    cascade: true,
-    eager: true,
+  @ManyToOne(() => Car, (car) => car.order, {
     nullable: true,
+    onDelete: 'CASCADE',
   })
   cars: Car;
 }
