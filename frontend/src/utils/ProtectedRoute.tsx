@@ -2,7 +2,7 @@
 "use server";
 import { jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export default async function ProtectedRoute() {
 	const token = (await cookies()).get("access_token")?.value;
@@ -26,8 +26,13 @@ export default async function ProtectedRoute() {
 export async function OrderRoute() {
 	const carId = (await cookies()).get("carId")?.value;
 	if (!carId) {
-		setTimeout(() => {
-			redirect("/cars");
-		}, 2000);
+		return notFound();
+	}
+	const today = new Date().toISOString().split("T")[0];
+	const oldOrderDate = (await cookies()).get("OrderDate")?.value;
+	console.log(oldOrderDate);
+
+	if (oldOrderDate === today) {
+		return redirect("/order/oneTime");
 	}
 }

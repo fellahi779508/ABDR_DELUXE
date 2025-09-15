@@ -4,6 +4,7 @@
 import { cookies } from "next/headers";
 import { api } from "./api";
 import { CreateCar, UpdateCar } from "./Types";
+import { redirect } from "next/navigation";
 
 type Car = {
 	Année: string;
@@ -315,21 +316,31 @@ export async function CreateNewOrder(data: any) {
 	try {
 		const carId = (await cookies()).get("carId")?.value;
 		if (!carId) return;
-		const order = { ...data, carId: carId };
+
+		const order = { ...data, carId };
 		const response = await api.post(`/order`, order);
+
 		if (response) {
-			(await cookies()).delete("carId");
-			(await cookies()).delete("price");
+			const today = new Date().toISOString().split("T")[0];
+			(await cookies()).set("OrderDate", today.toString());
 			return true;
 		}
 	} catch (error: any) {
 		console.error(error);
 		return false;
+	} finally {
+		(await cookies()).delete("carId");
+		(await cookies()).delete("price");
 	}
 }
 export async function GetAllOrders(page: number) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.get(`/order?page=${page}&limit=3`);
+		const response = await api.get(`/order?page=${page}&limit=3`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			return response.data;
 		}
@@ -347,8 +358,17 @@ export async function SetCarIdCookie(id: string, price: number) {
 }
 
 export async function AcceptOrder(id: string) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.put(`/order/accept/${id}`);
+		const response = await api.put(
+			`/order/accept/${id}`,
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 		if (response) {
 			console.log(response);
 			return true;
@@ -359,8 +379,17 @@ export async function AcceptOrder(id: string) {
 	}
 }
 export async function CancaleOrder(id: string) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.put(`/order/cancel/${id}`);
+		const response = await api.put(
+			`/order/cancel/${id}`,
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 		if (response) {
 			console.log(response);
 			return true;
@@ -372,8 +401,17 @@ export async function CancaleOrder(id: string) {
 }
 
 export async function CompleteOrder(id: string) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.put(`/order/complete/${id}`);
+		const response = await api.put(
+			`/order/complete/${id}`,
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 		if (response) {
 			console.log(response);
 			return true;
@@ -384,8 +422,13 @@ export async function CompleteOrder(id: string) {
 	}
 }
 export async function DeleteOrderById(id: string) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.delete(`/order/${id}`);
+		const response = await api.delete(`/order/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			return "deleted";
 		}

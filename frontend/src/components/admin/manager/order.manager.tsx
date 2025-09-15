@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import styles from "./order.manager.module.css";
 import {
 	AcceptOrder,
@@ -41,81 +42,120 @@ function OrderManger() {
 	const [allOrders, setAllOrders] = useState<Order[]>([]);
 	const [page, setPage] = useState(1);
 	const [hasMore, setHasMore] = useState(true);
-	const fetchMoreData = async () => {
-		const [newOrders, moreAvailable] = await GetAllOrders(page + 1);
-		setPage((prev) => prev + 1);
-		setAllOrders((prev) => [...prev, ...newOrders]);
-		setHasMore(moreAvailable);
-	};
+	const [activeTab, setActiveTab] = useState<Order["status"]>("new");
+
+	const fetchMoreData = useCallback(async () => {
+		try {
+			const [newOrders, moreAvailable] = await GetAllOrders(page + 1);
+			setPage((prev) => prev + 1);
+			setAllOrders((prev) => {
+				// Filter out duplicates
+				const uniqueOrders = newOrders.filter(
+					(newOrder: any) => !prev.some((order) => order.id === newOrder.id)
+				);
+				return [...prev, ...uniqueOrders];
+			});
+			setHasMore(moreAvailable);
+		} catch (error) {
+			toast.error("Error loading more orders");
+		}
+	}, [page]);
+
 	useEffect(() => {
-		GetAllOrders(1).then((res) => (setAllOrders(res[0]), setHasMore(res[1])));
-		const eventSource = new EventSource("http://localhost:7777/order/stream");
+		// Initial data fetch
+		GetAllOrders(1)
+			.then(([orders, moreAvailable]) => {
+				setAllOrders(orders);
+				setHasMore(moreAvailable);
+			})
+			.catch(() => toast.error("Error loading orders"));
 
-		eventSource.addEventListener("orderCreated", (event) => {
-			const newOrder: Order = JSON.parse(event.data);
-			setAllOrders((prev) => [...prev, newOrder]);
+		// SSE setup
+		const eventSource = new EventSource("http://localhost:7777/order/stream", {
+			withCredentials: true,
 		});
 
-		eventSource.addEventListener("orderAccepted", (event) => {
-			const updatedOrder: Order = JSON.parse(event.data);
-			setAllOrders((prev) =>
-				prev.map((o) => (o.id === updatedOrder.id ? updatedOrder : o))
-			);
-		});
+		const handleOrderEvent = (event: MessageEvent) => {
+			try {
+				const order: Order = JSON.parse(event.data);
+				setAllOrders((prev) => {
+					const existingIndex = prev.findIndex((o) => o.id === order.id);
+					if (existingIndex > -1) {
+						// Update existing order
+						const newOrders = [...prev];
+						newOrders[existingIndex] = order;
+						return newOrders;
+					} else {
+						// Add new order at beginning for newest first ordering
+						return [order, ...prev];
+					}
+				});
+			} catch (error) {
+				console.error("Error parsing SSE data:", error);
+			}
+		};
 
-		eventSource.addEventListener("orderCancelled", (event) => {
-			const updatedOrder: Order = JSON.parse(event.data);
-			setAllOrders((prev) =>
-				prev.map((o) => (o.id === updatedOrder.id ? updatedOrder : o))
-			);
-		});
-
-		eventSource.addEventListener("orderCompleted", (event) => {
-			const updatedOrder: Order = JSON.parse(event.data);
-			setAllOrders((prev) =>
-				prev.map((o) => (o.id === updatedOrder.id ? updatedOrder : o))
-			);
-		});
+		eventSource.addEventListener("orderCreated", handleOrderEvent);
+		eventSource.addEventListener("orderAccepted", handleOrderEvent);
+		eventSource.addEventListener("orderCancelled", handleOrderEvent);
+		eventSource.addEventListener("orderCompleted", handleOrderEvent);
 
 		eventSource.addEventListener("orderDeleted", (event) => {
-			const deletedOrder: string = event.data;
-			setAllOrders((prev) => prev.filter((o) => o.id !== deletedOrder));
+			try {
+				const deletedOrderId = event.data;
+				setAllOrders((prev) => prev.filter((o) => o.id !== deletedOrderId));
+			} catch (error) {
+				console.error("Error handling delete event:", error);
+			}
 		});
+
+		eventSource.onerror = (error) => {
+			console.error("SSE connection error:", error);
+			eventSource.close();
+		};
+
 		return () => {
 			eventSource.close();
 		};
 	}, []);
 
-	const [activeTab, setActiveTab] = useState<Order["status"]>("new");
-
-
 	const filteredOrders = allOrders.filter(
 		(order) => order.status === activeTab
 	);
 
-	const acceptOrder = async (orderId: string) => {
-		const response = await AcceptOrder(orderId);
-		if (response === true) {
-			toast.success("Order accepted successfully");
+	const handleOrderAction = async (
+		action: () => Promise<unknown>,
+		successMessage: string
+	) => {
+		try {
+			const response = await action();
+			if (response === true) {
+				toast.success(successMessage);
+			} else {
+				throw new Error("Invalid response");
+			}
+		} catch (error) {
+			toast.error(`Error: ${error.message}`);
 		}
-		toast.error("Error accepting order");
 	};
 
-	const cancelOrder = async (orderId: string) => {
-		const response = await CancaleOrder(orderId);
-		if (response === true) {
-			toast.success("Order cancelled successfully");
-		}
-		toast.error("Error cancelling order");
-	};
+	const acceptOrder = (orderId: string) =>
+		handleOrderAction(
+			() => AcceptOrder(orderId),
+			"Order accepted successfully"
+		);
 
-	const completeOrder = async (orderId: string) => {
-		const response = await CompleteOrder(orderId);
-		if (response === true) {
-			toast.success("Order completed successfully");
-		}
-		toast.error("Error completing order");
-	};
+	const cancelOrder = (orderId: string) =>
+		handleOrderAction(
+			() => CancaleOrder(orderId),
+			"Order cancelled successfully"
+		);
+
+	const completeOrder = (orderId: string) =>
+		handleOrderAction(
+			() => CompleteOrder(orderId),
+			"Order completed successfully"
+		);
 
 	const formatDate = (dateString: string) => {
 		return new Date(dateString).toLocaleDateString("en-US", {
@@ -127,54 +167,38 @@ function OrderManger() {
 		});
 	};
 
-	async function deleteOrder(id: string) {
-		const resp = await DeleteOrderById(id);
-		if (resp === "deleted") {
-			toast.success("Order deleted successfully");
+	const deleteOrder = async (id: string) => {
+		try {
+			const resp = await DeleteOrderById(id);
+			if (resp === "deleted") {
+				toast.success("Order deleted successfully");
+			} else {
+				throw new Error("Invalid response");
+			}
+		} catch (error) {
+			toast.error("Error deleting order");
 		}
-		toast.error("Error deleting order");
-	}
+	};
 
 	return (
 		<div className={styles.container}>
 			<h1 className={styles.title}>Order Management</h1>
 
 			<div className={styles.tabs}>
-				<button
-					className={`${styles.tab} ${
-						activeTab === "new" ? styles.activeTab : ""
-					}`}
-					onClick={() => setActiveTab("new")}
-				>
-					New Orders
-				</button>
-
-				<button
-					className={`${styles.tab} ${
-						activeTab === "pending" ? styles.activeTab : ""
-					}`}
-					onClick={() => setActiveTab("pending")}
-				>
-					Pending
-				</button>
-
-				<button
-					className={`${styles.tab} ${
-						activeTab === "completed" ? styles.activeTab : ""
-					}`}
-					onClick={() => setActiveTab("completed")}
-				>
-					Completed
-				</button>
-
-				<button
-					className={`${styles.tab} ${
-						activeTab === "cancelled" ? styles.activeTab : ""
-					}`}
-					onClick={() => setActiveTab("cancelled")}
-				>
-					Declined
-				</button>
+				{(["new", "pending", "completed", "cancelled"] as const).map((tab) => (
+					<button
+						key={tab}
+						className={`${styles.tab} ${
+							activeTab === tab ? styles.activeTab : ""
+						}`}
+						onClick={() => setActiveTab(tab)}
+					>
+						{tab === "cancelled"
+							? "Declined"
+							: tab.charAt(0).toUpperCase() + tab.slice(1)}{" "}
+						Orders
+					</button>
+				))}
 			</div>
 
 			<div id="scrollableDiv" className={styles.ordersContainer}>
@@ -193,6 +217,7 @@ function OrderManger() {
 					) : (
 						filteredOrders.map((order) => (
 							<div key={order.id} className={styles.orderCard}>
+								{/* Order card content remains same */}
 								<div className={styles.orderHeader}>
 									<div className={styles.orderInfo}>
 										<h3 className={styles.orderId}>Order #{order.id}</h3>

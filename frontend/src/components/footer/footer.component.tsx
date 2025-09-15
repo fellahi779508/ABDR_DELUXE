@@ -9,6 +9,7 @@ import {
 	Twitter,
 	Youtube,
 } from "lucide-react";
+import Image from "next/image";
 
 function Footer() {
 	return (
@@ -30,19 +31,25 @@ function Footer() {
 							>
 								<Facebook />
 							</Link>
-							<Link href="#" aria-label="Twitter" className={styles.socialLink}>
-								<Twitter />
-							</Link>
 							<Link
-								href="#"
+								href="https://www.instagram.com/abr_delux_auto"
 								aria-label="Instagram"
 								className={styles.socialLink}
 							>
 								<Instagram />
 							</Link>
-							<a href="#" aria-label="YouTube" className={styles.socialLink}>
-								<Youtube />
-							</a>
+							<Link
+								href="https://www.tiktok.com/@abrdeluxeautochina?_t=ZS-8ziobk4aG0o&_r=1"
+								aria-label="YouTube"
+								className={styles.socialLink}
+							>
+								<Image
+									src="/images/tik-tok.png"
+									alt="Tiktok"
+									width={24}
+									height={24}
+								/>
+							</Link>
 						</div>
 					</div>
 
@@ -80,7 +87,7 @@ function Footer() {
 							</div>
 							<div className={styles.contactItem}>
 								<MapPin />
-								<span>123 Avenue du Luxe, Ville Premium, PC 90210</span>
+								<span>Chlef, Jijel, Bouira</span>
 							</div>
 						</div>
 					</div>

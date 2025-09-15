@@ -28,13 +28,11 @@ function OrderComponent({ price }: Props) {
 		const newOrder = { ...order, address: MainAddress };
 
 		setOrder(newOrder);
-		const response = await CreateNewOrder(newOrder);
-		console.log(response);
-		if (response) {
-			toast.success("la cammande a bien ete passer");
-		} else {
-			toast.error("la cammande n'a pas ete passer");
+		const result = await CreateNewOrder(newOrder);
+		if (result) {
+			redirect("/order/completed");
 		}
+		redirect("/order/error");
 	}
 
 	return (
