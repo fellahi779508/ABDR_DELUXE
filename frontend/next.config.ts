@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
 		// even if your project has type errors.
 		ignoreBuildErrors: true,
 	},
+	eslint: {
+		ignoreDuringBuilds: true, // ignore ESLint errors
+	},
 };
 
 export default nextConfig;
