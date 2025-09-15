@@ -4,7 +4,6 @@
 import { cookies } from "next/headers";
 import { api } from "./api";
 import { CreateCar, UpdateCar } from "./Types";
-import { exportTraceState } from "next/dist/trace";
 
 type Car = {
 	Année: string;
@@ -317,15 +316,14 @@ export async function CreateNewOrder(data: any) {
 		const carId = (await cookies()).get("carId")?.value;
 		if (!carId) return;
 		const order = { ...data, carId: carId };
-		console.log(order);
 		const response = await api.post(`/order`, order);
 		if (response) {
-			console.log(response);
 			(await cookies()).delete("carId");
+			(await cookies()).delete("price");
 			return true;
 		}
 	} catch (error: any) {
-		console.error(error.response);
+		console.error(error);
 		return false;
 	}
 }
@@ -389,11 +387,9 @@ export async function DeleteOrderById(id: string) {
 	try {
 		const response = await api.delete(`/order/${id}`);
 		if (response) {
-			console.log(response.data);
 			return "deleted";
 		}
 	} catch (error) {
-		console.error(error.response);
 		return "error";
 	}
 }

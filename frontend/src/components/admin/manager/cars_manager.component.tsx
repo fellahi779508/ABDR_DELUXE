@@ -23,7 +23,7 @@ import { redirect } from "next/navigation";
 import { toast } from "react-toastify";
 
 function CarManager() {
-	const [cars, setCars] = useState<Car[]>([]);
+	const [cars, setCars] = useState<Car[] | []>([]);
 	const [filteredCars, setFilteredCars] = useState<Car[]>([]);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [statusFilter, setStatusFilter] = useState<

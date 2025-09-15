@@ -19,13 +19,15 @@ function Main() {
 						/>
 					</div>
 					<div className={styles.textContent}>
-						<h1 className={styles.mainTitle}>Bienvenue chez ABDR_DELUXE</h1>
+						<h1 className={styles.mainTitle}>Bienvenue chez ABR_DELUXE</h1>
 						<p className={styles.description}>
 							Découvrez la voiture de vos rêves parmi notre collection exclusive
 							de véhicules de luxe. Profitez d’un service inégalé et d’une
 							qualité qui nous distingue.
 						</p>
-						<button className={styles.ctaButton}>Explorer l’inventaire</button>
+						<Link href="/cars" className={styles.ctaButton}>
+							Explorer l’inventaire
+						</Link>
 					</div>
 				</div>
 			</section>
@@ -95,7 +97,7 @@ function Main() {
 						/>
 					</div>
 					<div className={styles.textContent}>
-						<h2 className={styles.sectionTitle}>À propos de ABDR_DELUXE</h2>
+						<h2 className={styles.sectionTitle}>À propos de ABR_DELUXE</h2>
 						<p className={styles.description}>
 							Nous sommes fiers de proposer des véhicules exceptionnels et un
 							service client irréprochable. Notre équipe expérimentée est dédiée

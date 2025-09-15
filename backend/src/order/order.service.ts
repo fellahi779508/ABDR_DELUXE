@@ -56,8 +56,7 @@ export class OrderService {
     if (!order) {
       throw new NotFoundException('Order not found');
     }
-    // await this.orderRepo.remove(order);
-    console.log(order.id);
+    await this.orderRepo.remove(order);
     return order.id;
   }
   async updateOrder(status: Status, id: string) {

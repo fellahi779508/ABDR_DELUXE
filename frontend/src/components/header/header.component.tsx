@@ -4,6 +4,7 @@ import { useState } from "react";
 import styles from "./header.module.css";
 import ThemeToggle from "../ThemeProvider/themeProvider";
 import { Car, Menu, X, Phone, MapPin } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 function Header() {
@@ -15,13 +16,13 @@ function Header() {
 				<div className={styles.container}>
 					<div className={styles.top_content}>
 						<div className={styles.contact_info}>
-							<div className={styles.contact_item}>
+							{/* <div className={styles.contact_item}>
 								<Phone size={16} />
 								<span>+213 555 123 456</span>
-							</div>
+							</div> */}
 							<div className={styles.contact_item}>
 								<MapPin size={16} />
-								<span>Algiers, Algeria</span>
+								<span>Chlef, Jijel, Bouira</span>
 							</div>
 						</div>
 					</div>
@@ -32,10 +33,18 @@ function Header() {
 				<div className={styles.container}>
 					<div className={styles.nav_content}>
 						<div className={styles.brand}>
-							<Link href="/" className={styles.logoLink}>
-								<Car size={32} className={styles.logo_icon} />
-								<span className={styles.logo}>ABDR_DELUXE</span>
-							</Link>
+							<button
+								className={styles.logoLink}
+								onClick={() => router.push("/")}
+							>
+								<Image
+									src="/main/abr deluxe.png"
+									alt="Logo"
+									width={250}
+									height={80}
+									className={styles.logo}
+								/>
+							</button>
 						</div>
 
 						<div
@@ -48,28 +57,19 @@ function Header() {
 								className={styles.link}
 								onClick={() => setIsMenuOpen(false)}
 							>
-								Home
+								Accueil
 							</Link>
 							<Link
 								href="/about"
 								className={styles.link}
 								onClick={() => setIsMenuOpen(false)}
 							>
-								About
+								À propos
 							</Link>
-							<Link
-								href="/contact"
-								className={styles.link}
-								onClick={() => setIsMenuOpen(false)}
-							>
-								Contact
+
+							<Link href="/cars" className={styles.cta_button}>
+								Voir les voitures
 							</Link>
-							<button
-								className={styles.cta_button}
-								onClick={() => router.push("/cars")}
-							>
-								Browse Cars
-							</button>
 							<div className={styles.theme_toggle}>
 								<ThemeToggle />
 							</div>
@@ -77,7 +77,7 @@ function Header() {
 
 						<button
 							className={styles.menuToggle}
-							aria-label="Toggle menu"
+							aria-label="Basculer le menu"
 							onClick={() => setIsMenuOpen(!isMenuOpen)}
 						>
 							{isMenuOpen ? <X size={24} /> : <Menu size={24} />}

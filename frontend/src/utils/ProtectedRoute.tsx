@@ -26,6 +26,8 @@ export default async function ProtectedRoute() {
 export async function OrderRoute() {
 	const carId = (await cookies()).get("carId")?.value;
 	if (!carId) {
-		redirect("/cars");
+		setTimeout(() => {
+			redirect("/cars");
+		}, 2000);
 	}
 }

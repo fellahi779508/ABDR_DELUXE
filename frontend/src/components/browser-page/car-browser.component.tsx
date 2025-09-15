@@ -5,8 +5,6 @@ import { useState, useEffect } from "react";
 import styles from "./car-browser.component.module.css";
 import Image from "next/image";
 import { FetchSeriesByBrand, GetCarsOfSerie } from "@/utils/Admin";
-import { Serie } from "@/utils/Types";
-import { Divide } from "lucide-react";
 
 type Car = {
 	finition: string;
@@ -39,7 +37,8 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 	const [series, setSeries] = useState<{ id: number; name: string }[]>([]);
 	const [selectedBrand, setSelectedBrand] = useState<number | null>(null);
 	const [seriesLoading, setSeriesLoading] = useState(false);
-	const [visibleCars, setVisibleCars] = useState<Car[]>(car);
+	const [visibleCars, setVisibleCars] = useState<Car[] | []>(car);
+
 	async function GetSeriesOfBrand(brandId: number) {
 		setSeriesLoading(true);
 		setSelectedBrand(brandId);
@@ -51,16 +50,18 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 				setSeries([]);
 			}
 		} catch (error) {
-			console.error("Error fetching series:", error);
+			console.error("Erreur lors de la récupération des séries :", error);
 			setSeries([]);
 		} finally {
 			setSeriesLoading(false);
 		}
 	}
+
 	async function getCarsOfSerie(SerieId: number) {
 		const response = await GetCarsOfSerie(SerieId);
 		setVisibleCars(response);
 	}
+
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setLoading(false);
@@ -74,11 +75,7 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 	};
 
 	const getPrimaryImage = (images: Car["images"]) => {
-		return (
-			images.find((img) => img.isPrimary)?.url ||
-			images[0]?.url ||
-			"/placeholder.png"
-		);
+		return images.find((img) => img.isPrimary)?.url || images[0]?.url;
 	};
 
 	const handleImageLoad = (carId: string) => {
@@ -89,11 +86,11 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 		return (
 			<div className={styles.main}>
 				<div className={styles.title}>
-					<span>Browse Our Cars</span>
+					<span>Parcourez nos voitures</span>
 				</div>
 
 				<div className={styles.section}>
-					<h2 className={styles.sectionTitle}>Brands</h2>
+					<h2 className={styles.sectionTitle}>Marques</h2>
 					<div className={styles.brands}>
 						{[...Array(6)].map((_, index) => (
 							<div key={index} className={styles.brandSkeleton}></div>
@@ -120,11 +117,11 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 	return (
 		<div className={styles.main}>
 			<div className={styles.title}>
-				<span>Browse Our Cars</span>
+				<span>Parcourez nos voitures</span>
 			</div>
 
 			<div className={styles.section}>
-				<h2 className={styles.sectionTitle}>Brands</h2>
+				<h2 className={styles.sectionTitle}>Marques</h2>
 				<div className={styles.brands}>
 					<div
 						className={`${styles.brandItem} ${
@@ -132,7 +129,7 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 						}`}
 						onClick={() => (setVisibleCars(car), setSelectedBrand(null))}
 					>
-						All
+						Toutes
 					</div>
 					{brands.map((brand) => (
 						<div
@@ -151,9 +148,9 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 			{selectedBrand && (
 				<div className={styles.section}>
 					<h2 className={styles.sectionTitle}>
-						Series for {brands.find((b) => b.id === selectedBrand)?.name}
+						Séries pour {brands.find((b) => b.id === selectedBrand)?.name}
 						{seriesLoading && (
-							<span className={styles.loadingText}>Loading...</span>
+							<span className={styles.loadingText}>Chargement...</span>
 						)}
 					</h2>
 					{series.length > 0 ? (
@@ -171,16 +168,17 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 					) : (
 						!seriesLoading && (
 							<p className={styles.noSeries}>
-								No series available for this brand
+								Aucune série disponible pour cette marque
 							</p>
 						)
 					)}
 				</div>
 			)}
+
 			{car || visibleCars ? (
 				<div className={styles.section}>
 					<h2 className={styles.sectionTitle}>
-						Available Cars ({visibleCars.length})
+						Voitures disponibles ({visibleCars.length})
 					</h2>
 					<div className={styles.container}>
 						{visibleCars.map((car) => (
@@ -194,7 +192,9 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 										<div className={styles.imageSkeleton}></div>
 									)}
 									<Image
-										src={getPrimaryImage(car.images)}
+										src={
+											getPrimaryImage(car.images) || "/images/placeholder.png"
+										}
 										alt={car.finition}
 										width={300}
 										height={200}
@@ -204,7 +204,7 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 										onLoad={() => handleImageLoad(car.id)}
 									/>
 									<div className={styles.carOverlay}>
-										<span className={styles.viewDetails}>View Details</span>
+										<span className={styles.viewDetails}>Voir les détails</span>
 									</div>
 								</div>
 								<div className={styles.carInfo}>
@@ -231,7 +231,9 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 				</div>
 			) : (
 				<div>
-					<p className={styles.noCars}>No cars available for this series</p>
+					<p className={styles.noCars}>
+						Aucune voiture disponible pour cette série
+					</p>
 				</div>
 			)}
 		</div>

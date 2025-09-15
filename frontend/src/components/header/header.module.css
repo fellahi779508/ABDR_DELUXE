@@ -70,8 +70,10 @@
 	display: flex;
 	align-items: center;
 	text-decoration: none;
-	color: var(--text);
 	gap: 0.5rem;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
 }
 
 .logo_icon {

@@ -18,19 +18,28 @@ function Footer() {
 					<div className={styles.brandSection}>
 						<div className={styles.logo}>ABDR_DELUXE</div>
 						<p className={styles.description}>
-							Premium car dealership offering the finest selection of luxury
-							vehicles with exceptional service and customer experience.
+							Concessionnaire automobile haut de gamme offrant la meilleure
+							sélection de véhicules de luxe avec un service et une expérience
+							client exceptionnels.
 						</p>
 						<div className={styles.socialLinks}>
-							<a href="#" aria-label="Facebook" className={styles.socialLink}>
+							<Link
+								href="https://www.facebook.com/profile.php?id=61578296488657"
+								aria-label="Facebook"
+								className={styles.socialLink}
+							>
 								<Facebook />
-							</a>
-							<a href="#" aria-label="Twitter" className={styles.socialLink}>
+							</Link>
+							<Link href="#" aria-label="Twitter" className={styles.socialLink}>
 								<Twitter />
-							</a>
-							<a href="#" aria-label="Instagram" className={styles.socialLink}>
+							</Link>
+							<Link
+								href="#"
+								aria-label="Instagram"
+								className={styles.socialLink}
+							>
 								<Instagram />
-							</a>
+							</Link>
 							<a href="#" aria-label="YouTube" className={styles.socialLink}>
 								<Youtube />
 							</a>
@@ -38,38 +47,28 @@ function Footer() {
 					</div>
 
 					<div className={styles.linksSection}>
-						<h3 className={styles.sectionTitle}>Quick Links</h3>
+						<h3 className={styles.sectionTitle}>Liens rapides</h3>
 						<ul className={styles.linkList}>
 							<li>
 								<Link href="/" className={styles.footerLink}>
-									Home
+									Accueil
 								</Link>
 							</li>
 							<li>
 								<Link href="/cars" className={styles.footerLink}>
-									Cars
+									Voitures
 								</Link>
 							</li>
 							<li>
 								<Link href="/about" className={styles.footerLink}>
-									About
-								</Link>
-							</li>
-							<li>
-								<Link href="/contact" className={styles.footerLink}>
-									Contact
-								</Link>
-							</li>
-							<li>
-								<Link href="/testimonials" className={styles.footerLink}>
-									Testimonials
+									À propos
 								</Link>
 							</li>
 						</ul>
 					</div>
 
 					<div className={styles.contactSection}>
-						<h3 className={styles.sectionTitle}>Contact Us</h3>
+						<h3 className={styles.sectionTitle}>Contactez-nous</h3>
 						<div className={styles.contactInfo}>
 							<div className={styles.contactItem}>
 								<Mail />
@@ -81,7 +80,7 @@ function Footer() {
 							</div>
 							<div className={styles.contactItem}>
 								<MapPin />
-								<span>123 Luxury Avenue, Premium City, PC 90210</span>
+								<span>123 Avenue du Luxe, Ville Premium, PC 90210</span>
 							</div>
 						</div>
 					</div>
@@ -89,7 +88,7 @@ function Footer() {
 
 				<div className={styles.bottomBar}>
 					<div className={styles.copyright}>
-						&copy; {new Date().getFullYear()} ABDR_DELUXE. All rights reserved.
+						&copy; {new Date().getFullYear()} ABDR_DELUXE. Tous droits réservés.
 					</div>
 				</div>
 			</div>

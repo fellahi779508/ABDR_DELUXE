@@ -8,7 +8,7 @@ import {
 	DeleteOrderById,
 	GetAllOrders,
 } from "@/utils/Admin";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 type Car = {
@@ -79,7 +79,6 @@ function OrderManger() {
 
 		eventSource.addEventListener("orderDeleted", (event) => {
 			const deletedOrder: string = event.data;
-			console.log(deletedOrder);
 			setAllOrders((prev) => prev.filter((o) => o.id !== deletedOrder));
 		});
 		return () => {
@@ -89,12 +88,11 @@ function OrderManger() {
 
 	const [activeTab, setActiveTab] = useState<Order["status"]>("new");
 
-	// Filter orders based on active tab
+
 	const filteredOrders = allOrders.filter(
 		(order) => order.status === activeTab
 	);
 
-	// Empty functions for order actions
 	const acceptOrder = async (orderId: string) => {
 		const response = await AcceptOrder(orderId);
 		if (response === true) {
@@ -292,6 +290,7 @@ function OrderManger() {
 					)}
 				</InfiniteScroll>
 			</div>
+			<ToastContainer />
 		</div>
 	);
 }

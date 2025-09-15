@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Minus, Plus, X } from "lucide-react";
 import styles from "./addNewCar.module.css";
@@ -51,9 +52,13 @@ function AddNewCar() {
 		price: 0,
 		serieId: 0,
 	});
+	type Option = {
+		value: string | null;
+		label: string | null;
+	};
 	const [createdCarId, setCreatedCarId] = useState("");
-	const [brandOptions, setBrandOptions] = useState([]);
-	const [serieOptions, setSerieOptions] = useState([]);
+	const [brandOptions, setBrandOptions] = useState<Option>();
+	const [serieOptions, setSerieOptions] = useState<Option>();
 	const [primaryImage, setPrimaryImage] = useState<File>(new File([], ""));
 	const [images, setImages] = useState<File[]>([]);
 
@@ -77,7 +82,6 @@ function AddNewCar() {
 		setLoading((prev) => ({ ...prev, createCar: true }));
 
 		try {
-			console.log(car);
 			const response = await CreateCarDB(car);
 			if (response.id) {
 				setCar({
@@ -93,12 +97,14 @@ function AddNewCar() {
 					price: 0,
 					serieId: 0,
 				});
+				toast.success("Car created successfully");
 				setCreatedCarId(response.id);
 				await CreateImages(response.id);
 			}
 		} catch (error) {
 			toast.error("Error creating car");
 		} finally {
+			setTimeout(() => redirect("/admin/dashboard/cars"), 2000);
 			setLoading((prev) => ({ ...prev, createCar: false }));
 		}
 	}
@@ -111,19 +117,26 @@ function AddNewCar() {
 			const primaryResponse = await UploadPrimaryImage(id, primaryImage);
 
 			if (primaryResponse && primaryResponse.length > 0) {
-				const secondaryResponse = await UploadImages(id, images);
-
-				if (secondaryResponse && secondaryResponse.length > 0) {
-					toast.success("Car created successfully");
-				}
+				toast.success("Primary Image uploaded successfully");
 			}
+			await CreateResImages(id);
 		} catch (error) {
 			toast.error("Error uploading images");
 		} finally {
 			setLoading((prev) => ({ ...prev, uploadImages: false }));
 		}
 	}
+	async function CreateResImages(id: string) {
+		try {
+			const secondaryResponse = await UploadImages(id, images);
 
+			if (secondaryResponse && secondaryResponse.length > 0) {
+				toast.success("Secondary Images uploaded successfully");
+			}
+		} catch (error) {
+			toast.error("Error uploading images");
+		}
+	}
 	async function createNewBrand(name: string) {
 		if (!name) {
 			toast.error("Please fill in all fields");
@@ -202,7 +215,10 @@ function AddNewCar() {
 			if (response) {
 				setAvailableSeries(response);
 				setSerieOptions(
-					response.map((serie) => ({ value: serie.id, label: serie.name }))
+					response.map((serie: { id: any; name: any }) => ({
+						value: serie.id,
+						label: serie.name,
+					}))
 				);
 			}
 		} catch (error) {
@@ -220,18 +236,21 @@ function AddNewCar() {
 			setPrimaryImage(e.target.files[0]);
 		}
 	}
-	async function handleDeleteBrand(id) {
+	async function handleDeleteBrand(id: number) {
 		const response = await DeleteBrandById(id);
 		if (response === "deleted") {
 			toast.success("Brand deleted successfully");
-			setBrandOptions([]);
+			setBrandOptions({
+				value: null,
+				label: null,
+			});
 			setSelectedBrand(null);
 			FetchBrands();
 		} else {
 			toast.error("Error deleting brand");
 		}
 	}
-	async function handleDeleteSerie(id) {
+	async function handleDeleteSerie(id: number) {
 		const response = await DeleteSerieById(id);
 		if (response === "deleted") {
 			toast.success("Brand deleted successfully");
@@ -251,7 +270,10 @@ function AddNewCar() {
 
 	useEffect(() => {
 		if (selectedBrand) {
-			setSerieOptions([]);
+			setSerieOptions({
+				value: null,
+				label: null,
+			});
 			setSelectedSerie(null);
 			FetchSeries(selectedBrand.id);
 		}

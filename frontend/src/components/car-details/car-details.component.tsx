@@ -61,28 +61,14 @@ function CarDetailsComponent(param: CarDetailsProps) {
 			<div className={styles.header}>
 				<div className={styles.breadcrumb}>
 					<Link href="/" className={styles.link}>
-						Home
+						Accueil
 					</Link>{" "}
 					/
 					<Link href="/cars" className={styles.link}>
 						{" "}
-						Cars
+						Voitures
 					</Link>{" "}
 					/ <span> {data.serie.brand.name}</span> <span>{data.serie.name}</span>
-				</div>
-				<div className={styles.header_actions}>
-					<button
-						className={`${styles.icon_btn} ${
-							isFavorite ? styles.favorite : ""
-						}`}
-						onClick={() => setIsFavorite(!isFavorite)}
-						aria-label="Favorite"
-					>
-						<Heart size={20} />
-					</button>
-					<button className={styles.icon_btn} aria-label="Share">
-						<Share2 size={20} />
-					</button>
 				</div>
 			</div>
 
@@ -95,10 +81,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						<Clock size={16} /> {data.Année}
 					</span>
 					<span className={styles.meta_item}>
-						<MapPin size={16} /> Chlef
-					</span>
-					<span className={styles.meta_item}>
-						<Shield size={16} /> Verified
+						<Shield size={16} /> Vérifié
 					</span>
 				</div>
 			</div>
@@ -164,7 +147,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 				<div className={styles.section}>
 					<div className={styles.price_section}>
 						<div className={styles.price}>{formatPrice(data.price)} DZD</div>
-						<div className={styles.price_note}>Price negotiable</div>
+						<div className={styles.price_note}>Prix négociable</div>
 					</div>
 
 					<div className={styles.feature_highlights}>
@@ -211,28 +194,28 @@ function CarDetailsComponent(param: CarDetailsProps) {
 					</div>
 
 					<div className={styles.details_card}>
-						<h3 className={styles.details_title}>Vehicle Details</h3>
+						<h3 className={styles.details_title}>Détails du véhicule</h3>
 						<div className={styles.details}>
 							<div className={styles.detail_item}>
-								<span className={styles.detail_label}>Brand:</span>
+								<span className={styles.detail_label}>Marque :</span>
 								<span className={styles.detail_value}>
 									{data.serie.brand.name}
 								</span>
 							</div>
 							<div className={styles.detail_item}>
-								<span className={styles.detail_label}>Model:</span>
+								<span className={styles.detail_label}>Modèle :</span>
 								<span className={styles.detail_value}>{data.serie.name}</span>
 							</div>
 							<div className={styles.detail_item}>
-								<span className={styles.detail_label}>Trim:</span>
+								<span className={styles.detail_label}>Finition :</span>
 								<span className={styles.detail_value}>{data.finition}</span>
 							</div>
 							<div className={styles.detail_item}>
-								<span className={styles.detail_label}>Year:</span>
+								<span className={styles.detail_label}>Année :</span>
 								<span className={styles.detail_value}>{data.Année}</span>
 							</div>
 							<div className={styles.detail_item}>
-								<span className={styles.detail_label}>Color:</span>
+								<span className={styles.detail_label}>Couleur :</span>
 								<span className={styles.detail_value}>{data.color}</span>
 							</div>
 						</div>
@@ -245,20 +228,17 @@ function CarDetailsComponent(param: CarDetailsProps) {
 								handleBuy();
 							}}
 						>
-							Contact Seller
-						</button>
-						<button className={`${styles.btn} ${styles.secondary_btn}`}>
-							Make an Offer
+							Contacter le vendeur
 						</button>
 					</div>
 				</div>
 			</div>
 
 			<div className={styles.specs_section}>
-				<h2 className={styles.section_title}>Technical Specifications</h2>
+				<h2 className={styles.section_title}>Caractéristiques techniques</h2>
 				<div className={styles.specs_grid}>
 					<div className={styles.spec_item}>
-						<span className={styles.spec_label}>Engine</span>
+						<span className={styles.spec_label}>Moteur</span>
 						<span className={styles.spec_value}>{data.Moteur}</span>
 					</div>
 					<div className={styles.spec_item}>
@@ -266,19 +246,19 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						<span className={styles.spec_value}>{data.Boite}</span>
 					</div>
 					<div className={styles.spec_item}>
-						<span className={styles.spec_label}>Fuel Type</span>
+						<span className={styles.spec_label}>Type de carburant</span>
 						<span className={styles.spec_value}>{data.Energie}</span>
 					</div>
 					<div className={styles.spec_item}>
-						<span className={styles.spec_label}>Mileage</span>
+						<span className={styles.spec_label}>Kilométrage</span>
 						<span className={styles.spec_value}>{data.Kilométrage} </span>
 					</div>
 					<div className={styles.spec_item}>
-						<span className={styles.spec_label}>Year</span>
+						<span className={styles.spec_label}>Année</span>
 						<span className={styles.spec_value}>{data.Année}</span>
 					</div>
 					<div className={styles.spec_item}>
-						<span className={styles.spec_label}>Color</span>
+						<span className={styles.spec_label}>Couleur</span>
 						<span className={styles.spec_value}>{data.color}</span>
 					</div>
 				</div>

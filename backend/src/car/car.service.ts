@@ -44,7 +44,7 @@ export class CarService {
     if (!car) {
       throw new NotFoundException('Car not found');
     }
-    if (car.images.length > 0) {
+    if (car.images) {
       car.images.forEach((image) => {
         this.ImageService.removeImage(image.id);
       });
@@ -86,10 +86,14 @@ export class CarService {
     return this.ImageService.removeImage(imageId);
   }
   async getAllVisibleCars() {
-    return this.carRepo.find({
+    const cars = await this.carRepo.find({
       where: { isVisible: true },
       relations: ['images'],
     });
+    if (!cars) {
+      return [];
+    }
+    return cars;
   }
   async updateCarById(id: string, dto: UpdateCarDto) {
     const car = await this.GetCarById(id);
