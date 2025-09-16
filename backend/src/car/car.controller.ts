@@ -23,7 +23,7 @@ import { memoryStorage } from 'multer';
 import { UpdateCarDto } from './dto/updateCar.dto';
 const multerOptions = {
   storage: memoryStorage(),
-  limits: { fileSize: 8 * 1024 * 1024, files: 20 }, // 8MB, up to 10 files
+  limits: { fileSize: 24 * 1024 * 1024, files: 20 },
   fileFilter: (_req, file, cb) => {
     const ok = /\/(jpg|jpeg|png|webp)$/i.test(file.mimetype);
     return ok
@@ -35,7 +35,7 @@ const multerOptions = {
 export class CarController {
   constructor(private readonly service: CarService) {}
   @Post()
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   CreateCar(@Body() dto: CreateCarDto) {
     return this.service.CreateCar(dto);
   }
@@ -52,10 +52,12 @@ export class CarController {
     return this.service.getAllVisibleCars();
   }
   @Get('serie/:serieId')
+  @UseGuards(AuthGuard)
   getCarsOfSerie(@Param('serieId', ParseIntPipe) serieId: number) {
     return this.service.GetCarsOfSerie(serieId);
   }
   @Get(':id')
+  @UseGuards(AuthGuard)
   GetCarById(@Param('id') id: string) {
     return this.service.GetCarById(id);
   }
@@ -64,10 +66,12 @@ export class CarController {
     return this.service.getCarBySlug(slug);
   }
   @Delete(':id')
+  @UseGuards(AuthGuard)
   DeleteCar(@Param('id', ParseUUIDPipe) id: string) {
     return this.service.DeleteCar(id);
   }
   @Post(':carId/images')
+  @UseGuards(AuthGuard)
   @UseInterceptors(FilesInterceptor('files', 20, multerOptions))
   async uploadCarImages(
     @Param('carId', new ParseUUIDPipe()) carId: string,
@@ -78,14 +82,17 @@ export class CarController {
     return this.service.addCarImages(carId, files, isPrimary);
   }
   @Put('update/:id')
+  @UseGuards(AuthGuard)
   UpdateCarById(@Param('id') id: string, @Body() dto: UpdateCarDto) {
     return this.service.updateCarById(id, dto);
   }
   @Delete('images/:id')
+  @UseGuards(AuthGuard)
   removeImage(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.service.removeCarImage(id);
   }
   @Put('visibility/:id/:visibility')
+  @UseGuards(AuthGuard)
   updateCarVisibility(
     @Param('visibility', ParseBoolPipe) visibility: boolean,
     @Param('id') id: string,

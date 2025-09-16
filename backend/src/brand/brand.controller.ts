@@ -28,12 +28,12 @@ export class BrandController {
     return this.service.GetBrandById(id);
   }
   @Post()
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   createBrand(@Body() dto: CreateBrandDto) {
     return this.service.CreateBrand(dto);
   }
   @Delete(':id')
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   deleteBrand(@Param('id', ParseIntPipe) id: number) {
     return this.service.DeleteBrand(id);
   }

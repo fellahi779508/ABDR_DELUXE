@@ -5,7 +5,6 @@ import { Admin } from './admin/admin.entity';
 import { AdminModule } from './admin/admin.module';
 import { BrandModule } from './brand/brand.module';
 import { Brand } from './brand/brand.entity';
-
 import { CarModule } from './car/car.module';
 import { Car } from './car/car.entity';
 import { Serie } from './serie/serie.entity';
@@ -18,9 +17,16 @@ import { Image } from './image/image.entity';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
+        const isProd = process.env.NODE_ENV === 'production';
+
         return {
           type: config.get<string>('DB_TYPE') as any,
           database: config.get<string>('DB_DATABASE'),
@@ -28,16 +34,15 @@ import { Image } from './image/image.entity';
           password: config.get<string>('DB_PASSWORD'),
           port: config.get<number>('DB_PORT'),
           host: config.get<string>('DB_HOST'),
-          synchronize: true,
+
+          // ✅ Auto-sync only in dev, NOT in prod
+          synchronize: !isProd,
 
           entities: [Admin, Brand, Serie, Car, Order, Image],
         };
       },
     }),
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
+
     AdminModule,
     BrandModule,
     SerieModule,

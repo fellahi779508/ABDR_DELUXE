@@ -41,10 +41,9 @@ export class ImageService {
     return this.imageRepo.save(images);
   }
 
-  async removeImage(imageId: string) {
-    const image = await this.imageRepo.findOne({ where: { id: imageId } });
+  async removeImage(id: string) {
+    const image = await this.imageRepo.findOne({ where: { id } });
     if (!image) throw new NotFoundException('Image not found');
-
     await this.cloudinaryService.deleteFile(image.publicId);
     await this.imageRepo.remove(image);
     return { success: true };
@@ -66,10 +65,11 @@ export class ImageService {
     rest.forEach((i) => ((i.isPrimary = false), this.imageRepo.save(i)));
     return this.imageRepo.save(image);
   }
-  async DeleteAllCarImages(imageId: string) {
+  async DeleteAllCarImages(carId: string) {
     const images = await this.imageRepo.find({
-      where: { car: { id: imageId } },
+      where: { car: { id: carId } },
     });
+    images.forEach((i) => this.cloudinaryService.deleteFile(i.publicId));
     await this.imageRepo.remove(images);
     return { success: true };
   }

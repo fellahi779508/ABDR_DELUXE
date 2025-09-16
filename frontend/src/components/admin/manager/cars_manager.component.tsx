@@ -20,7 +20,7 @@ import SelectedCarDetails from "./selectedCar_details.component";
 import AddNewCar from "./addnew.component";
 import { Car } from "@/utils/Types";
 import { redirect } from "next/navigation";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 function CarManager() {
 	const [cars, setCars] = useState<Car[] | []>([]);
@@ -97,14 +97,12 @@ function CarManager() {
 	}, [cars, initialCars.length]);
 
 	async function deleteCar(id: string) {
-		try {
-			const response = await DeleteCarById(id);
-			if (response === "deleted") {
-				toast.success("Car deleted successfully");
-				setCars((prevCars) => prevCars.filter((car) => car.id !== id));
-			}
-		} catch (error) {
-			console.error(error);
+		const response = await DeleteCarById(id);
+		if (response === "deleted") {
+			toast.success("Car deleted successfully");
+			setTimeout(() => redirect("/admin/dashboard/cars"), 1000);
+		} else {
+			toast.error("Error deleting car");
 		}
 	}
 	return (
@@ -351,11 +349,9 @@ function CarManager() {
 					<AddNewCar />
 				</>
 			) : null}
+			<ToastContainer />
 		</div>
 	);
 }
 
 export default CarManager;
-function UpdateCarById(id: string, cars: Car[]) {
-	throw new Error("Function not implemented.");
-}

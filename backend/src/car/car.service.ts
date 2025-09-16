@@ -7,6 +7,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { ImageService } from 'src/image/image.service';
 import { UpdateCarDto } from './dto/updateCar.dto';
+import { Observable, Subject } from 'rxjs';
 
 export class CarService {
   constructor(
@@ -44,13 +45,21 @@ export class CarService {
     if (!car) {
       throw new NotFoundException('Car not found');
     }
-    if (car.images) {
-      car.images.forEach((image) => {
-        this.ImageService.removeImage(image.id);
-      });
+    if (!car.images) {
+      return this.carRepo.remove(car);
     }
+    await this.ImageService.DeleteAllCarImages(car.id);
+    return this.carRepo.remove(car);
+  }
 
-    return await this.carRepo.delete(id);
+  private carEvents$ = new Subject<{ event: string; data: any }>();
+
+  getCarEvents(): Observable<{ event: string; data: any }> {
+    return this.carEvents$.asObservable();
+  }
+
+  emitCarEvent(event: string, data: any) {
+    this.carEvents$.next({ event, data });
   }
 
   // this function is private
@@ -101,8 +110,10 @@ export class CarService {
     return this.carRepo.save(car);
   }
   async updateCarVisibility(visibility: boolean, id: string) {
+    console.log(visibility, id);
     const car = await this.GetCarById(id);
     car.isVisible = visibility;
+
     return this.carRepo.save(car);
   }
   async GetCarsOfSerie(id: number) {

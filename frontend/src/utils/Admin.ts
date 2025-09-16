@@ -94,8 +94,13 @@ export async function UpdateGroupCarById(id: string, data: Car[]) {
 	}
 }
 export async function DeleteCarById(id: string) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.delete(`/car/${id}`);
+		const response = await api.delete(`/car/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			return "deleted";
 		}
@@ -141,8 +146,17 @@ export async function FetchAllSeries() {
 	}
 }
 export async function CreateBrand(name: string) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.post(`/brand`, { name: name });
+		const response = await api.post(
+			`/brand`,
+			{ name: name },
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 		if (response) {
 			return response.data;
 		}
@@ -161,8 +175,17 @@ export async function FetchSeriesByBrand(id: number) {
 	}
 }
 export async function Createserie(name: string, brandId: number) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.post(`/serie`, { name: name, brandId: brandId });
+		const response = await api.post(
+			`/serie`,
+			{ name: name, brandId: brandId },
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 		if (response) {
 			return response.data;
 		}
@@ -171,8 +194,13 @@ export async function Createserie(name: string, brandId: number) {
 	}
 }
 export async function CreateCarDB(car: CreateCar) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.post(`/car`, car);
+		const response = await api.post(`/car`, car, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			return response.data;
 		}
@@ -181,6 +209,7 @@ export async function CreateCarDB(car: CreateCar) {
 	}
 }
 export async function UploadPrimaryImage(id: string, image: File) {
+	const token = (await cookies()).get("access_token")?.value;
 	const formData = new FormData();
 	formData.append("files", image);
 
@@ -191,6 +220,7 @@ export async function UploadPrimaryImage(id: string, image: File) {
 			{
 				headers: {
 					"Content-Type": "multipart/form-data",
+					Authorization: `Bearer ${token}`,
 				},
 			}
 		);
@@ -201,6 +231,7 @@ export async function UploadPrimaryImage(id: string, image: File) {
 	}
 }
 export async function UploadImages(id: string, image: File[]) {
+	const token = (await cookies()).get("access_token")?.value;
 	const formData = new FormData();
 	for (const file of image) {
 		formData.append("files", file);
@@ -212,6 +243,7 @@ export async function UploadImages(id: string, image: File[]) {
 			{
 				headers: {
 					"Content-Type": "multipart/form-data",
+					Authorization: `Bearer ${token}`,
 				},
 			}
 		);
@@ -219,6 +251,7 @@ export async function UploadImages(id: string, image: File[]) {
 			return response.data;
 		}
 	} catch (error) {
+		console.error(error);
 		return null;
 	}
 }
@@ -233,8 +266,13 @@ export async function FetchCarImages(id: string) {
 	}
 }
 export async function DeleteImageById(id: string) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.delete(`/image/${id}`);
+		const response = await api.delete(`/image/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			return response.data;
 		}
@@ -253,8 +291,13 @@ export async function UpdateImageToPrimary(id: string) {
 	}
 }
 export async function DeleteAllCarImages(imageId: string) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.delete(`/image/DeleteAll/${imageId}`);
+		const response = await api.delete(`/image/DeleteAll/${imageId}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			return response.data;
 		}
@@ -263,8 +306,13 @@ export async function DeleteAllCarImages(imageId: string) {
 	}
 }
 export async function UpdateCarVisibility(id: string, isVisible: boolean) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.put(`/car/visibility/${id}/${isVisible}`);
+		const response = await api.put(`/car/visibility/${id}/${isVisible}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			return "updated";
 		}
@@ -293,8 +341,13 @@ export async function GetCarsOfSerie(SerieId: number) {
 	}
 }
 export async function DeleteBrandById(id: any) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.delete(`/brand/${id}`);
+		const response = await api.delete(`/brand/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			return "deleted";
 		}
@@ -303,8 +356,13 @@ export async function DeleteBrandById(id: any) {
 	}
 }
 export async function DeleteSerieById(id: any) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.delete(`/serie/${id}`);
+		const response = await api.delete(`/serie/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			return response.data;
 		}

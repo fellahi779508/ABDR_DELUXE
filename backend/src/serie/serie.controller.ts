@@ -7,9 +7,11 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { SerieService } from './serie.service';
 import { CreateSerieDto } from './dto/createSerie.dto';
+import { AuthGuard } from 'src/utils/guards/auth.guard';
 
 @Controller('serie')
 export class SerieController {
@@ -26,10 +28,12 @@ export class SerieController {
     return this.service.GetSerieById(id);
   }
   @Delete(':id')
+  @UseGuards(AuthGuard)
   deleteSerie(@Param('id', ParseIntPipe) id: number) {
     return this.service.DeleteSerie(id);
   }
   @Post()
+  @UseGuards(AuthGuard)
   createSerie(@Body() dto: CreateSerieDto) {
     return this.service.CreateSerie(dto);
   }

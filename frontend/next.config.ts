@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
 	eslint: {
 		ignoreDuringBuilds: true, // ignore ESLint errors
 	},
+	experimental: {
+		serverActions: {
+			bodySizeLimit: "20mb", // adjust depending on your image sizes
+		},
+	},
 };
 
 export default nextConfig;

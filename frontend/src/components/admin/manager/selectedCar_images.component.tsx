@@ -89,13 +89,11 @@ function SelectedCarImages({ id }: ImageProps) {
 		}
 	};
 
-	// Function to set an image as primary
 	const handleSetPrimary = async (imageId: string) => {
-		setSettingPrimary(imageId);
 		try {
 			const response = await UpdateImageToPrimary(imageId);
-			if (response) {
-				// Refresh the images after successful update
+			if (response === "updated") {
+				setSettingPrimary(imageId);
 				fetchImages(id);
 			}
 			setImages((prev) =>
