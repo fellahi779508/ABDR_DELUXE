@@ -1,7 +1,7 @@
 import OrderComponent from "@/components/order/order.component";
 import { OrderRoute } from "@/utils/ProtectedRoute";
 import { cookies } from "next/headers";
-
+export const dynamic = "force-dynamic";
 async function Order() {
 	await OrderRoute();
 	const price = (await cookies()).get("price")?.value;
