@@ -73,7 +73,7 @@ export class CarService {
   }
   async getCarBySlug(slug: string) {
     const car = await this.carRepo.findOne({
-      where: { slug },
+      where: { slug, isVisible: true },
       relations: ['serie', 'serie.brand', 'images'],
     });
     if (!car) {
@@ -117,7 +117,7 @@ export class CarService {
   }
   async GetCarsOfSerie(id: number) {
     const cars = await this.carRepo.find({
-      where: { serie: { id } },
+      where: { serie: { id }, isVisible: true },
       relations: ['images'],
     });
     console.log(cars);
