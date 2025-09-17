@@ -68,7 +68,7 @@ export async function GetAllCars() {
 			return response.data;
 		}
 	} catch (error) {
-		return error;
+		return [];
 	}
 }
 export async function UpdateGroupCarById(id: string, data: Car[]) {
@@ -132,7 +132,7 @@ export async function FetchAllBrands() {
 			return response.data;
 		}
 	} catch (error) {
-		return error;
+		return [];
 	}
 }
 export async function FetchAllSeries() {
@@ -142,7 +142,7 @@ export async function FetchAllSeries() {
 			return response.data;
 		}
 	} catch (error) {
-		return error;
+		return [];
 	}
 }
 export async function CreateBrand(name: string) {
@@ -171,7 +171,7 @@ export async function FetchSeriesByBrand(id: number) {
 			return response.data;
 		}
 	} catch (error) {
-		return error;
+		return [];
 	}
 }
 export async function Createserie(name: string, brandId: number) {
@@ -251,7 +251,6 @@ export async function UploadImages(id: string, image: File[]) {
 			return response.data;
 		}
 	} catch (error) {
-		console.error(error);
 		return null;
 	}
 }
@@ -308,11 +307,15 @@ export async function DeleteAllCarImages(imageId: string) {
 export async function UpdateCarVisibility(id: string, isVisible: boolean) {
 	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.put(`/car/visibility/${id}/${isVisible}`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
+		const response = await api.put(
+			`/car/visibility/${id}/${isVisible}`,
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 		if (response) {
 			return "updated";
 		}
@@ -327,17 +330,17 @@ export async function GetAllVisibleCars() {
 			return response.data;
 		}
 	} catch (error) {
-		return error;
+		return [];
 	}
 }
 export async function GetCarsOfSerie(SerieId: number) {
 	try {
-		const response = await api.get(`/car/serie/${SerieId}`, {});
+		const response = await api.get(`/car/serie/${SerieId}`);
 		if (response) {
 			return response.data;
 		}
 	} catch (error) {
-		return error;
+		return [];
 	}
 }
 export async function DeleteBrandById(id: any) {

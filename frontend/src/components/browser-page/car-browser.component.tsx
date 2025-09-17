@@ -59,6 +59,7 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 
 	async function getCarsOfSerie(SerieId: number) {
 		const response = await GetCarsOfSerie(SerieId);
+		console.log(response);
 		setVisibleCars(response);
 	}
 
@@ -156,13 +157,13 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 					{series.length > 0 ? (
 						<div className={styles.series}>
 							{series.map((serie) => (
-								<div
+								<button
 									key={serie.id}
 									className={styles.serieItem}
 									onClick={() => getCarsOfSerie(serie.id)}
 								>
 									{serie.name}
-								</div>
+								</button>
 							))}
 						</div>
 					) : (

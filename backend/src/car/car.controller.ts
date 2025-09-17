@@ -34,6 +34,7 @@ const multerOptions = {
 @Controller('car')
 export class CarController {
   constructor(private readonly service: CarService) {}
+
   @Post()
   @UseGuards(AuthGuard)
   CreateCar(@Body() dto: CreateCarDto) {
@@ -51,11 +52,12 @@ export class CarController {
   getAllVisibleCars() {
     return this.service.getAllVisibleCars();
   }
+
   @Get('serie/:serieId')
-  @UseGuards(AuthGuard)
   getCarsOfSerie(@Param('serieId', ParseIntPipe) serieId: number) {
     return this.service.GetCarsOfSerie(serieId);
   }
+
   @Get(':id')
   @UseGuards(AuthGuard)
   GetCarById(@Param('id') id: string) {

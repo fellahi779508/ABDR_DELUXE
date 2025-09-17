@@ -99,7 +99,7 @@ function AddNewCar() {
 				});
 				toast.success("Car created successfully");
 				setCreatedCarId(response.id);
-				await CreateImages(response.id);
+				if (primaryImage || images) await CreateImages(response.id);
 			}
 		} catch (error) {
 			toast.error("Error creating car");
