@@ -71,9 +71,12 @@ function OrderManger() {
 			.catch(() => toast.error("Error loading orders"));
 
 		// SSE setup
-		const eventSource = new EventSource("http://localhost:7777/order/stream", {
-			withCredentials: true,
-		});
+		const eventSource = new EventSource(
+			`${process.env.NEXT_PUBLIC_API_URL}/order/stream`,
+			{
+				withCredentials: true,
+			}
+		);
 
 		const handleOrderEvent = (event: MessageEvent) => {
 			try {
