@@ -63,7 +63,6 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 
 	async function getCarsOfSerie(SerieId: number) {
 		const response = await GetCarsOfSerie(SerieId);
-		console.log(response);
 		setVisibleCars(response);
 	}
 	async function getCarsOfBrand(BrandId: number) {

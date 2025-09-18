@@ -20,7 +20,6 @@ export default async function ProtectedRoute() {
 	} catch (error) {
 		redirect("/admin");
 	}
-
 	return true;
 }
 export async function OrderRoute() {
@@ -30,7 +29,6 @@ export async function OrderRoute() {
 	}
 	const today = new Date().toISOString().split("T")[0];
 	const oldOrderDate = (await cookies()).get("OrderDate")?.value;
-	console.log(oldOrderDate);
 
 	if (oldOrderDate === today) {
 		return redirect("/order/oneTime");

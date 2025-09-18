@@ -431,7 +431,6 @@ export async function AcceptOrder(id: string) {
 			}
 		);
 		if (response) {
-			console.log(response);
 			return true;
 		}
 	} catch (error: any) {
@@ -452,7 +451,6 @@ export async function CancaleOrder(id: string) {
 			}
 		);
 		if (response) {
-			console.log(response);
 			return true;
 		}
 	} catch (error: any) {
@@ -474,7 +472,6 @@ export async function CompleteOrder(id: string) {
 			}
 		);
 		if (response) {
-			console.log(response);
 			return true;
 		}
 	} catch (error) {

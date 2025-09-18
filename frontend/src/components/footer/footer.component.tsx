@@ -1,14 +1,6 @@
 import Link from "next/link";
 import styles from "./footer.component.module.css";
-import {
-	Facebook,
-	Instagram,
-	Mail,
-	MapPin,
-	Phone,
-	Twitter,
-	Youtube,
-} from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 
 function Footer() {

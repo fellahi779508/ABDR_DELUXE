@@ -110,7 +110,6 @@ export class CarService {
     return this.carRepo.save(car);
   }
   async updateCarVisibility(visibility: boolean, id: string) {
-    console.log(visibility, id);
     const car = await this.GetCarById(id);
     car.isVisible = visibility;
     return this.carRepo.save(car);
@@ -120,7 +119,6 @@ export class CarService {
       where: { serie: { id }, isVisible: true },
       relations: ['images'],
     });
-    console.log(cars);
     if (!cars) {
       return [];
     }
