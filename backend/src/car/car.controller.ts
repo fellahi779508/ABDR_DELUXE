@@ -57,6 +57,10 @@ export class CarController {
   getCarsOfSerie(@Param('serieId', ParseIntPipe) serieId: number) {
     return this.service.GetCarsOfSerie(serieId);
   }
+  @Get('brand/:brandId')
+  getCarsOfBrand(@Param('brandId', ParseIntPipe) brandId: number) {
+    return this.service.GetCarsOfBrand(brandId);
+  }
 
   @Get(':id')
   @UseGuards(AuthGuard)

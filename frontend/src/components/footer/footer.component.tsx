@@ -83,7 +83,13 @@ function Footer() {
 							</div>
 							<div className={styles.contactItem}>
 								<Phone />
-								<span>+1 (555) 123-4567</span>
+								<span>Dz:</span>
+								<a href="tel:+213 77 22 78 102">+213 77 22 78 102</a>
+							</div>
+							<div className={styles.contactItem}>
+								<Phone />
+								<span>Qa:</span>
+								<a href="tel:+974 77 00 55 29">+974 77 00 55 29</a>
 							</div>
 							<div className={styles.contactItem}>
 								<MapPin />

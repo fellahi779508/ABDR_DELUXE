@@ -497,3 +497,13 @@ export async function DeleteOrderById(id: string) {
 		return "error";
 	}
 }
+export async function GetCarsOfBrand(BrandId: number) {
+	try {
+		const response = await api.get(`/car/brand/${BrandId}`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		return [];
+	}
+}

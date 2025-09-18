@@ -38,6 +38,51 @@ function OrderComponent({ price }: Props) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.orderForm}>
+				<div
+					style={{
+						textAlign: "center",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+						gap: "0.5rem",
+					}}
+				>
+					<h2>Contacter nous : </h2>
+					<a
+						href="tel:+213 555 123 456"
+						style={{
+							textDecoration: "underline",
+							color: "var(--text-secondary)",
+							cursor: "pointer",
+							display: "flex",
+							gap: "0.5rem",
+							alignItems: "center",
+							justifyContent: "center",
+							fontWeight: "bold",
+						}}
+					>
+						{" "}
+						+213 555 123 456
+					</a>
+				</div>
+				<h1
+					style={{
+						textDecoration: "none",
+						color: "inherit",
+						cursor: "pointer",
+						fontSize: "1.5rem",
+						display: "flex",
+						gap: "0.5rem",
+						alignItems: "center",
+						justifyContent: "center",
+						marginBottom: "2rem",
+						borderBottom: "1px solid black",
+						width: "100%",
+						padding: "1rem",
+					}}
+				>
+					ou
+				</h1>
 				<h2 className={styles.title}>Passer votre commande</h2>
 
 				<div className={styles.inputFields}>

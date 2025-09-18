@@ -4,7 +4,11 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import styles from "./car-browser.component.module.css";
 import Image from "next/image";
-import { FetchSeriesByBrand, GetCarsOfSerie } from "@/utils/Admin";
+import {
+	FetchSeriesByBrand,
+	GetCarsOfBrand,
+	GetCarsOfSerie,
+} from "@/utils/Admin";
 
 type Car = {
 	finition: string;
@@ -61,6 +65,14 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 		const response = await GetCarsOfSerie(SerieId);
 		console.log(response);
 		setVisibleCars(response);
+	}
+	async function getCarsOfBrand(BrandId: number) {
+		try {
+			const response = await GetCarsOfBrand(BrandId);
+			setVisibleCars(response);
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	useEffect(() => {
@@ -138,7 +150,9 @@ function CarBrowserComp({ car, brands }: CarBrowserProps) {
 							className={`${styles.brandItem} ${
 								selectedBrand === brand.id ? styles.brandItemActive : ""
 							}`}
-							onClick={() => GetSeriesOfBrand(brand.id)}
+							onClick={() => (
+								GetSeriesOfBrand(brand.id), getCarsOfBrand(brand.id)
+							)}
 						>
 							{brand.name}
 						</div>

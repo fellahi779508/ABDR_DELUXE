@@ -126,4 +126,14 @@ export class CarService {
     }
     return cars;
   }
+  async GetCarsOfBrand(id: number) {
+    const cars = await this.carRepo.find({
+      where: { serie: { brand: { id } }, isVisible: true },
+      relations: ['images'],
+    });
+    if (!cars) {
+      return [];
+    }
+    return cars;
+  }
 }
