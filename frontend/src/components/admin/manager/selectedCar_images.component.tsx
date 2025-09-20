@@ -6,13 +6,13 @@ import { X, Trash2, Loader, Plus, Star, Check } from "lucide-react";
 import {
 	DeleteAllCarImages,
 	DeleteImageById,
-	FetchCarImages,
+	FetchCarImagesByColor,
 	UpdateImageToPrimary,
 	UploadImages,
 } from "@/utils/Admin";
 
 type ImageProps = {
-	id: string;
+	id: number;
 };
 
 type ImageType = {
@@ -29,10 +29,10 @@ function SelectedCarImages({ id }: ImageProps) {
 	const [uploading, setUploading] = useState(false);
 	const [settingPrimary, setSettingPrimary] = useState<string | null>(null);
 
-	async function fetchImages(id: string) {
+	async function fetchImages(id: number) {
 		try {
 			setLoading(true);
-			const response = await FetchCarImages(id);
+			const response = await FetchCarImagesByColor(id);
 			setImages(response);
 		} catch (error) {
 			console.error("Error fetching images:", error);

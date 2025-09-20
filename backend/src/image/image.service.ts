@@ -5,6 +5,7 @@ import { Image } from './image.entity';
 import { Car } from 'src/car/car.entity';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { CarService } from 'src/car/car.service';
+import { Color } from 'src/color/color.entity';
 
 @Injectable()
 export class ImageService {
@@ -13,20 +14,24 @@ export class ImageService {
     private cloudinaryService: CloudinaryService,
   ) {}
 
-  async addImages(car: Car, files: Express.Multer.File[], isPrimary: boolean) {
+  async addImages(
+    color: Color,
+    files: Express.Multer.File[],
+    isPrimary: boolean,
+  ) {
     const uploads = await Promise.all(
       files.map((file) =>
-        this.cloudinaryService.uploadFile(file, `cars/${car.id}`),
+        this.cloudinaryService.uploadFile(file, `cars/${color.id}`),
       ),
     );
 
     const hasAny = await this.imageRepo.exist({
-      where: { car: { id: car.id } },
+      where: { color: { id: color.id } },
     });
 
     const images = uploads.map((u, idx) =>
       this.imageRepo.create({
-        car,
+        color,
         publicId: u.public_id,
         url: u.secure_url,
         width: u.width,
@@ -49,9 +54,9 @@ export class ImageService {
     return { success: true };
   }
 
-  async getCarImages(carId: string) {
+  async getCarImages(colorId: number) {
     return this.imageRepo.find({
-      where: { car: { id: carId } },
+      where: { color: { id: colorId } },
       order: { sortOrder: 'asc' },
     });
   }
@@ -60,14 +65,14 @@ export class ImageService {
     if (!image) throw new NotFoundException('Image not found');
     image.isPrimary = true;
     const rest = await this.imageRepo.find({
-      where: { car: { images: { id: imageId } } },
+      where: { color: { images: { id: imageId } } },
     });
     rest.forEach((i) => ((i.isPrimary = false), this.imageRepo.save(i)));
     return this.imageRepo.save(image);
   }
-  async DeleteAllCarImages(carId: string) {
+  async DeleteAllCarImages(colorId: number) {
     const images = await this.imageRepo.find({
-      where: { car: { id: carId } },
+      where: { color: { id: colorId } },
     });
     images.forEach((i) => this.cloudinaryService.deleteFile(i.publicId));
     await this.imageRepo.remove(images);

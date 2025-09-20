@@ -27,10 +27,10 @@ export async function OrderRoute() {
 	if (!carId) {
 		return notFound();
 	}
-	const today = new Date().toISOString().split("T")[0];
-	const oldOrderDate = (await cookies()).get("OrderDate")?.value;
+	// const today = new Date().toISOString().split("T")[0];
+	// const oldOrderDate = (await cookies()).get("OrderDate")?.value;
 
-	if (oldOrderDate === today) {
-		return redirect("/order/oneTime");
-	}
+	// if (oldOrderDate === today) {
+	// 	return redirect("/order/oneTime");
+	// }
 }

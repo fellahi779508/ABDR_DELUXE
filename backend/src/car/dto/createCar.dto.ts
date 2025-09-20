@@ -1,5 +1,6 @@
 import {
   IsBoolean,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -41,10 +42,6 @@ export class CreateCarDto {
   @IsOptional()
   description?: string;
 
-  @IsString()
-  @IsNotEmpty()
-  color: string;
-
   @IsBoolean()
   @IsNotEmpty()
   isVisible: boolean;
@@ -52,4 +49,7 @@ export class CreateCarDto {
   @IsNumber()
   @IsNotEmpty()
   serieId: number;
+  @IsNotEmpty()
+  @IsEnum(['new', 'used'], { message: 'status must be new or used' })
+  status: string;
 }

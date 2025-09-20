@@ -3,16 +3,7 @@
 import Image from "next/image";
 import styles from "./car-details.component.module.css";
 import { useState } from "react";
-import {
-	MoveLeft,
-	MoveRight,
-	Heart,
-	Share2,
-	Clock,
-	MapPin,
-	Shield,
-	Zap,
-} from "lucide-react";
+import { MoveLeft, MoveRight, Clock, Shield, Zap } from "lucide-react";
 import Link from "next/link";
 import { SetCarIdCookie } from "@/utils/Admin";
 import { useRouter } from "next/navigation";
@@ -32,7 +23,6 @@ function CarDetailsComponent(param: CarDetailsProps) {
 	const [selectedImageIndex, setSelectedImageIndex] = useState(
 		images[0]?.sortOrder + 1 || 0
 	);
-	const [isFavorite, setIsFavorite] = useState(false);
 
 	function rightArrowClick() {
 		if (images.length < startIndex + 5) return;

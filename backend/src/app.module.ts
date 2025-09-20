@@ -14,6 +14,10 @@ import { OrderModule } from './order/order.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ImageModule } from './image/image.module';
 import { Image } from './image/image.entity';
+import { Color } from './color/color.entity';
+import { Option } from './option/option.entity';
+import { ColorModule } from './color/color.module';
+import { OptionModule } from './option/option.module';
 
 @Module({
   imports: [
@@ -41,7 +45,7 @@ import { Image } from './image/image.entity';
           // ✅ Important for Supabase + Railway
           ssl: isProd ? { rejectUnauthorized: false } : false,
 
-          entities: [Admin, Brand, Serie, Car, Order, Image],
+          entities: [Admin, Brand, Serie, Car, Order, Image, Color, Option],
         };
       },
     }),
@@ -53,6 +57,8 @@ import { Image } from './image/image.entity';
     OrderModule,
     CloudinaryModule,
     ImageModule,
+    ColorModule,
+    OptionModule,
   ],
 })
 export class AppModule {}

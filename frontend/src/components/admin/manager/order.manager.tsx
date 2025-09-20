@@ -49,7 +49,6 @@ function OrderManger() {
 			const [newOrders, moreAvailable] = await GetAllOrders(page + 1);
 			setPage((prev) => prev + 1);
 			setAllOrders((prev) => {
-				// Filter out duplicates
 				const uniqueOrders = newOrders.filter(
 					(newOrder: any) => !prev.some((order) => order.id === newOrder.id)
 				);
@@ -62,7 +61,6 @@ function OrderManger() {
 	}, [page]);
 
 	useEffect(() => {
-		// Initial data fetch
 		GetAllOrders(1)
 			.then(([orders, moreAvailable]) => {
 				setAllOrders(orders);
@@ -70,7 +68,6 @@ function OrderManger() {
 			})
 			.catch(() => toast.error("Error loading orders"));
 
-		// SSE setup
 		const eventSource = new EventSource(
 			`${process.env.NEXT_PUBLIC_API_URL}/order/stream`,
 			{
@@ -84,12 +81,10 @@ function OrderManger() {
 				setAllOrders((prev) => {
 					const existingIndex = prev.findIndex((o) => o.id === order.id);
 					if (existingIndex > -1) {
-						// Update existing order
 						const newOrders = [...prev];
 						newOrders[existingIndex] = order;
 						return newOrders;
 					} else {
-						// Add new order at beginning for newest first ordering
 						return [order, ...prev];
 					}
 				});
@@ -102,15 +97,7 @@ function OrderManger() {
 		eventSource.addEventListener("orderAccepted", handleOrderEvent);
 		eventSource.addEventListener("orderCancelled", handleOrderEvent);
 		eventSource.addEventListener("orderCompleted", handleOrderEvent);
-
-		eventSource.addEventListener("orderDeleted", (event) => {
-			try {
-				const deletedOrderId = event.data;
-				setAllOrders((prev) => prev.filter((o) => o.id !== deletedOrderId));
-			} catch (error) {
-				console.error("Error handling delete event:", error);
-			}
-		});
+		eventSource.addEventListener("orderDeleted", handleOrderEvent);
 
 		eventSource.onerror = (error) => {
 			console.error("SSE connection error:", error);

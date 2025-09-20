@@ -40,9 +40,4 @@ export class UpdateCarDto {
   @IsNotEmpty()
   @IsOptional()
   description?: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  color?: string;
 }

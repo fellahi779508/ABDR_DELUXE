@@ -48,10 +48,10 @@ export class CarController {
   ) {
     return this.service.GetAllCars(page, limit);
   }
-  @Get('visible')
-  getAllVisibleCars() {
-    return this.service.getAllVisibleCars();
-  }
+  // @Get('visible')
+  // getAllVisibleCars() {
+  //   return this.service.getAllVisibleCars();
+  // }
 
   @Get('serie/:serieId')
   getCarsOfSerie(@Param('serieId', ParseIntPipe) serieId: number) {
@@ -76,27 +76,30 @@ export class CarController {
   DeleteCar(@Param('id', ParseUUIDPipe) id: string) {
     return this.service.DeleteCar(id);
   }
-  @Post(':carId/images')
-  @UseGuards(AuthGuard)
-  @UseInterceptors(FilesInterceptor('files', 20, multerOptions))
-  async uploadCarImages(
-    @Param('carId', new ParseUUIDPipe()) carId: string,
-    @UploadedFiles() files: Express.Multer.File[],
-    @Query('isPrimary') isPrimary: boolean,
-  ) {
-    if (!files?.length) throw new BadRequestException('No files uploaded');
-    return this.service.addCarImages(carId, files, isPrimary);
-  }
+  // @Post(':carId/images')
+  // @UseGuards(AuthGuard)
+  // @UseInterceptors(FilesInterceptor('files', 20, multerOptions))
+  // async uploadCarImages(
+  //   @Param('carId', new ParseUUIDPipe()) carId: string,
+  //   @UploadedFiles() files: Express.Multer.File[],
+  //   @Query('isPrimary') isPrimary: boolean,
+  // ) {
+  //   if (!files?.length) throw new BadRequestException('No files uploaded');
+  //   return this.service.addCarImages(carId, files, isPrimary);
+  // }
   @Put('update/:id')
   @UseGuards(AuthGuard)
-  UpdateCarById(@Param('id') id: string, @Body() dto: UpdateCarDto) {
+  UpdateCarById(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateCarDto,
+  ) {
     return this.service.updateCarById(id, dto);
   }
-  @Delete('images/:id')
-  @UseGuards(AuthGuard)
-  removeImage(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.service.removeCarImage(id);
-  }
+  // @Delete('images/:id')
+  // @UseGuards(AuthGuard)
+  // removeImage(@Param('id', new ParseUUIDPipe()) id: string) {
+  //   return this.service.removeCarImage(id);
+  // }
   @Put('visibility/:id/:visibility')
   @UseGuards(AuthGuard)
   updateCarVisibility(

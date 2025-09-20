@@ -5,13 +5,23 @@ export type Car = {
 	Energie: string;
 	Kilométrage: string;
 	Moteur: string;
-	color: string;
 	description: string;
 	finition: string;
 	isVisible: boolean | null;
 	price: number;
 	serie: Serie;
 	slug: string;
+	options: Option[];
+	colors: Color[];
+};
+export type Option = {
+	id: number;
+	title: string;
+	value: string;
+};
+export type Color = {
+	id: number;
+	name: string;
 	images: Images[];
 };
 export type Serie = {
@@ -70,8 +80,6 @@ export type UpdateCar = {
 	Année: string;
 
 	description?: string;
-
-	color: string;
 };
 export type VisibleCar = {
 	finition: string;

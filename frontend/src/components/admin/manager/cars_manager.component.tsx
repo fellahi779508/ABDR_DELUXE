@@ -35,6 +35,7 @@ function CarManager() {
 		async function fetchCars() {
 			try {
 				const data = await GetAllCars();
+				console.log(data);
 				setCars(data);
 				setFilteredCars(data);
 			} catch (err) {
@@ -46,7 +47,6 @@ function CarManager() {
 
 	useEffect(() => {
 		let results = cars;
-
 		// Apply search filter
 		if (searchQuery) {
 			results = results.filter(
@@ -248,17 +248,18 @@ function CarManager() {
 								</div>
 
 								<div className={styles.car_image}>
-									<Image
-										src={
-											car.images.find((img) => img.isPrimary === true)?.url ??
-											car.images[0]?.url ??
-											"/images/placeholder.png"
-										}
-										alt={`${car.serie.brand.name} ${car.serie.name}`}
-										width={300}
-										height={200}
-										className={styles.image}
-									/>
+									{car.colors.length > 0 && (
+										<Image
+											src={
+												car.colors[0].images[0]?.url ??
+												"/images/placeholder.png"
+											}
+											alt="Placeholder"
+											width={300}
+											height={200}
+											className={styles.image}
+										/>
+									)}
 								</div>
 
 								<div className={styles.car_info}>

@@ -12,31 +12,41 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Image } from 'src/image/image.entity';
+import { Color } from 'src/color/color.entity';
+import { Option } from 'src/option/option.entity';
 
 @Entity({ name: 'car' })
 export class Car {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
   @Column({ nullable: true })
   finition?: string;
+
   @Column()
   price: number;
+
   @Column()
   Moteur: string;
+
   @Column()
   Energie: string;
+
   @Column()
   Boite: string;
+
   @Column()
   Kilométrage: string;
+
   @Column()
   Année: string;
-  @Column()
-  color: string;
+
   @Column({ nullable: true })
   description?: string;
+
   @Column()
   slug: string;
+
   @BeforeInsert()
   generateSlug() {
     this.slug = slugify(
@@ -45,16 +55,32 @@ export class Car {
   }
   @ManyToOne(() => Serie, (serie) => serie.cars, { onDelete: 'CASCADE' })
   serie: Serie;
+
   @OneToMany(() => Order, (order) => order.cars, {
     nullable: true,
     cascade: true,
   })
   order: Order;
-  @OneToMany(() => Image, (image) => image.car, {
-    cascade: true,
-    eager: false,
-  })
-  images: Image[];
+
   @Column({ nullable: true })
   isVisible: boolean;
+
+  @OneToMany(() => Color, (color) => color.cars)
+  colors: Color[];
+
+  @OneToMany(() => Option, (option) => option.car, {
+    cascade: true,
+    eager: false,
+    nullable: true,
+  })
+  options?: Option[];
+
+  @Column({ type: 'enum', enum: ['used', 'new'], default: 'new' })
+  status: string;
+
+  @OneToMany(() => Image, (image) => image.car, {
+    nullable: true,
+    cascade: true,
+  })
+  images?: Image[];
 }

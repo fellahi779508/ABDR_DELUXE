@@ -9,7 +9,7 @@
 
 .top_bar {
 	background-color: var(--primary);
-	color: rgb(221, 253, 255);
+	color: white;
 	padding: 0.5rem 0;
 	font-size: 0.85rem;
 	width: 100%;
@@ -59,6 +59,7 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: 1rem 0;
+	position: relative;
 }
 
 .brand {
@@ -76,13 +77,10 @@
 	cursor: pointer;
 }
 
-.logo_icon {
-	color: var(--primary);
-}
-
-.logo {
+.logoText {
 	font-size: 1.5rem;
 	font-weight: 700;
+	color: var(--primary);
 	letter-spacing: -0.5px;
 }
 
@@ -90,6 +88,7 @@
 	display: flex;
 	align-items: center;
 	gap: 2rem;
+	position: relative;
 }
 
 .link {
@@ -120,20 +119,68 @@
 	width: 100%;
 }
 
-.cta_button {
-	background-color: var(--primary);
-	color: white;
-	border: none;
-	border-radius: var(--radius);
-	padding: 0.7rem 1.5rem;
-	font-weight: 600;
+/* Service dropdown styles */
+.service_container {
+	position: relative;
 	cursor: pointer;
-	transition: var(--transition);
 }
 
-.cta_button:hover {
-	background-color: var(--primary-hover);
-	transform: translateY(-2px);
+.service_trigger {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	color: var(--text);
+	font-weight: 500;
+	padding: 0.5rem 0;
+	transition: color 0.3s ease;
+}
+
+.service_trigger:hover {
+	color: var(--primary);
+}
+
+.chevron {
+	transition: transform 0.3s ease;
+}
+
+.rotate {
+	transform: rotate(180deg);
+}
+
+.dropdown {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background-color: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	padding: 0.5rem 0;
+	min-width: 150px;
+	box-shadow: var(--shadow);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(10px);
+	transition: all 0.3s ease;
+	z-index: 1001;
+}
+
+.dropdownOpen {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.dropdown_link {
+	display: block;
+	padding: 0.5rem 1rem;
+	color: var(--text);
+	text-decoration: none;
+	transition: all 0.3s ease;
+}
+
+.dropdown_link:hover {
+	background-color: var(--background);
+	color: var(--primary);
 }
 
 .menuToggle {
@@ -160,15 +207,13 @@
 	.top_bar {
 		display: none;
 	}
+
 	.header {
 		position: relative;
 	}
+
 	.container {
 		padding: 0 1.5rem;
-	}
-
-	.contact_info {
-		gap: 1rem;
 	}
 
 	.links {
@@ -179,16 +224,65 @@
 		width: 70%;
 		background-color: var(--background);
 		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		gap: 2rem;
+		justify-content: flex-start;
+		align-items: flex-start;
+		gap: 0;
+		padding: 5rem 2rem;
 		transition: right 0.3s ease;
 		box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
 		z-index: 1001;
+		overflow-y: auto;
 	}
 
 	.linksOpen {
 		right: 0;
+	}
+
+	.link {
+		width: 100%;
+		padding: 1rem 0;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.service_container {
+		width: 100%;
+	}
+
+	.service_trigger {
+		width: 100%;
+		padding: 1rem 0;
+		border-bottom: 1px solid var(--border);
+		justify-content: space-between;
+	}
+
+	.dropdown {
+		position: static;
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+		box-shadow: none;
+		border: none;
+		width: 100%;
+		display: none;
+		padding: 0;
+		margin-left: 1rem;
+	}
+
+	.dropdownOpen {
+		display: block;
+	}
+
+	.dropdown_link {
+		padding: 0.75rem 0;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.theme_toggle {
+		margin-top: 2rem;
+		padding: 1rem 0;
+		border-top: 1px solid var(--border);
+		width: 100%;
+		justify-content: center;
 	}
 
 	.menuToggle {
@@ -202,22 +296,8 @@
 		padding: 0 1rem;
 	}
 
-	.contact_info {
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.top_content {
-		flex-direction: column;
-		gap: 0.5rem;
-		align-items: flex-start;
-	}
-
-	.logo {
-		font-size: 1.2rem;
-	}
-
 	.links {
 		width: 85%;
+		padding: 4rem 1.5rem;
 	}
 }

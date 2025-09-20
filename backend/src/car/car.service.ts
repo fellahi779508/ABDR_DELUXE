@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { Car } from './car.entity';
 import { CreateCarDto } from './dto/createCar.dto';
 import { SerieService } from 'src/serie/serie.service';
@@ -26,7 +26,7 @@ export class CarService {
     const cars = await this.carRepo.find({
       skip,
       take: limit,
-      relations: ['serie', 'serie.brand', 'images'],
+      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
     });
     return cars;
   }
@@ -45,10 +45,12 @@ export class CarService {
     if (!car) {
       throw new NotFoundException('Car not found');
     }
-    if (!car.images) {
+    if (!car.colors) {
       return this.carRepo.remove(car);
     }
-    await this.ImageService.DeleteAllCarImages(car.id);
+    car.colors.forEach(async (color) => {
+      await this.ImageService.DeleteAllCarImages(color.id);
+    });
     return this.carRepo.remove(car);
   }
 
@@ -71,39 +73,41 @@ export class CarService {
       throw new BadRequestException('Car already exists');
     }
   }
+
   async getCarBySlug(slug: string) {
     const car = await this.carRepo.findOne({
       where: { slug, isVisible: true },
-      relations: ['serie', 'serie.brand', 'images'],
+      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
     });
     if (!car) {
       throw new NotFoundException('Car not found');
     }
     return car;
   }
-  async addCarImages(
-    carId: string,
-    files: Express.Multer.File[],
-    isPrimary: boolean,
-  ) {
-    const car = await this.carRepo.findOne({ where: { id: carId } });
-    if (!car) throw new NotFoundException('Car not found');
 
-    return this.ImageService.addImages(car, files, isPrimary);
-  }
-  async removeCarImage(imageId: string) {
-    return this.ImageService.removeImage(imageId);
-  }
-  async getAllVisibleCars() {
-    const cars = await this.carRepo.find({
-      where: { isVisible: true },
-      relations: ['images'],
-    });
-    if (!cars) {
-      return [];
-    }
-    return cars;
-  }
+  // async addCarImages(
+  //   carId: string,
+  //   files: Express.Multer.File[],
+  //   isPrimary: boolean,
+  // ) {
+  //   const car = await this.carRepo.findOne({ where: { id: carId } });
+  //   if (!car) throw new NotFoundException('Car not found');
+
+  //   return this.ImageService.addImages(car, files, isPrimary);
+  // }
+  // async removeCarImage(imageId: string) {
+  //   return this.ImageService.removeImage(imageId);
+  // }
+  // async getAllVisibleCars() {
+  //   const cars = await this.carRepo.find({
+  //     where: { isVisible: true },
+  //     relations: ['images'],
+  //   });
+  //   if (!cars) {
+  //     return [];
+  //   }
+  //   return cars;
+  // }
   async updateCarById(id: string, dto: UpdateCarDto) {
     const car = await this.GetCarById(id);
     Object.assign(car, dto);
@@ -117,7 +121,7 @@ export class CarService {
   async GetCarsOfSerie(id: number) {
     const cars = await this.carRepo.find({
       where: { serie: { id }, isVisible: true },
-      relations: ['images'],
+      relations: ['colors', 'colors.images', 'options'],
     });
     if (!cars) {
       return [];
@@ -127,7 +131,37 @@ export class CarService {
   async GetCarsOfBrand(id: number) {
     const cars = await this.carRepo.find({
       where: { serie: { brand: { id } }, isVisible: true },
-      relations: ['images'],
+      relations: ['colors', 'colors.images', 'options'],
+    });
+    if (!cars) {
+      return [];
+    }
+    return cars;
+  }
+  async GetAllUsedCars() {
+    const cars = await this.carRepo.find({
+      where: { isVisible: true },
+      relations: ['colors', 'colors.images', 'options'],
+    });
+    if (!cars) {
+      return [];
+    }
+    return cars;
+  }
+  async GetAllNewCars() {
+    const cars = await this.carRepo.find({
+      where: { isVisible: true },
+      relations: ['colors', 'colors.images', 'options'],
+    });
+    if (!cars) {
+      return [];
+    }
+    return cars;
+  }
+  async SearchCars(query: string) {
+    const cars = await this.carRepo.find({
+      where: { finition: ILike(`%${query}%`) },
+      relations: ['colors', 'colors.images', 'options'],
     });
     if (!cars) {
       return [];

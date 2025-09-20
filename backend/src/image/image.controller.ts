@@ -3,6 +3,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   ParseUUIDPipe,
   Put,
   UseGuards,
@@ -19,17 +20,17 @@ export class ImageController {
   async removeImage(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.imageService.removeImage(id);
   }
-  @Get(':carId')
-  getCarImages(@Param('carId', new ParseUUIDPipe()) carId: string) {
-    return this.imageService.getCarImages(carId);
+  @Get(':colorId')
+  getCarImages(@Param('colorId', ParseIntPipe) colorId: number) {
+    return this.imageService.getCarImages(colorId);
   }
   @Put('MakePrimary/:id')
   updateImageToPrimary(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.imageService.updateImageToPrimary(id);
   }
-  @Delete('DeleteAll/:id')
+  @Delete('DeleteAll/:colorId')
   @UseGuards(AuthGuard)
-  DeleteAllCarImages(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.imageService.DeleteAllCarImages(id);
+  DeleteAllCarImages(@Param('colorId', ParseIntPipe) colorId: number) {
+    return this.imageService.DeleteAllCarImages(colorId);
   }
 }

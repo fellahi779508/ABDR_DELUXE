@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { api } from "./api";
 import { CreateCar, UpdateCar } from "./Types";
 import { redirect } from "next/navigation";
+import { AxiosError } from "axios";
 
 type Car = {
 	Année: string;
@@ -215,7 +216,7 @@ export async function UploadPrimaryImage(id: string, image: File) {
 
 	try {
 		const response = await api.post(
-			`/car/${id}/images?isPrimary=true`,
+			`/color/${id}/images?isPrimary=true`,
 			formData,
 			{
 				headers: {
@@ -238,7 +239,7 @@ export async function UploadImages(id: string, image: File[]) {
 	}
 	try {
 		const response = await api.post(
-			`/car/${id}/images?isPrimary=false`,
+			`/color/${id}/images?isPrimary=false`,
 			formData,
 			{
 				headers: {
@@ -254,9 +255,9 @@ export async function UploadImages(id: string, image: File[]) {
 		return null;
 	}
 }
-export async function FetchCarImages(id: string) {
+export async function FetchCarImagesByColor(Colorid: number) {
 	try {
-		const response = await api.get(`/image/${id}`);
+		const response = await api.get(`/image/${Colorid}`);
 		if (response) {
 			return response.data;
 		}
@@ -264,6 +265,7 @@ export async function FetchCarImages(id: string) {
 		return error;
 	}
 }
+
 export async function DeleteImageById(id: string) {
 	const token = (await cookies()).get("access_token")?.value;
 	try {
@@ -289,10 +291,10 @@ export async function UpdateImageToPrimary(id: string) {
 		return "error";
 	}
 }
-export async function DeleteAllCarImages(imageId: string) {
+export async function DeleteAllCarImages(colorId: number) {
 	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.delete(`/image/DeleteAll/${imageId}`, {
+		const response = await api.delete(`/image/DeleteAll/${colorId}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -502,5 +504,74 @@ export async function GetCarsOfBrand(BrandId: number) {
 		}
 	} catch (error) {
 		return [];
+	}
+}
+export async function UpdateColorName(id: number, name: string) {
+	try {
+		const response = await api.put(`/color/${id}`, { name });
+		if (response) {
+			return "updated";
+		}
+	} catch (error) {
+		return "error";
+	}
+}
+export async function CreateNewColor(name: string, CarId: string) {
+	try {
+		const response = await api.post(`/color`, { name, CarId });
+		if (response) {
+			return response.data;
+		}
+	} catch (error: any) {
+		console.error(error.response);
+		return "error";
+	}
+}
+export async function UpdateOption(id: number, title?: string, value?: string) {
+	const body = { title, value };
+	try {
+		const response = await api.put(`/option/${id}`, body);
+		if (response) {
+			return response.data;
+		}
+	} catch (error: any) {
+		console.error(error.response);
+		return "error";
+	}
+}
+export async function DeleteOptionById(id: number) {
+	try {
+		const response = await api.delete(`/option/${id}`);
+		if (response) {
+			return "deleted";
+		}
+	} catch (error: any) {
+		console.error(error.response);
+		return "error";
+	}
+}
+export async function DeleteColorById(id: number) {
+	try {
+		const response = await api.delete(`/color/${id}`);
+		if (response) {
+			return "deleted";
+		}
+	} catch (error) {
+		return "error";
+	}
+}
+export async function CreateNewOption(
+	title: string,
+	value: string,
+	CarId: string
+) {
+	try {
+		const response = await api.post(`/option`, { title, value, CarId });
+		if (response) {
+			return response.data;
+		}
+	} catch (error: any) {
+		console.error(error.response);
+		return "error";
 	}
 }

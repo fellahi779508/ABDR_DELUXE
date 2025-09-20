@@ -1,4 +1,5 @@
 import { Car } from 'src/car/car.entity';
+import { Color } from 'src/color/color.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('image')
@@ -34,4 +35,8 @@ export class Image {
     onDelete: 'CASCADE',
   })
   car: Car;
+  @ManyToOne(() => Color, (color) => color.images, {
+    onDelete: 'CASCADE',
+  })
+  color: Color;
 }
