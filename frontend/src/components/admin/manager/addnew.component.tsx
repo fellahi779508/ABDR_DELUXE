@@ -1,17 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { Minus, Plus, X } from "lucide-react";
+import { Minus, Plus, X, ChevronDown, ChevronUp, Trash2 } from "lucide-react";
 import styles from "./addNewCar.module.css";
-import { Brand, Car, CreateCar, Serie } from "@/utils/Types";
+import { Brand, Car, CreateCar, Serie, Color, Option } from "@/utils/Types";
 import { use, useEffect, useState } from "react";
 import {
 	CreateBrand,
 	CreateCarDB,
+	CreateNewColor,
+	CreateNewOption,
 	Createserie,
 	DeleteBrandById,
+	DeleteColorById,
+	DeleteOptionById,
 	DeleteSerieById,
 	FetchAllBrands,
 	FetchSeriesByBrand,
+	UpdateColorName,
+	UpdateOption,
 	UploadImages,
 	UploadPrimaryImage,
 } from "@/utils/Admin";
@@ -46,21 +52,81 @@ function AddNewCar() {
 		Energie: "",
 		Kilométrage: "",
 		Moteur: "",
-		color: "",
 		description: "",
 		isVisible: false,
 		price: 0,
 		serieId: 0,
+		status: "",
 	});
-	type Option = {
+
+	type OptionType = {
 		value: string | null;
 		label: string | null;
 	};
+
 	const [createdCarId, setCreatedCarId] = useState("");
-	const [brandOptions, setBrandOptions] = useState<Option>();
-	const [serieOptions, setSerieOptions] = useState<Option>();
-	const [primaryImage, setPrimaryImage] = useState<File>(new File([], ""));
-	const [images, setImages] = useState<File[]>([]);
+	const [brandOptions, setBrandOptions] = useState<OptionType>();
+	const [serieOptions, setSerieOptions] = useState<OptionType>();
+
+	// Colors and Options state
+	const [colors, setColors] = useState<{ name: string; images: File[] }[]>([]);
+	const [options, setOptions] = useState<{ title: string; value: string }[]>(
+		[]
+	);
+	const [newColorName, setNewColorName] = useState("");
+	const [newOption, setNewOption] = useState({ title: "", value: "" });
+	const [expandedSections, setExpandedSections] = useState({
+		colors: true,
+		options: true,
+	});
+
+	const toggleSection = (section: keyof typeof expandedSections) => {
+		setExpandedSections((prev) => ({
+			...prev,
+			[section]: !prev[section],
+		}));
+	};
+
+	const handleAddColor = () => {
+		if (!newColorName.trim()) {
+			toast.error("Color name cannot be empty");
+			return;
+		}
+		setColors([...colors, { name: newColorName, images: [] }]);
+		setNewColorName("");
+	};
+
+	const handleRemoveColor = (index: number) => {
+		const newColors = [...colors];
+		newColors.splice(index, 1);
+		setColors(newColors);
+	};
+
+	const handleColorImageChange = (index: number, files: FileList | null) => {
+		if (!files) return;
+
+		const newColors = [...colors];
+		newColors[index].images = Array.from(files);
+		setColors(newColors);
+	};
+
+	const handleAddOption = () => {
+		if (!newOption.title.trim() || !newOption.value.trim()) {
+			toast.error("Option title and value cannot be empty");
+			return;
+		}
+		setOptions([
+			...options,
+			{ title: newOption.title, value: newOption.value },
+		]);
+		setNewOption({ title: "", value: "" });
+	};
+
+	const handleRemoveOption = (index: number) => {
+		const newOptions = [...options];
+		newOptions.splice(index, 1);
+		setOptions(newOptions);
+	};
 
 	async function addNewCar() {
 		if (
@@ -70,12 +136,17 @@ function AddNewCar() {
 			!car.Energie ||
 			!car.Kilométrage ||
 			!car.Moteur ||
-			!car.color ||
 			!car.description ||
 			!car.price ||
-			!car.serieId
+			!car.serieId ||
+			!car.status
 		) {
 			toast.error("Please fill in all fields");
+			return;
+		}
+
+		if (colors.length === 0) {
+			toast.error("Please add at least one color");
 			return;
 		}
 
@@ -84,22 +155,31 @@ function AddNewCar() {
 		try {
 			const response = await CreateCarDB(car);
 			if (response.id) {
-				setCar({
-					finition: "",
-					Année: "",
-					Boite: "",
-					Energie: "",
-					Kilométrage: "",
-					Moteur: "",
-					color: "",
-					description: "",
-					isVisible: false,
-					price: 0,
-					serieId: 0,
-				});
 				toast.success("Car created successfully");
 				setCreatedCarId(response.id);
-				if (primaryImage || images) await CreateImages(response.id);
+
+				// Create colors and upload their images
+				for (const color of colors) {
+					const colorResponse = await CreateNewColor(color.name, response.id);
+					if (colorResponse.id && color.images.length > 0) {
+						// Upload primary image (first image)
+						if (color.images[0]) {
+							await UploadPrimaryImage(colorResponse.id, color.images[0]);
+						}
+
+						// Upload remaining images if any
+						if (color.images.length > 1) {
+							await UploadImages(colorResponse.id, color.images.slice(1));
+						}
+					}
+				}
+
+				// Create options
+				for (const option of options) {
+					await CreateNewOption(option.title, option.value, response.id);
+				}
+
+				toast.success("Car with all colors and options created successfully");
 			}
 		} catch (error) {
 			toast.error("Error creating car");
@@ -109,34 +189,8 @@ function AddNewCar() {
 		}
 	}
 
-	async function CreateImages(id: string) {
-		setLoading((prev) => ({ ...prev, uploadImages: true }));
+	// ... (rest of the existing functions like createNewBrand, createNewSerie, FetchBrands, etc.)
 
-		try {
-			// Upload primary image first
-			const primaryResponse = await UploadPrimaryImage(id, primaryImage);
-
-			if (primaryResponse && primaryResponse.length > 0) {
-				toast.success("Primary Image uploaded successfully");
-			}
-			await CreateResImages(id);
-		} catch (error) {
-			toast.error("Error uploading images");
-		} finally {
-			setLoading((prev) => ({ ...prev, uploadImages: false }));
-		}
-	}
-	async function CreateResImages(id: string) {
-		try {
-			const secondaryResponse = await UploadImages(id, images);
-
-			if (secondaryResponse && secondaryResponse.length > 0) {
-				toast.success("Secondary Images uploaded successfully");
-			}
-		} catch (error) {
-			toast.error("Error uploading images");
-		}
-	}
 	async function createNewBrand(name: string) {
 		if (!name) {
 			toast.error("Please fill in all fields");
@@ -229,13 +283,6 @@ function AddNewCar() {
 		}
 	}
 
-	async function handlePrimaryImageUpload(
-		e: React.ChangeEvent<HTMLInputElement>
-	) {
-		if (e.target.files && e.target.files.length > 0) {
-			setPrimaryImage(e.target.files[0]);
-		}
-	}
 	async function handleDeleteBrand(id: number) {
 		const response = await DeleteBrandById(id);
 		if (response === "deleted") {
@@ -250,6 +297,7 @@ function AddNewCar() {
 			toast.error("Error deleting brand");
 		}
 	}
+
 	async function handleDeleteSerie(id: number) {
 		const response = await DeleteSerieById(id);
 		if (response === "deleted") {
@@ -264,6 +312,7 @@ function AddNewCar() {
 			toast.error("Error deleting brand");
 		}
 	}
+
 	useEffect(() => {
 		FetchBrands();
 	}, []);
@@ -515,36 +564,161 @@ function AddNewCar() {
 						</div>
 					</div>
 
+					{/* Colors Section */}
 					<div className={styles.section}>
-						<div className={styles.sectionHeader}>
-							<h3>Car Images</h3>
+						<div
+							className={styles.sectionHeader}
+							onClick={() => toggleSection("colors")}
+							style={{ cursor: "pointer" }}
+						>
+							<h3>Colors ({colors.length})</h3>
+							{expandedSections.colors ? (
+								<ChevronUp size={20} />
+							) : (
+								<ChevronDown size={20} />
+							)}
 						</div>
-						<div className={styles.inputGroup} style={{ marginBottom: "20px" }}>
-							<label>Primary Image :</label>
-							<input
-								type="file"
-								accept="image/*"
-								onChange={handlePrimaryImageUpload}
-								className={styles.textInput}
-								required
-							/>
+
+						{expandedSections.colors && (
+							<>
+								<div className={styles.colorList}>
+									{colors.map((color, index) => (
+										<div key={index} className={styles.colorItem}>
+											<div className={styles.colorContent}>
+												<input
+													type="text"
+													value={color.name}
+													onChange={(e) => {
+														const newColors = [...colors];
+														newColors[index].name = e.target.value;
+														setColors(newColors);
+													}}
+													className={styles.textInput}
+													placeholder="Color name"
+												/>
+												<div className={styles.colorActions}>
+													<input
+														type="file"
+														accept="image/*"
+														multiple
+														onChange={(e) =>
+															handleColorImageChange(index, e.target.files)
+														}
+														className={styles.fileInput}
+													/>
+													<span className={styles.imageCount}>
+														{color.images.length} images
+													</span>
+													<button
+														className={styles.deleteBtn}
+														onClick={() => handleRemoveColor(index)}
+														title="Delete color"
+													>
+														<Trash2 size={16} />
+													</button>
+												</div>
+											</div>
+										</div>
+									))}
+								</div>
+
+								<div className={styles.addItem}>
+									<input
+										type="text"
+										value={newColorName}
+										onChange={(e) => setNewColorName(e.target.value)}
+										placeholder="New color name"
+										className={styles.textInput}
+									/>
+									<button className={styles.addButton} onClick={handleAddColor}>
+										<Plus size={16} /> Add Color
+									</button>
+								</div>
+							</>
+						)}
+					</div>
+
+					{/* Options Section */}
+					<div className={styles.section}>
+						<div
+							className={styles.sectionHeader}
+							onClick={() => toggleSection("options")}
+							style={{ cursor: "pointer" }}
+						>
+							<h3>Custom Options ({options.length})</h3>
+							{expandedSections.options ? (
+								<ChevronUp size={20} />
+							) : (
+								<ChevronDown size={20} />
+							)}
 						</div>
-						<div className={styles.inputGroup}>
-							<label>Secondary Images :</label>
-							<input
-								type="file"
-								accept="image/*"
-								multiple
-								onChange={(e) => {
-									if (e.target.files) {
-										const files = Array.from(e.target.files);
-										setImages(files);
-									}
-								}}
-								required
-								className={styles.textInput}
-							/>
-						</div>
+
+						{expandedSections.options && (
+							<>
+								<div className={styles.optionsList}>
+									{options.map((option, index) => (
+										<div key={index} className={styles.optionItem}>
+											<input
+												type="text"
+												value={option.title}
+												onChange={(e) => {
+													const newOptions = [...options];
+													newOptions[index].title = e.target.value;
+													setOptions(newOptions);
+												}}
+												className={styles.textInput}
+												placeholder="Option name"
+											/>
+											<input
+												type="text"
+												value={option.value}
+												onChange={(e) => {
+													const newOptions = [...options];
+													newOptions[index].value = e.target.value;
+													setOptions(newOptions);
+												}}
+												className={styles.textInput}
+												placeholder="Option value"
+											/>
+											<button
+												className={styles.deleteBtn}
+												onClick={() => handleRemoveOption(index)}
+												title="Delete option"
+											>
+												<Trash2 size={16} />
+											</button>
+										</div>
+									))}
+								</div>
+
+								<div className={styles.addItem}>
+									<input
+										type="text"
+										value={newOption.title}
+										onChange={(e) =>
+											setNewOption({ ...newOption, title: e.target.value })
+										}
+										placeholder="Option name"
+										className={styles.textInput}
+									/>
+									<input
+										type="text"
+										value={newOption.value}
+										onChange={(e) =>
+											setNewOption({ ...newOption, value: e.target.value })
+										}
+										placeholder="Option value"
+										className={styles.textInput}
+									/>
+									<button
+										className={styles.addButton}
+										onClick={handleAddOption}
+									>
+										<Plus size={16} /> Add Option
+									</button>
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 

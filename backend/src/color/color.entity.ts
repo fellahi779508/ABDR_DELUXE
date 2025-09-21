@@ -16,7 +16,7 @@ export class Color {
   @Column()
   name: string;
 
-  @ManyToOne(() => Car, (car) => car.colors)
+  @ManyToOne(() => Car, (car) => car.colors, { onDelete: 'CASCADE' })
   cars: Car;
 
   @OneToMany(() => Image, (image) => image.color, {

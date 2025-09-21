@@ -48,10 +48,48 @@ export class CarController {
   ) {
     return this.service.GetAllCars(page, limit);
   }
-  // @Get('visible')
-  // getAllVisibleCars() {
-  //   return this.service.getAllVisibleCars();
-  // }
+
+  @Get('visible')
+  GetAllVisibleCars() {
+    return this.service.GetAllVisibleCars();
+  }
+  @Get('used')
+  GetAllUsedCars() {
+    return this.service.GetAllUsedCars();
+  }
+
+  @Get('new')
+  GetAllNewCars() {
+    return this.service.GetAllNewCars();
+  }
+  @Get('visible/new')
+  GetAllVisibleNewCars() {
+    return this.service.GetAllVisibleNewCars();
+  }
+  @Get('visible/used')
+  GetAllVisibleUsedCars() {
+    return this.service.GetAllVisibleUsedCars();
+  }
+  @Get('browse/:searchQuery')
+  SearchCars(@Param('searchQuery') searchQuery: string) {
+    return this.service.SearchCars(searchQuery);
+  }
+  @Get('new/:serieId')
+  GetAllNewCarsOfSerie(@Param('serieId', ParseIntPipe) serieId: number) {
+    return this.service.GetAllVisibleNewCarsOfSerie(serieId);
+  }
+  @Get('used/:serieId')
+  GetAllUsedCarsOfSerie(@Param('serieId', ParseIntPipe) serieId: number) {
+    return this.service.GetAllVisibleUsedCarsOfSerie(serieId);
+  }
+  @Get('new/brand/:brandId')
+  GetAllNewCarsOfBrand(@Param('brandId', ParseIntPipe) brandId: number) {
+    return this.service.GeAllNewCarsOfBrand(brandId);
+  }
+  @Get('used/brand/:brandId')
+  GetAllUsedCarsOfBrand(@Param('brandId', ParseIntPipe) brandId: number) {
+    return this.service.GeAllUsedCarsOfBrand(brandId);
+  }
 
   @Get('serie/:serieId')
   getCarsOfSerie(@Param('serieId', ParseIntPipe) serieId: number) {
@@ -76,17 +114,7 @@ export class CarController {
   DeleteCar(@Param('id', ParseUUIDPipe) id: string) {
     return this.service.DeleteCar(id);
   }
-  // @Post(':carId/images')
-  // @UseGuards(AuthGuard)
-  // @UseInterceptors(FilesInterceptor('files', 20, multerOptions))
-  // async uploadCarImages(
-  //   @Param('carId', new ParseUUIDPipe()) carId: string,
-  //   @UploadedFiles() files: Express.Multer.File[],
-  //   @Query('isPrimary') isPrimary: boolean,
-  // ) {
-  //   if (!files?.length) throw new BadRequestException('No files uploaded');
-  //   return this.service.addCarImages(carId, files, isPrimary);
-  // }
+
   @Put('update/:id')
   @UseGuards(AuthGuard)
   UpdateCarById(
@@ -95,11 +123,7 @@ export class CarController {
   ) {
     return this.service.updateCarById(id, dto);
   }
-  // @Delete('images/:id')
-  // @UseGuards(AuthGuard)
-  // removeImage(@Param('id', new ParseUUIDPipe()) id: string) {
-  //   return this.service.removeCarImage(id);
-  // }
+
   @Put('visibility/:id/:visibility')
   @UseGuards(AuthGuard)
   updateCarVisibility(

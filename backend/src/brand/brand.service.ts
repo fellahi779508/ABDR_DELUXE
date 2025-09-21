@@ -10,6 +10,18 @@ export class BrandService {
   constructor(
     @InjectRepository(Brand) private readonly brandRepo: Repository<Brand>,
   ) {}
+  async getAllBrandsOfUsedCars() {
+    return await this.brandRepo.find({
+      where: { series: { cars: { status: 'used' } } },
+      relations: ['series', 'series.cars'],
+    });
+  }
+  async getAllBrandsOfNewCars() {
+    return await this.brandRepo.find({
+      where: { series: { cars: { status: 'new' } } },
+      relations: ['series', 'series.cars'],
+    });
+  }
   async CreateBrand(dto: CreateBrandDto) {
     const { name } = dto;
     const brandExists = await this.brandRepo.findOne({ where: { name } });

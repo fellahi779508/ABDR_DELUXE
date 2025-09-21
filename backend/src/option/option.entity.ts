@@ -9,6 +9,6 @@ export class Option {
   title: string;
   @Column()
   value: string;
-  @ManyToOne(() => Car, (car) => car.options)
+  @ManyToOne(() => Car, (car) => car.options, { onDelete: 'CASCADE' })
   car: Car;
 }

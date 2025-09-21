@@ -4,7 +4,6 @@ import { CarService } from './car.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Car } from './car.entity';
 import { SerieModule } from 'src/serie/serie.module';
-import { OrderModule } from 'src/order/order.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ImageModule } from 'src/image/image.module';
 

@@ -5,12 +5,11 @@ import { FetchAllBrands, GetAllVisibleCars } from "@/utils/Admin";
 export const dynamic = "force-dynamic";
 
 async function CarBrowser() {
-	const cars = await GetAllVisibleCars();
+	const allCars = await GetAllVisibleCars();
 	const brands = await FetchAllBrands();
-
 	return (
 		<div className={styles.container}>
-			<CarBrowserComp car={cars} brands={brands} />
+			<CarBrowserComp SVbrands={brands} AllCars={allCars} />
 		</div>
 	);
 }

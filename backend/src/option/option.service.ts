@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Option } from './option.entity';
 import { CarService } from 'src/car/car.service';
+import { UpdateoptionDto } from './dto/updateOption.dto';
 @Injectable()
 export class OptionService {
   constructor(
@@ -31,10 +32,11 @@ export class OptionService {
     const option = await this.GetOptionById(optionId);
     return await this.optionRepo.remove(option);
   }
-  async UpdateOption(optionId: number, title: string, value: string) {
+
+  async UpdateOption(optionId: number, dto: UpdateoptionDto) {
     const option = await this.GetOptionById(optionId);
-    option.title = title ?? option.title;
-    option.value = value ?? option.value;
+    option.title = dto.title ?? option.title;
+    option.value = dto.value ?? option.value;
     return await this.optionRepo.save(option);
   }
 }

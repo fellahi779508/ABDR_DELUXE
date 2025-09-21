@@ -13,6 +13,7 @@ export type Car = {
 	slug: string;
 	options: Option[];
 	colors: Color[];
+	status: string;
 };
 export type Option = {
 	id: number;
@@ -58,7 +59,7 @@ export type CreateCar = {
 
 	description?: string;
 
-	color: string;
+	status: string;
 
 	isVisible: boolean;
 
@@ -67,19 +68,21 @@ export type CreateCar = {
 export type UpdateCar = {
 	finition?: string;
 
-	price: number;
+	price?: number;
 
-	Moteur: string;
+	Moteur?: string;
 
-	Energie: string;
+	Energie?: string;
 
-	Boite: string;
+	Boite?: string;
 
-	Kilométrage: string;
+	Kilométrage?: string;
 
-	Année: string;
+	Année?: string;
 
 	description?: string;
+
+	status?: string;
 };
 export type VisibleCar = {
 	finition: string;

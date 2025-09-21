@@ -23,6 +23,14 @@ export class BrandController {
   ) {
     return this.service.GetAllBrands(page, limit);
   }
+  @Get('UsedCars')
+  getAllBrandsOfUsedCars() {
+    return this.service.getAllBrandsOfUsedCars();
+  }
+  @Get('NewCars')
+  getAllBrandsOfNewCars() {
+    return this.service.getAllBrandsOfNewCars();
+  }
   @Get(':id')
   getBrandById(@Param('id', ParseIntPipe) id: number) {
     return this.service.GetBrandById(id);

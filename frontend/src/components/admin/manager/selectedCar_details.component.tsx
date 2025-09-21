@@ -21,20 +21,19 @@ type CarProps = {
 	car: Car;
 };
 
-async function updateCar(id: string, data: any) {
-	try {
-		const response = await UpdateCarById(id, data);
-		if (response === "updated") {
-			toast.success("Car updated successfully");
-			redirect("/admin/dashboard/cars");
-		}
-	} catch (error) {
-		console.error(error);
-		toast.error("Error updating car");
-	}
-}
-
 function SelectedCarDetails({ car }: CarProps) {
+	async function updateCar(id: string, data: any) {
+		try {
+			const response = await UpdateCarById(id, data);
+			if (response.id) {
+				toast.success("Car updated successfully");
+				setSelectedCar({ ...selectedCar, ...data });
+			}
+		} catch (error) {
+			console.error(error);
+			toast.error("Error updating car");
+		}
+	}
 	const [selectedCar, setSelectedCar] = useState<Car>(car);
 	const [updatedCar, setUpdatedCar] = useState<UpdateCar>({
 		Année: car.Année,
@@ -45,6 +44,7 @@ function SelectedCarDetails({ car }: CarProps) {
 		description: car.description,
 		finition: car.finition,
 		price: car.price,
+		status: car.status,
 	});
 
 	const [openImages, setOpenImages] = useState(false);
@@ -155,6 +155,7 @@ function SelectedCarDetails({ car }: CarProps) {
 	};
 
 	const handleDeleteOption = async (optionId: number) => {
+		console.log(optionId);
 		if (!confirm("Are you sure you want to delete this option?")) return;
 
 		try {
@@ -183,19 +184,18 @@ function SelectedCarDetails({ car }: CarProps) {
 
 		try {
 			// Assuming we have a function to create new option
-			await CreateNewOption(newOption.name, newOption.value, selectedCar.id);
+			const response = await CreateNewOption(
+				newOption.name,
+				newOption.value,
+				selectedCar.id
+			);
 			toast.success("New option added");
 
 			// Update local state
-			const newOptionItem: Option = {
-				id: Date.now(), // Temporary ID
-				title: newOption.name,
-				value: newOption.value,
-			};
 
 			setSelectedCar((prev) => ({
 				...prev,
-				options: [...prev.options, newOptionItem],
+				options: [...prev.options, response],
 			}));
 
 			setNewOption({ name: "", value: "" });

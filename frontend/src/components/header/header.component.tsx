@@ -57,7 +57,7 @@ function Header() {
                   height={80}
                   className={styles.logo}
                 /> */}
-								<span className={styles.logoText}>Your Logo</span>
+								<span className={styles.logoText}>ABR_DELUXE Auto</span>
 							</button>
 						</div>
 

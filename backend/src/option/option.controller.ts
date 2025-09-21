@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { OptionService } from './option.service';
 import { CreateOptionDto } from './dto/createOption.dto';
-import { title } from 'process';
+import { UpdateoptionDto } from './dto/updateOption.dto';
 
 @Controller('option')
 export class OptionController {
@@ -24,10 +24,9 @@ export class OptionController {
   @Put('/:optionId')
   async updateOption(
     @Param('optionId', ParseIntPipe) optionId: number,
-    @Body() title: string,
-    @Body() value: string,
+    @Body() dto: UpdateoptionDto,
   ) {
-    return this.service.UpdateOption(optionId, title, value);
+    return this.service.UpdateOption(optionId, dto);
   }
   @Get('/:carId')
   async getOption(@Param('carId', ParseUUIDPipe) carId: string) {

@@ -4,33 +4,35 @@
 
 /* Light Theme (default) */
 :root[data-theme="light"] {
-	--primary: hsl(166, 80%, 20%);
-	--primary-hover: hsla(166, 80%, 20%, 0.589);
-	--background: hsl(226, 50%, 95%);
-	--surface: hsl(226, 50%, 90%);
-	--text: hsl(226, 50%, 10%);
-	--text-secondary: hsl(226, 50%, 30%);
-	--border: hsl(226, 50%, 80%);
-	--accent: hsl(286, 80%, 20%);
-	--success: hsl(166, 80%, 20%);
-	--shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-	--radius: 8px;
-	--transition: all 0.2s ease;
+	--primary: hsl(210, 100%, 25%);
+	--primary-hover: hsla(210, 100%, 25%, 0.8);
+	--background: hsl(210, 20%, 98%);
+	--surface: hsl(204, 9%, 90%);
+	--text: hsl(210, 20%, 10%);
+	--text-secondary: hsl(210, 20%, 40%);
+	--border: hsl(210, 20%, 85%);
+	--accent: hsl(34, 100%, 50%);
+	--success: hsl(120, 60%, 40%);
+	--shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+	--shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.15);
+	--radius: 12px;
+	--transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Dark Theme */
 :root[data-theme="dark"] {
-	--primary: hsla(177, 100%, 57%, 0.521);
-	--primary-hover: hsla(177, 100%, 57%, 0.267);
-	--background: hsl(226, 50%, 5%);
-	--surface: hsl(226, 50%, 15%);
-	--text: hsl(226, 50%, 90%);
-	--text-secondary: hsl(226, 50%, 70%);
-	--border: hsl(226, 50%, 20%);
-	--accent: hsl(286, 80%, 80%);
-	--success: hsl(166, 80%, 80%);
-	--shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-	--radius: 8px;
+	--primary: hsl(358, 83%, 25%);
+	--primary-hover: hsla(358, 83%, 25%, 0.601);
+	--background: hsl(210, 20%, 8%);
+	--surface: hsl(210, 20%, 12%);
+	--text: hsl(210, 20%, 95%);
+	--text-secondary: hsl(210, 20%, 70%);
+	--border: hsl(210, 20%, 20%);
+	--accent: hsl(45, 100%, 60%);
+	--success: hsl(120, 60%, 50%);
+	--shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+	--shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.4);
+	--radius: 12px;
 	--transition: all 0.2s ease;
 }
 

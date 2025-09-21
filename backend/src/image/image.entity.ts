@@ -31,10 +31,6 @@ export class Image {
   @Column({ default: 0 })
   sortOrder: number;
 
-  @ManyToOne(() => Car, (car) => car.images, {
-    onDelete: 'CASCADE',
-  })
-  car: Car;
   @ManyToOne(() => Color, (color) => color.images, {
     onDelete: 'CASCADE',
   })

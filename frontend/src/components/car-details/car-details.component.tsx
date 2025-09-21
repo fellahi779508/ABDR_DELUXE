@@ -3,22 +3,49 @@
 import Image from "next/image";
 import styles from "./car-details.component.module.css";
 import { useState } from "react";
-import { MoveLeft, MoveRight, Clock, Shield, Zap } from "lucide-react";
+import {
+	MoveLeft,
+	MoveRight,
+	Clock,
+	Shield,
+	Zap,
+	Milestone,
+	ParkingMeter,
+} from "lucide-react";
 import Link from "next/link";
 import { SetCarIdCookie } from "@/utils/Admin";
 import { useRouter } from "next/navigation";
 
 type CarDetailsProps = {
 	slug: string;
-	data: any;
+	data: Car;
 };
-
+type Car = {
+	finition: string;
+	id: string;
+	price: number;
+	Moteur: string;
+	Energie: string;
+	Boite: string;
+	Kilométrage: string;
+	Année: string;
+	description?: string;
+	colors: {
+		id: number;
+		name: string;
+		images: { isPrimary?: boolean; url: string; sortOrder: number }[];
+	}[];
+	slug: string;
+	status: string;
+	serie: { id: number; name: string; brand: { id: number; name: string } };
+};
 function CarDetailsComponent(param: CarDetailsProps) {
 	const { data } = param;
-	const images = data.images;
-	const [mainImage, setMainImage] = useState<any>(
-		images.find((img: any) => img.isPrimary === true) || images[0]
-	);
+	const [images, setImages] = useState<any>(data.colors[0].images);
+	const [mainImage, setMainImage] = useState<any>({
+		url: data.colors[0].images[0].url,
+		sortOrder: 0,
+	});
 	const [startIndex, setStartIndex] = useState(0);
 	const [selectedImageIndex, setSelectedImageIndex] = useState(
 		images[0]?.sortOrder + 1 || 0
@@ -136,8 +163,44 @@ function CarDetailsComponent(param: CarDetailsProps) {
 
 				<div className={styles.section}>
 					<div className={styles.price_section}>
-						<div className={styles.price}>{formatPrice(data.price)} DZD</div>
-						<div className={styles.price_note}>Prix négociable</div>
+						<div className={styles.price}>
+							<span>Promo : </span>
+							{formatPrice(data.price)} DZD
+						</div>
+						<div className={styles.OldPrice}>
+							<span>Prix : </span> {formatPrice(data.price)} DZD
+						</div>
+					</div>
+					<div className={styles.car_colors}>
+						<div
+							style={{
+								fontWeight: "bold",
+								fontSize: "20px",
+								color: "var(--primary)",
+							}}
+						>
+							Couleurs Disponible :
+						</div>
+						<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+							{data.colors.map((color: any, index: number) => {
+								return (
+									<div
+										className={styles.color}
+										key={index}
+										onClick={() => (
+											setMainImage(
+												color.images.find(
+													(image: any) => image.isPrimary === true
+												)
+											),
+											setImages(color.images)
+										)}
+									>
+										{color.name}
+									</div>
+								);
+							})}
+						</div>
 					</div>
 
 					<div className={styles.feature_highlights}>
@@ -162,23 +225,11 @@ function CarDetailsComponent(param: CarDetailsProps) {
 								<line x1="10" y1="7" x2="10" y2="15"></line>
 								<line x1="10" y1="11" x2="10" y2="11"></line>
 							</svg>
+							<span>Boite </span>
 							<span>{data.Boite}</span>
 						</div>
 						<div className={styles.feature}>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								strokeWidth="2"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							>
-								<circle cx="12" cy="12" r="10"></circle>
-								<polyline points="12 6 12 12 16 14"></polyline>
-							</svg>
+							<ParkingMeter size={20} />
 							<span>{data.Kilométrage} </span>
 						</div>
 					</div>
@@ -203,10 +254,6 @@ function CarDetailsComponent(param: CarDetailsProps) {
 							<div className={styles.detail_item}>
 								<span className={styles.detail_label}>Année :</span>
 								<span className={styles.detail_value}>{data.Année}</span>
-							</div>
-							<div className={styles.detail_item}>
-								<span className={styles.detail_label}>Couleur :</span>
-								<span className={styles.detail_value}>{data.color}</span>
 							</div>
 						</div>
 					</div>
@@ -249,7 +296,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 					</div>
 					<div className={styles.spec_item}>
 						<span className={styles.spec_label}>Couleur</span>
-						<span className={styles.spec_value}>{data.color}</span>
+						<span className={styles.spec_value}>{data.colors[0].name}</span>
 					</div>
 				</div>
 			</div>

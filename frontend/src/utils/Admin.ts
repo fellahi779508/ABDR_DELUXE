@@ -6,6 +6,7 @@ import { api } from "./api";
 import { CreateCar, UpdateCar } from "./Types";
 import { redirect } from "next/navigation";
 import { AxiosError } from "axios";
+import { trackSynchronousPlatformIOAccessInDev } from "next/dist/server/app-render/dynamic-rendering";
 
 type Car = {
 	Année: string;
@@ -119,7 +120,7 @@ export async function UpdateCarById(id: string, data: UpdateCar) {
 			},
 		});
 		if (response) {
-			return "updated";
+			return response.data;
 		}
 	} catch (error) {
 		return "error";
@@ -195,6 +196,7 @@ export async function Createserie(name: string, brandId: number) {
 	}
 }
 export async function CreateCarDB(car: CreateCar) {
+	console.log(car);
 	const token = (await cookies()).get("access_token")?.value;
 	try {
 		const response = await api.post(`/car`, car, {
@@ -205,7 +207,8 @@ export async function CreateCarDB(car: CreateCar) {
 		if (response) {
 			return response.data;
 		}
-	} catch (error) {
+	} catch (error: any) {
+		console.error(error.response);
 		return error;
 	}
 }
@@ -325,16 +328,7 @@ export async function UpdateCarVisibility(id: string, isVisible: boolean) {
 		return "error";
 	}
 }
-export async function GetAllVisibleCars() {
-	try {
-		const response = await api.get(`/car/visible`);
-		if (response) {
-			return response.data;
-		}
-	} catch (error) {
-		return [];
-	}
-}
+
 export async function GetCarsOfSerie(SerieId: number) {
 	try {
 		const response = await api.get(`/car/serie/${SerieId}`);
@@ -528,10 +522,11 @@ export async function CreateNewColor(name: string, CarId: string) {
 	}
 }
 export async function UpdateOption(id: number, title?: string, value?: string) {
-	const body = { title, value };
+	const data = { title, value };
 	try {
-		const response = await api.put(`/option/${id}`, body);
+		const response = await api.put(`/option/${id}`, data);
 		if (response) {
+			console.log(response.data);
 			return response.data;
 		}
 	} catch (error: any) {
@@ -573,5 +568,138 @@ export async function CreateNewOption(
 	} catch (error: any) {
 		console.error(error.response);
 		return "error";
+	}
+}
+export async function GetAllUsedCars() {
+	try {
+		const response = await api.get(`/car/used`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+export async function GetAllNewCars() {
+	try {
+		const response = await api.get(`/car/new`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+export async function GetAllBrandsOfUsedCars() {
+	try {
+		const response = await api.get(`/brand/UsedCars`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+export async function GetAllBrandsOfNewCars() {
+	try {
+		const response = await api.get(`/brand/NewCars`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+export async function GetAllVisibleCars() {
+	try {
+		const response = await api.get(`/car/visible`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+export async function GetAllNewCarsOfSerie(id: number) {
+	try {
+		const response = await api.get(`/car/new/${id}`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+export async function GetAllUsedCarsOfSerie(id: number) {
+	try {
+		const response = await api.get(`/car/used/${id}`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+export async function GetAllNewCarsOfBrand(id: number) {
+	try {
+		const response = await api.get(`/car/new/brand/${id}`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+export async function GetAllUsedCarsOfBrand(id: number) {
+	try {
+		const response = await api.get(`/car/used/brand/${id}`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+export async function GetAllVisibleNewCars() {
+	try {
+		const response = await api.get(`/car/visible/new`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+export async function GetAllVisibleUsedCars() {
+	try {
+		const response = await api.get(`/car/visible/used`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+export async function SearchCars(searchQuery: string) {
+	try {
+		const response = await api.get(`/car/browse/${searchQuery}`);
+		if (response) {
+			console.log(response.data);
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return [];
 	}
 }

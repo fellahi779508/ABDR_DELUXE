@@ -40,7 +40,8 @@ import { OptionModule } from './option/option.module';
           database: config.get<string>('DB_DATABASE'),
 
           // ✅ Auto-sync only in dev
-          synchronize: !isProd,
+          // synchronize: !isProd,
+          synchronize: true,
 
           // ✅ Important for Supabase + Railway
           ssl: isProd ? { rejectUnauthorized: false } : false,

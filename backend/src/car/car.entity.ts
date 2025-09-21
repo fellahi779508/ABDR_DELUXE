@@ -46,12 +46,9 @@ export class Car {
 
   @Column()
   slug: string;
-
   @BeforeInsert()
   generateSlug() {
-    this.slug = slugify(
-      `${this.serie.name}-${this.finition}-${this.Année}`,
-    ).toLowerCase();
+    this.slug = slugify(`${this.serie.name}-${this.finition}`);
   }
   @ManyToOne(() => Serie, (serie) => serie.cars, { onDelete: 'CASCADE' })
   serie: Serie;
@@ -62,10 +59,14 @@ export class Car {
   })
   order: Order;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'boolean', default: true })
   isVisible: boolean;
 
-  @OneToMany(() => Color, (color) => color.cars)
+  @OneToMany(() => Color, (color) => color.cars, {
+    cascade: true,
+    eager: false,
+    nullable: true,
+  })
   colors: Color[];
 
   @OneToMany(() => Option, (option) => option.car, {
@@ -77,10 +78,4 @@ export class Car {
 
   @Column({ type: 'enum', enum: ['used', 'new'], default: 'new' })
   status: string;
-
-  @OneToMany(() => Image, (image) => image.car, {
-    nullable: true,
-    cascade: true,
-  })
-  images?: Image[];
 }

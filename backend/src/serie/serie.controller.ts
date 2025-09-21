@@ -23,6 +23,7 @@ export class SerieController {
   ) {
     return this.service.GetAllSeries(page, limit);
   }
+
   @Get(':id')
   getSerieById(@Param('id', ParseIntPipe) id: number) {
     return this.service.GetSerieById(id);
