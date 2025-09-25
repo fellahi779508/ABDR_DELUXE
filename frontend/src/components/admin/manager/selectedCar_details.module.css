@@ -24,8 +24,13 @@
 	max-height: 90vh;
 	overflow-y: auto;
 }
+.checkbox {
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+}
 
-.title {
+s .title {
 	color: var(--primary);
 	margin-bottom: 1.5rem;
 	text-align: center;

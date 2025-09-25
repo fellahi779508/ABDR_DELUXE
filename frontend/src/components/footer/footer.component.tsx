@@ -93,7 +93,8 @@ function Footer() {
 
 				<div className={styles.bottomBar}>
 					<div className={styles.copyright}>
-						&copy; {new Date().getFullYear()} ABDR_DELUXE. Tous droits réservés.
+						&copy; {new Date().getFullYear()} ABR_DELUXE Auto. Tous droits
+						réservés.
 					</div>
 				</div>
 			</div>

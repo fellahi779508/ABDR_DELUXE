@@ -23,12 +23,12 @@ export class OrderController {
   constructor(private readonly service: OrderService) {}
   private orderStream$ = new Subject<any>();
 
-  @Post()
-  async createNewOrder(@Body() dto: CreateOrderDto) {
-    const order = await this.service.createNewOrder(dto);
-    this.orderStream$.next({ type: 'orderCreated', data: order });
-    return order;
-  }
+  // @Post()
+  // async createNewOrder(@Body() dto: CreateOrderDto) {
+  //   const order = await this.service.createNewOrder(dto);
+  //   this.orderStream$.next({ type: 'orderCreated', data: order });
+  //   return order;
+  // }
 
   // SSE endpoint
   @Sse('stream')
@@ -87,5 +87,9 @@ export class OrderController {
     const order = await this.service.completeOrder(id);
     this.orderStream$.next({ type: 'orderCompleted', data: order });
     return order;
+  }
+  @Get('test')
+  async test(@Body() dto: CreateOrderDto) {
+    return true;
   }
 }

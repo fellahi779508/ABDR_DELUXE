@@ -18,19 +18,9 @@ import {
 import { CarService } from './car.service';
 import { CreateCarDto } from './dto/createCar.dto';
 import { AuthGuard } from 'src/utils/guards/auth.guard';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { memoryStorage } from 'multer';
+
 import { UpdateCarDto } from './dto/updateCar.dto';
-const multerOptions = {
-  storage: memoryStorage(),
-  limits: { fileSize: 24 * 1024 * 1024, files: 20 },
-  fileFilter: (_req, file, cb) => {
-    const ok = /\/(jpg|jpeg|png|webp)$/i.test(file.mimetype);
-    return ok
-      ? cb(null, true)
-      : cb(new BadRequestException('Unsupported file type'), false);
-  },
-};
+
 @Controller('car')
 export class CarController {
   constructor(private readonly service: CarService) {}

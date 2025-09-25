@@ -21,8 +21,8 @@
 
 /* Dark Theme */
 :root[data-theme="dark"] {
-	--primary: hsl(358, 83%, 25%);
-	--primary-hover: hsla(358, 83%, 25%, 0.601);
+	--primary: hsl(208, 83%, 25%);
+	--primary-hover: hsla(208, 83%, 25%, 0.493);
 	--background: hsl(210, 20%, 8%);
 	--surface: hsl(210, 20%, 12%);
 	--text: hsl(210, 20%, 95%);
@@ -83,7 +83,7 @@ a {
 	box-shadow: var(--shadow);
 	width: 40px;
 	height: 40px;
-	z-index: 9999;
+	z-index: 999;
 }
 
 .theme-toggle:hover {

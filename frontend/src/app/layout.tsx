@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "ABDR_DELUXE",
-	description: "Get your car",
+	title: "ABR_DELUXE Auto",
+	description: "Buy / Rent / Import Cars",
 };
 
 export default function RootLayout({

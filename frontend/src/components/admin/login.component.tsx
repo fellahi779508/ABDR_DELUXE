@@ -33,6 +33,7 @@ function Login() {
 							required
 							className={styles.input}
 							onChange={(e) => setAdmin({ ...admin, username: e.target.value })}
+							onKeyPress={(e) => e.key === "Enter" && HandleSubmit()}
 						/>
 					</div>
 					<div className={styles.field}>
@@ -45,6 +46,7 @@ function Login() {
 							required
 							className={styles.input}
 							onChange={(e) => setAdmin({ ...admin, password: e.target.value })}
+							onKeyPress={(e) => e.key === "Enter" && HandleSubmit()}
 						/>
 					</div>
 				</div>

@@ -18,10 +18,12 @@ import {
 	GetAllVisibleUsedCars,
 	GetCarsOfBrand,
 	GetCarsOfSerie,
-	SearchCars, // Assuming this API exists
+	SearchCars,
 } from "@/utils/Admin";
 import { ChevronLeft, Search, Filter, X, Car, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import "@/styles/globals.css";
+import { image } from "framer-motion/client";
 
 type Car = {
 	finition: string;
@@ -41,11 +43,17 @@ type Car = {
 	slug: string;
 	status: string;
 	serie: { id: number; name: string; brand: { id: number; name: string } };
+	isShiped: boolean;
+	oldPrice: number;
 };
 
 type Brands = {
 	id: number;
 	name: string;
+	icon: {
+		url: string;
+		publicId: string;
+	};
 };
 
 type CarBrowserProps = {
@@ -63,7 +71,6 @@ const containerVariants = {
 		},
 	},
 };
-
 const itemVariants = {
 	hidden: { y: 20, opacity: 0 },
 	visible: {
@@ -87,6 +94,15 @@ const cardVariants = {
 };
 
 function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
+	const [theme, setTheme] = useState("light");
+	useEffect(() => {
+		const storedTheme = localStorage.getItem("theme");
+		if (storedTheme === "dark") {
+			setTheme("dark");
+		} else {
+			setTheme("light");
+		}
+	}, []);
 	const [car, setCar] = useState<Car[]>(AllCars);
 	const [brands, setBrand] = useState<Brands[]>(SVbrands);
 	const router = useRouter();
@@ -377,6 +393,13 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 										whileHover={{ scale: 1.05 }}
 										whileTap={{ scale: 0.95 }}
 									>
+										<Image
+											src={brand.icon.url ?? ""}
+											alt={brand.name}
+											width={28}
+											height={25}
+											className={styles.brandIcon}
+										/>
 										{brand.name}
 									</motion.div>
 								))}
@@ -457,60 +480,133 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 											className={styles.carCard}
 											onClick={() => handleCarClick(car)}
 											variants={cardVariants}
-											whileHover={{ y: -5, transition: { duration: 0.2 } }}
+											whileHover={{ y: -8, transition: { duration: 0.3 } }}
 										>
+											<div className={styles.statusBadges}>
+												<span
+													className={`${styles.statusBadge} ${
+														car.status === "Available"
+															? styles.available
+															: styles.comingSoon
+													}`}
+												>
+													{car.status}
+												</span>
+												<span
+													className={`${styles.availabilityBadge} ${
+														car.isShiped ? styles.inStock : styles.onOrder
+													}`}
+												>
+													{car.isShiped ? "In Stock" : "On Order"}
+												</span>
+											</div>
+
 											<div className={styles.imageContainer}>
 												{!imageLoaded[car.id] && (
 													<div className={styles.imageSkeleton}></div>
 												)}
 												<Image
 													src={
-														car.colors[0].images.find((i) => i.isPrimary)
+														car.colors
+															.find(
+																(color) =>
+																	color.images.find(
+																		(image) => image.isPrimary === true
+																	)?.url
+															)
+															?.images.find((image) => image.isPrimary === true)
 															?.url || "/images/placeholder.png"
 													}
 													alt={car.finition}
-													width={300}
-													height={200}
+													width={350}
+													height={220}
 													className={`${styles.carImage} ${
 														imageLoaded[car.id] ? styles.loaded : ""
 													}`}
 													onLoad={() => handleImageLoad(car.id)}
 												/>
+
 												<div className={styles.carOverlay}>
 													<span className={styles.viewDetails}>
-														View Details
+														View Details →
 													</span>
 												</div>
-												<div className={styles.carStatus}>{car.status}</div>
 											</div>
+
 											<div className={styles.carInfo}>
-												<h2 className={styles.carTitle}>
-													{car.serie.brand.name}
-												</h2>
-												<h4 style={{ color: "var(--text-secondary)" }}>
-													{car.serie.name}
-												</h4>
-												<h4 style={{ color: "var(--text-secondary)" }}>
-													{car.finition}
-												</h4>
-												<p className={styles.carPrice}>
-													{car.price.toLocaleString()} DZD
-												</p>
-												<div className={styles.carDetails}>
-													<span>
-														{car.Année} • {car.Kilométrage}
+												<div className={styles.priceTag}>
+													<span className={styles.currentPrice}>
+														{car.price.toLocaleString()} DZD
 													</span>
-													<span>
-														{car.Boite} • {car.Energie}
+													<span className={styles.oldPrice}>
+														{car.oldPrice.toLocaleString()} DZD
 													</span>
 												</div>
-												<div className={styles.carFeatures}>
-													<span className={styles.carFeature}>
-														{car.Moteur}
-													</span>
-													<span className={styles.carFeature}>
-														{car.colors.map((color) => color.name).join(" • ")}
-													</span>
+												<div className={styles.carHeader}>
+													<h3 className={styles.carBrand}>
+														{car.serie.brand.name}
+													</h3>
+													<h4 className={styles.carModel}>
+														{car.serie.name} {car.finition}
+													</h4>
+												</div>
+
+												<div className={styles.specsGrid}>
+													<div className={styles.specItem}>
+														<span className={styles.specLabel}>Year</span>
+														<span className={styles.specValue}>
+															{car.Année}
+														</span>
+													</div>
+													<div className={styles.specItem}>
+														<span className={styles.specLabel}>Mileage</span>
+														<span className={styles.specValue}>
+															{car.Kilométrage}
+														</span>
+													</div>
+													<div className={styles.specItem}>
+														<span className={styles.specLabel}>
+															Transmission
+														</span>
+														<span className={styles.specValue}>
+															{car.Boite}
+														</span>
+													</div>
+													<div className={styles.specItem}>
+														<span className={styles.specLabel}>Fuel</span>
+														<span className={styles.specValue}>
+															{car.Energie}
+														</span>
+													</div>
+												</div>
+
+												<div className={styles.features}>
+													<div className={styles.engineInfo}>
+														<span className={styles.engineLabel}>Engine:</span>
+														<span className={styles.engineValue}>
+															{car.Moteur}
+														</span>
+													</div>
+													<div className={styles.colorsInfo}>
+														<span className={styles.colorsLabel}>Colors:</span>
+														<div className={styles.colorChips}>
+															{car.colors.slice(0, 3).map((color, index) => (
+																<span
+																	key={color.id}
+																	className={styles.colorChip}
+																>
+																	{color.name}
+																	{index < Math.min(car.colors.length, 3) - 1 &&
+																		" • "}
+																</span>
+															))}
+															{car.colors.length > 3 && (
+																<span className={styles.moreColors}>
+																	+{car.colors.length - 3} more
+																</span>
+															)}
+														</div>
+													</div>
 												</div>
 											</div>
 										</motion.div>
@@ -553,7 +649,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 										className={styles.carCard}
 										onClick={() => handleCarClick(car)}
 										variants={cardVariants}
-										whileHover={{ y: -5, transition: { duration: 0.2 } }}
+										whileHover={{ y: -8, transition: { duration: 0.3 } }}
 									>
 										<div className={styles.imageContainer}>
 											{!imageLoaded[car.id] && (
@@ -561,48 +657,129 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 											)}
 											<Image
 												src={
-													car.colors[0].images.find((i) => i.isPrimary)?.url ||
-													"/images/placeholder.png"
+													car.colors
+														.find(
+															(color) =>
+																color.images.find(
+																	(image) => image.isPrimary === true
+																)?.url
+														)
+														?.images.find((image) => image.isPrimary === true)
+														?.url || "/images/placeholder.png"
 												}
 												alt={car.finition}
-												width={300}
-												height={200}
+												width={350}
+												height={220}
 												className={`${styles.carImage} ${
 													imageLoaded[car.id] ? styles.loaded : ""
 												}`}
 												onLoad={() => handleImageLoad(car.id)}
 											/>
+
 											<div className={styles.carOverlay}>
-												<span className={styles.viewDetails}>View Details</span>
+												<span className={styles.viewDetails}>
+													View Details →
+												</span>
 											</div>
-											<div className={styles.carStatus}>{car.status}</div>
 										</div>
+
 										<div className={styles.carInfo}>
-											<h2 className={styles.carTitle}>
-												{car.serie.brand.name}
-											</h2>
-											<h4 style={{ color: "var(--text-secondary)" }}>
-												{car.serie.name}
-											</h4>
-											<h4 style={{ color: "var(--text-secondary)" }}>
-												{car.finition}
-											</h4>
-											<p className={styles.carPrice}>
-												{car.price.toLocaleString()} DZD
-											</p>
-											<div className={styles.carDetails}>
-												<span>
-													{car.Année} • {car.Kilométrage}
+											<div className={styles.priceTag}>
+												{car.oldPrice > car.price ? (
+													<>
+														<span className={styles.currentPrice}>
+															{car.price.toLocaleString()} DZD
+														</span>
+														<span className={styles.oldPrice}>
+															{car.oldPrice.toLocaleString()} DZD
+														</span>
+													</>
+												) : (
+													<span className={styles.currentPrice}>
+														{car.price.toLocaleString()} DZD
+													</span>
+												)}
+											</div>{" "}
+											<div className={styles.priceTag}>
+												<span className={styles.currentPrice}>
+													{car.price.toLocaleString()} DZD
 												</span>
-												<span>
-													{car.Boite} • {car.Energie}
+												<span className={styles.oldPrice}>
+													{car.oldPrice.toLocaleString()} DZD
 												</span>
 											</div>
-											<div className={styles.carFeatures}>
-												<span className={styles.carFeature}>{car.Moteur}</span>
-												<span className={styles.carFeature}>
-													{car.colors.map((color) => color.name).join(" • ")}
+											<div className={styles.statusBadges}>
+												<span
+													className={`${styles.statusBadge} ${
+														car.status === "Available"
+															? styles.available
+															: styles.comingSoon
+													}`}
+												>
+													{car.status}
 												</span>
+												<span
+													className={`${styles.availabilityBadge} ${
+														car.isShiped ? styles.inStock : styles.onOrder
+													}`}
+												>
+													{car.isShiped ? "In Stock" : "On Order"}
+												</span>
+											</div>
+											<div className={styles.carHeader}>
+												<h3 className={styles.carBrand}>
+													{car.serie.brand.name}
+												</h3>
+												<h4 className={styles.carModel}>
+													{car.serie.name} {car.finition}
+												</h4>
+											</div>
+											<div className={styles.specsGrid}>
+												<div className={styles.specItem}>
+													<span className={styles.specLabel}>Year</span>
+													<span className={styles.specValue}>{car.Année}</span>
+												</div>
+												<div className={styles.specItem}>
+													<span className={styles.specLabel}>Mileage</span>
+													<span className={styles.specValue}>
+														{car.Kilométrage}
+													</span>
+												</div>
+												<div className={styles.specItem}>
+													<span className={styles.specLabel}>Transmission</span>
+													<span className={styles.specValue}>{car.Boite}</span>
+												</div>
+												<div className={styles.specItem}>
+													<span className={styles.specLabel}>Fuel</span>
+													<span className={styles.specValue}>
+														{car.Energie}
+													</span>
+												</div>
+											</div>
+											<div className={styles.features}>
+												<div className={styles.engineInfo}>
+													<span className={styles.engineLabel}>Engine:</span>
+													<span className={styles.engineValue}>
+														{car.Moteur}
+													</span>
+												</div>
+												<div className={styles.colorsInfo}>
+													<span className={styles.colorsLabel}>Colors:</span>
+													<div className={styles.colorChips}>
+														{car.colors.slice(0, 3).map((color, index) => (
+															<span key={color.id} className={styles.colorChip}>
+																{color.name}
+																{index < Math.min(car.colors.length, 3) - 1 &&
+																	" • "}
+															</span>
+														))}
+														{car.colors.length > 3 && (
+															<span className={styles.moreColors}>
+																+{car.colors.length - 3} more
+															</span>
+														)}
+													</div>
+												</div>
 											</div>
 										</div>
 									</motion.div>

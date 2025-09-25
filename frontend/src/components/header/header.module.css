@@ -45,13 +45,8 @@
 
 .main_nav {
 	background-color: var(--surface);
-	backdrop-filter: blur(10px);
 	border-bottom: 1px solid var(--border);
 	transition: all 0.3s ease;
-}
-
-.scrolled .main_nav {
-	box-shadow: var(--shadow);
 }
 
 .nav_content {

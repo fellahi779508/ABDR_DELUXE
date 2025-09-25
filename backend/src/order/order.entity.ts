@@ -1,5 +1,8 @@
 import { Car } from 'src/car/car.entity';
+import { Cart } from 'src/cart/cart.entity';
 import {
+  AfterInsert,
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -21,15 +24,15 @@ export class Order {
   phone: string;
   @Column()
   address: string;
+  @Column()
+  email: string;
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
   @Column({ enum: ['pending', 'new', 'cancelled', 'accepted'], default: 'new' })
   status: string;
-  @ManyToOne(() => Car, (car) => car.order, {
-    nullable: true,
-    onDelete: 'CASCADE',
-  })
-  cars: Car;
+  @OneToOne(() => Cart, (cart) => cart.order)
+  @JoinColumn({ name: 'cart_id' })
+  cart: Cart;
 }

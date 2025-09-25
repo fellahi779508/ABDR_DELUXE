@@ -5,25 +5,26 @@ import { CreateOrderDto } from './dto/createOrder.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Status } from 'src/utils/enums';
 import { CarService } from 'src/car/car.service';
+import { Car } from 'src/car/car.entity';
 
 export class OrderService {
   constructor(
     @InjectRepository(Order) private readonly orderRepo: Repository<Order>,
     private readonly carService: CarService,
   ) {}
-  async createNewOrder(dto: CreateOrderDto) {
-    const { carId, ...rest } = dto;
-
-    const car = await this.carService.GetCarById(carId);
-    if (!car) throw new NotFoundException('Car not found');
-
-    const order = this.orderRepo.create({
-      ...rest,
-      cars: car, // attach the entity here
-    });
-
-    return await this.orderRepo.save(order);
-  }
+  // async createNewOrder(dto: CreateOrderDto) {
+  //   const { carsId, ...rest } = dto;
+  //   const cars: Car[] = [];
+  //   for (const carId of carsId) {
+  //     const car = await this.carService.GetCarById(carId);
+  //     cars.push(car);
+  //   }
+  //   const order = this.orderRepo.create({
+  //     ...rest,
+  //   });
+  //   order.cars = cars;
+  //   return await this.orderRepo.save(order);
+  // }
 
   async getAllOrders(page: number, limit: number) {
     const skip = (page - 1) * limit;

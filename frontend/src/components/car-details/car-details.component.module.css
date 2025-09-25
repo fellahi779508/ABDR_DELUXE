@@ -28,7 +28,10 @@
 .link:hover {
 	text-decoration: underline;
 }
-
+.icons {
+	display: flex;
+	gap: 1rem;
+}
 .icon_btn {
 	display: flex;
 	align-items: center;
@@ -36,7 +39,6 @@
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
-	background: var(--surface);
 	border: 1px solid var(--border);
 	cursor: pointer;
 	transition: var(--transition);
@@ -45,6 +47,11 @@
 .icon_btn:hover {
 	background: var(--background);
 	box-shadow: var(--shadow);
+	scale: 1.1;
+}
+.color_clicked {
+	background: red;
+	scale: 1.1;
 }
 
 .icon_btn.favorite {
@@ -57,11 +64,9 @@
 }
 
 .title {
-	font-size: 2.2rem;
+	font-size: 2.5rem;
 	font-weight: 700;
 	color: var(--text);
-	margin: 0 0 0.5rem 0;
-	line-height: 1.2;
 }
 
 .car_meta {
@@ -210,7 +215,7 @@ s .price_note {
 .color {
 	display: flex;
 	gap: 1rem;
-	padding: 1rem;
+	padding: 0.7rem 2rem;
 	align-items: center;
 	border: 1px solid var(--border);
 	border-radius: var(--radius);
@@ -514,9 +519,14 @@ s .price_note {
 	}
 
 	.price {
-		font-size: 1.6rem;
+		font-size: 1.2rem;
 	}
-
+	.OldPrice {
+		font-size: 1rem;
+	}
+	.price > span {
+		font-size: 1.2rem;
+	}
 	.specs_section,
 	.description_section {
 		padding: 1.5rem;
@@ -529,6 +539,11 @@ s .price_note {
 	.mini_image {
 		width: 40px;
 		height: 40px;
+	}
+	.car_colors {
+		gap: 0.5rem;
+		padding: 0.5rem;
+		font-size: 0.8rem;
 	}
 }
 

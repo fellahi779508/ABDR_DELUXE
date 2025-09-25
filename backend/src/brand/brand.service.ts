@@ -5,21 +5,23 @@ import { CreateBrandDto } from './dto/createBrand.dto';
 import { Serie } from 'src/serie/serie.entity';
 import { NotFoundError } from 'rxjs';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { IconService } from 'src/icon/icon.service';
 
 export class BrandService {
   constructor(
     @InjectRepository(Brand) private readonly brandRepo: Repository<Brand>,
+    private readonly iconService: IconService,
   ) {}
   async getAllBrandsOfUsedCars() {
     return await this.brandRepo.find({
       where: { series: { cars: { status: 'used' } } },
-      relations: ['series', 'series.cars'],
+      relations: ['series', 'series.cars', 'icon'],
     });
   }
   async getAllBrandsOfNewCars() {
     return await this.brandRepo.find({
       where: { series: { cars: { status: 'new' } } },
-      relations: ['series', 'series.cars'],
+      relations: ['series', 'series.cars', 'icon'],
     });
   }
   async CreateBrand(dto: CreateBrandDto) {
@@ -32,9 +34,15 @@ export class BrandService {
     return await this.brandRepo.save(brand);
   }
   async DeleteBrand(id: number) {
-    const brand = await this.brandRepo.findOne({ where: { id } });
+    const brand = await this.brandRepo.findOne({
+      where: { id },
+      relations: ['icon'],
+    });
     if (!brand) {
       throw new NotFoundException('Brand not found');
+    }
+    if (brand.icon) {
+      await this.iconService.deleteIcon(brand.icon.publicId);
     }
     await this.brandRepo.delete(id);
     return 'deleted';
@@ -42,14 +50,17 @@ export class BrandService {
   async GetAllBrands(page: number, limit: number) {
     const skip = (page - 1) * limit;
     const cars = await this.brandRepo.find({
-      relations: ['series'],
+      relations: ['series', 'icon'],
       skip,
       take: limit,
     });
     return cars;
   }
   async GetBrandById(id: number) {
-    const brand = await this.brandRepo.findOne({ where: { id } });
+    const brand = await this.brandRepo.findOne({
+      where: { id },
+      relations: ['icon'],
+    });
     if (!brand) {
       throw new NotFoundException('Brand not found');
     }
@@ -62,5 +73,12 @@ export class BrandService {
   }
   async UpdateBrand(Brand: Brand) {
     return await this.brandRepo.save(Brand);
+  }
+  async uploadBrandIcon(brandId: number, file: Express.Multer.File) {
+    const brand = await this.GetBrandById(brandId);
+    const icon = await this.iconService.addIcons(brand, file);
+    brand.icon = icon;
+    console.log(brand);
+    return await this.brandRepo.save(brand);
   }
 }

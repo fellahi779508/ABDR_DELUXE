@@ -25,21 +25,42 @@ export class CarService {
   async GetAllVisibleCars() {
     const cars = await this.carRepo.find({
       where: { isVisible: true },
-      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
+      relations: [
+        'serie',
+        'serie.brand',
+        'colors',
+        'colors.images',
+        'options',
+        'serie.brand.icon',
+      ],
     });
     return cars;
   }
   async GetAllVisibleNewCarsOfSerie(serieId: number) {
     const cars = await this.carRepo.find({
       where: { isVisible: true, serie: { id: serieId }, status: 'new' },
-      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
+      relations: [
+        'serie',
+        'serie.brand',
+        'colors',
+        'colors.images',
+        'options',
+        'serie.brand.icon',
+      ],
     });
     return cars;
   }
   async GetAllVisibleUsedCarsOfSerie(serieId: number) {
     const cars = await this.carRepo.find({
       where: { isVisible: true, serie: { id: serieId }, status: 'used' },
-      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
+      relations: [
+        'serie',
+        'serie.brand',
+        'colors',
+        'colors.images',
+        'options',
+        'serie.brand.icon',
+      ],
     });
     return cars;
   }
@@ -50,21 +71,42 @@ export class CarService {
         serie: { brand: { id: brandId } },
         status: 'new',
       },
-      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
+      relations: [
+        'serie',
+        'serie.brand',
+        'colors',
+        'colors.images',
+        'options',
+        'serie.brand.icon',
+      ],
     });
     return cars;
   }
   async GetAllVisibleNewCars() {
     const cars = await this.carRepo.find({
       where: { isVisible: true, status: 'new' },
-      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
+      relations: [
+        'serie',
+        'serie.brand',
+        'colors',
+        'colors.images',
+        'options',
+        'serie.brand.icon',
+      ],
     });
     return cars;
   }
   async GetAllVisibleUsedCars() {
     const cars = await this.carRepo.find({
       where: { isVisible: true, status: 'used' },
-      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
+      relations: [
+        'serie',
+        'serie.brand',
+        'colors',
+        'colors.images',
+        'options',
+        'serie.brand.icon',
+      ],
     });
     return cars;
   }
@@ -75,7 +117,14 @@ export class CarService {
         serie: { brand: { id: brandId } },
         status: 'used',
       },
-      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
+      relations: [
+        'serie',
+        'serie.brand',
+        'colors',
+        'colors.images',
+        'options',
+        'serie.brand.icon',
+      ],
     });
     return cars;
   }
@@ -84,14 +133,28 @@ export class CarService {
     const cars = await this.carRepo.find({
       skip,
       take: limit,
-      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
+      relations: [
+        'serie',
+        'serie.brand',
+        'colors',
+        'colors.images',
+        'options',
+        'serie.brand.icon',
+      ],
     });
     return cars;
   }
   async GetCarById(id: string) {
     const car = await this.carRepo.findOne({
       where: { id },
-      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
+      relations: [
+        'serie',
+        'serie.brand',
+        'colors',
+        'colors.images',
+        'options',
+        'serie.brand.icon',
+      ],
     });
     if (!car) {
       throw new NotFoundException('Car not found');
@@ -138,7 +201,15 @@ export class CarService {
   async getCarBySlug(slug: string) {
     const car = await this.carRepo.findOne({
       where: { slug, isVisible: true },
-      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
+      relations: [
+        'serie',
+        'serie.brand',
+        'colors',
+        'colors.images',
+        'options',
+        'serie.brand.icon',
+      ],
+      order: { colors: { images: { sortOrder: 'ASC' } } },
     });
     if (!car) {
       throw new NotFoundException('Car not found');
@@ -160,7 +231,14 @@ export class CarService {
   async GetCarsOfSerie(id: number) {
     const cars = await this.carRepo.find({
       where: { serie: { id }, isVisible: true },
-      relations: ['colors', 'colors.images', 'options', 'serie', 'serie.brand'],
+      relations: [
+        'colors',
+        'colors.images',
+        'options',
+        'serie',
+        'serie.brand',
+        'serie.brand.icon',
+      ],
     });
     if (!cars) {
       return [];
@@ -170,7 +248,14 @@ export class CarService {
   async GetCarsOfBrand(id: number) {
     const cars = await this.carRepo.find({
       where: { serie: { brand: { id } }, isVisible: true },
-      relations: ['colors', 'colors.images', 'options', 'serie', 'serie.brand'],
+      relations: [
+        'colors',
+        'colors.images',
+        'options',
+        'serie',
+        'serie.brand',
+        'serie.brand.icon',
+      ],
     });
     if (!cars) {
       return [];
@@ -180,7 +265,14 @@ export class CarService {
   async GetAllUsedCars() {
     const cars = await this.carRepo.find({
       where: { isVisible: true, status: 'used' },
-      relations: ['colors', 'colors.images', 'options', 'serie', 'serie.brand'],
+      relations: [
+        'colors',
+        'colors.images',
+        'options',
+        'serie',
+        'serie.brand',
+        'serie.brand.icon',
+      ],
     });
     if (!cars) {
       return [];
@@ -190,7 +282,14 @@ export class CarService {
   async GetAllNewCars() {
     const cars = await this.carRepo.find({
       where: { isVisible: true, status: 'new' },
-      relations: ['colors', 'colors.images', 'options', 'serie', 'serie.brand'],
+      relations: [
+        'colors',
+        'colors.images',
+        'options',
+        'serie',
+        'serie.brand',
+        'serie.brand.icon',
+      ],
     });
     if (!cars) {
       return [];
@@ -204,7 +303,14 @@ export class CarService {
         { isVisible: true, serie: { name: ILike(`%${query}%`) } },
         { isVisible: true, finition: ILike(`%${query}%`) },
       ],
-      relations: ['serie', 'serie.brand', 'colors', 'colors.images', 'options'],
+      relations: [
+        'serie',
+        'serie.brand',
+        'colors',
+        'colors.images',
+        'options',
+        'serie.brand.icon',
+      ],
     });
 
     return cars ?? [];

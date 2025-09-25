@@ -18,6 +18,7 @@ import {
 	FetchSeriesByBrand,
 	UpdateColorName,
 	UpdateOption,
+	UploadBrandIcon,
 	UploadImages,
 	UploadPrimaryImage,
 } from "@/utils/Admin";
@@ -57,6 +58,8 @@ function AddNewCar() {
 		price: 0,
 		serieId: 0,
 		status: "",
+		isShiped: false,
+		oldPrice: 0,
 	});
 
 	type OptionType = {
@@ -200,13 +203,24 @@ function AddNewCar() {
 
 		try {
 			const response = await CreateBrand(name);
-			if (response) {
-				toast.success("Brand created successfully");
-				FetchBrands();
-				setIsCreatingBrand(false);
-				setNewBrandName("");
+			if (response.id) {
+				if (!brandIcon) {
+					toast.error("Please select a brand icon image");
+					setLoading((prev) => ({ ...prev, createBrand: false }));
+					return;
+				}
+				const icon = await UploadBrandIcon(response.id, brandIcon);
+				if (icon.id) {
+					toast.success("Brand created successfully");
+					FetchBrands();
+					setIsCreatingBrand(false);
+					setNewBrandName("");
+					setBrandIcon(undefined);
+				} else {
+					toast.error(icon);
+				}
 			} else {
-				toast.error("Error creating brand");
+				toast.error(response);
 			}
 		} catch (error) {
 			toast.error("Error creating brand");
@@ -327,6 +341,7 @@ function AddNewCar() {
 			FetchSeries(selectedBrand.id);
 		}
 	}, [selectedBrand]);
+	const [brandIcon, setBrandIcon] = useState<File>();
 
 	return (
 		<div className={styles.overlay}>
@@ -388,6 +403,11 @@ function AddNewCar() {
 									onChange={(e) => setNewBrandName(e.target.value)}
 									className={styles.textInput}
 									disabled={loading.createBrand}
+								/>
+								<input
+									type="file"
+									accept="image/*"
+									onChange={(e) => setBrandIcon(e.target.files![0])}
 								/>
 								<div className={styles.createActions}>
 									<button
@@ -544,11 +564,58 @@ function AddNewCar() {
 											</div>
 										</div>
 									);
+								if (key === "isShiped")
+									return (
+										<div className={styles.inputGroup} key={key}>
+											<label>Available in Store ?</label>
+											<div className={styles.toggleGroup}>
+												<button
+													type="button"
+													className={`${styles.toggleButton} ${
+														value ? styles.active : ""
+													}`}
+													onClick={() => setCar({ ...car, isShiped: true })}
+												>
+													Yes
+												</button>
+												<button
+													type="button"
+													className={`${styles.toggleButton} ${
+														!value ? styles.active : ""
+													}`}
+													onClick={() => setCar({ ...car, isShiped: false })}
+												>
+													No
+												</button>
+											</div>
+										</div>
+									);
+								if (key === "oldPrice")
+									return (
+										<div className={styles.inputGroup} key={key}>
+											<label>Old Price</label>
+											<input
+												type="number"
+												value={value}
+												onChange={(e) =>
+													setCar({ ...car, [key]: Number(e.target.value) })
+												}
+												className={styles.textInput}
+												required
+											/>
+										</div>
+									);
 								return (
 									<div className={styles.inputGroup} key={key}>
-										<label>{key}</label>
+										<label>
+											{key === "status" ? "Status (new / used)" : key}
+										</label>
 										<input
-											type={key === "price" ? "number" : "text"}
+											type={
+												key === "price" || key === "oldPrice"
+													? "number"
+													: "text"
+											}
 											value={value}
 											onChange={(e) =>
 												key === "price"

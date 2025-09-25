@@ -14,6 +14,8 @@ export type Car = {
 	options: Option[];
 	colors: Color[];
 	status: string;
+	isShiped: boolean;
+	oldPrice: number;
 };
 export type Option = {
 	id: number;
@@ -64,6 +66,10 @@ export type CreateCar = {
 	isVisible: boolean;
 
 	serieId: number;
+
+	isShiped: boolean;
+
+	oldPrice: number;
 };
 export type UpdateCar = {
 	finition?: string;
@@ -83,6 +89,10 @@ export type UpdateCar = {
 	description?: string;
 
 	status?: string;
+
+	isShiped?: boolean;
+
+	oldPrice?: number;
 };
 export type VisibleCar = {
 	finition: string;
@@ -102,6 +112,10 @@ export type VisibleCar = {
 	description?: string;
 
 	color: string;
+
+	isShiped: boolean;
+
+	oldPrice: number;
 };
 export type CreateOrder = {
 	name: string;

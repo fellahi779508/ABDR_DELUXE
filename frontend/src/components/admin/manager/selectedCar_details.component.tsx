@@ -16,6 +16,7 @@ import SelectedCarImages from "./selectedCar_images.component";
 import { toast, ToastContainer } from "react-toastify";
 import { redirect } from "next/navigation";
 import { Plus, X, Edit, Trash2, ChevronDown, ChevronUp } from "lucide-react";
+import { div } from "framer-motion/client";
 
 type CarProps = {
 	car: Car;
@@ -240,6 +241,23 @@ function SelectedCarDetails({ car }: CarProps) {
 							key === "isVisible"
 						)
 							return null;
+						if (key === "isShiped")
+							return (
+								<div key={key} className={styles.detail_item}>
+									<span className={styles.detail_label}>Available ?</span>
+									<input
+										type="checkbox"
+										className={styles.checkbox}
+										defaultChecked={value}
+										onChange={(e) =>
+											setUpdatedCar({
+												...updatedCar,
+												[key]: e.target.checked,
+											})
+										}
+									/>
+								</div>
+							);
 
 						return (
 							<div key={key} className={styles.detail_item}>
@@ -247,11 +265,18 @@ function SelectedCarDetails({ car }: CarProps) {
 									{key.charAt(0).toUpperCase() + key.slice(1)}:
 								</span>
 								<input
-									type={key === "price" ? "number" : "text"}
+									type={
+										key === "price" || key === "oldPrice" ? "number" : "text"
+									}
 									className={styles.detail_value}
 									defaultValue={String(value)}
 									onChange={(e) =>
 										key === "price"
+											? setUpdatedCar({
+													...updatedCar,
+													[key]: Number(e.target.value),
+											  })
+											: key === "oldPrice"
 											? setUpdatedCar({
 													...updatedCar,
 													[key]: Number(e.target.value),

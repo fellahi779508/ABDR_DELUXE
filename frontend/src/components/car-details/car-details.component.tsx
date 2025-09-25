@@ -11,10 +11,16 @@ import {
 	Zap,
 	Milestone,
 	ParkingMeter,
+	Heart,
+	Share2,
+	Star,
+	Bolt,
 } from "lucide-react";
 import Link from "next/link";
 import { SetCarIdCookie } from "@/utils/Admin";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { span } from "framer-motion/client";
 
 type CarDetailsProps = {
 	slug: string;
@@ -35,15 +41,28 @@ type Car = {
 		name: string;
 		images: { isPrimary?: boolean; url: string; sortOrder: number }[];
 	}[];
+	options: {
+		id: number;
+		title: string;
+		value: string;
+	}[];
 	slug: string;
 	status: string;
-	serie: { id: number; name: string; brand: { id: number; name: string } };
+	serie: {
+		id: number;
+		name: string;
+		brand: { id: number; name: string; icon: { url: string } };
+	};
+	isShiped: boolean;
+	oldPrice: number;
 };
 function CarDetailsComponent(param: CarDetailsProps) {
 	const { data } = param;
 	const [images, setImages] = useState<any>(data.colors[0].images);
 	const [mainImage, setMainImage] = useState<any>({
-		url: data.colors[0].images[0].url,
+		url: data.colors.find((color: any) =>
+			color.images.find((image: any) => image.url)
+		)?.images[0].url,
 		sortOrder: 0,
 	});
 	const [startIndex, setStartIndex] = useState(0);
@@ -72,41 +91,75 @@ function CarDetailsComponent(param: CarDetailsProps) {
 		await SetCarIdCookie(data.id, data.price);
 		router.push("/order");
 	}
-
+	const [clickedColor, setClickedColor] = useState({
+		color: "",
+	});
 	return (
-		<div className={styles.main}>
-			<div className={styles.header}>
+		<motion.div
+			className={styles.main}
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			transition={{ duration: 0.5 }}
+		>
+			<motion.div
+				className={styles.header}
+				initial={{ y: -20, opacity: 0 }}
+				animate={{ y: 0, opacity: 1 }}
+				transition={{ duration: 0.5 }}
+			>
 				<div className={styles.breadcrumb}>
 					<Link href="/" className={styles.link}>
 						Accueil
 					</Link>{" "}
 					/
-					<Link href="/cars" className={styles.link}>
+					<Link href="/buy" className={styles.link}>
 						{" "}
 						Voitures
 					</Link>{" "}
 					/ <span> {data.serie.brand.name}</span> <span>{data.serie.name}</span>
 				</div>
-			</div>
+			</motion.div>
 
-			<div className={styles.title_container}>
+			<motion.div
+				className={styles.title_container}
+				initial={{ y: 20, opacity: 0 }}
+				animate={{ y: 0, opacity: 1 }}
+				transition={{ delay: 0.1, duration: 0.5 }}
+			>
 				<h1 className={styles.title}>
 					{data.serie.brand.name} {data.serie.name} {data.finition}
 				</h1>
 				<div className={styles.car_meta}>
 					<span className={styles.meta_item}>
-						<Clock size={16} /> {data.Année}
+						<Shield size={16} /> {data.isShiped ? "Disponible" : "Par Commande"}
 					</span>
-					<span className={styles.meta_item}>
-						<Shield size={16} /> Vérifié
-					</span>
+					{data.status === "new" ? (
+						<span className={styles.meta_item}>
+							<Star size={16} /> Nouveau
+						</span>
+					) : (
+						<span className={styles.meta_item}>
+							<Bolt size={16} /> Occasion
+						</span>
+					)}
 				</div>
-			</div>
+			</motion.div>
 
-			<div className={styles.details_container}>
-				<div className={styles.section}>
+			<motion.div
+				className={styles.details_container}
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ delay: 0.2, duration: 0.5 }}
+			>
+				<motion.div className={styles.section} transition={{ duration: 0.2 }}>
 					<div className={styles.main_image_container}>
-						<div className={styles.main_image}>
+						<motion.div
+							className={styles.main_image}
+							key={mainImage.url}
+							initial={{ opacity: 0, scale: 0.95 }}
+							animate={{ opacity: 1, scale: 1 }}
+							transition={{ duration: 0.3 }}
+						>
 							<span className={styles.image_index}>
 								{selectedImageIndex} / {images.length}
 							</span>
@@ -117,9 +170,14 @@ function CarDetailsComponent(param: CarDetailsProps) {
 								alt={`${data.serie.brand.name} ${data.serie.name}`}
 								priority
 							/>
-						</div>
+						</motion.div>
 					</div>
-					<div className={styles.mini_images_container}>
+					<motion.div
+						className={styles.mini_images_container}
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.3, duration: 0.5 }}
+					>
 						{startIndex === 0 ? null : (
 							<MoveLeft
 								onClick={() => leftArrowClick()}
@@ -131,7 +189,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 							.slice(startIndex, startIndex + 5)
 							.map((image: any, index: number) => {
 								return (
-									<div
+									<motion.div
 										className={`${styles.mini_image} ${
 											mainImage.url === image.url ? styles.active : ""
 										}`}
@@ -140,6 +198,11 @@ function CarDetailsComponent(param: CarDetailsProps) {
 											setMainImage(image),
 											setSelectedImageIndex(image.sortOrder + 1)
 										)}
+										whileHover={{ scale: 1.05 }}
+										whileTap={{ scale: 0.95 }}
+										initial={{ opacity: 0, scale: 0.8 }}
+										animate={{ opacity: 1, scale: 1 }}
+										transition={{ delay: 0.1 * index, duration: 0.3 }}
 									>
 										<Image
 											src={image.url ?? "/images/placeholder.png"}
@@ -148,7 +211,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 											alt=""
 											priority
 										/>
-									</div>
+									</motion.div>
 								);
 							})}
 
@@ -158,20 +221,36 @@ function CarDetailsComponent(param: CarDetailsProps) {
 								className={styles.right_arrow}
 							/>
 						) : null}
-					</div>
-				</div>
+					</motion.div>
+				</motion.div>
 
-				<div className={styles.section}>
-					<div className={styles.price_section}>
+				<motion.div
+					className={styles.section}
+					initial={{ opacity: 0, x: 20 }}
+					animate={{ opacity: 1, x: 0 }}
+					transition={{ delay: 0.4, duration: 0.5 }}
+				>
+					<motion.div
+						className={styles.price_section}
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.5, duration: 0.5 }}
+					>
 						<div className={styles.price}>
 							<span>Promo : </span>
 							{formatPrice(data.price)} DZD
 						</div>
 						<div className={styles.OldPrice}>
-							<span>Prix : </span> {formatPrice(data.price)} DZD
+							<span>Prix : </span> {formatPrice(data.oldPrice)} DZD
 						</div>
-					</div>
-					<div className={styles.car_colors}>
+					</motion.div>
+
+					<motion.div
+						className={styles.car_colors}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 0.6, duration: 0.5 }}
+					>
 						<div
 							style={{
 								fontWeight: "bold",
@@ -184,31 +263,59 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
 							{data.colors.map((color: any, index: number) => {
 								return (
-									<div
-										className={styles.color}
+									<motion.div
+										className={
+											clickedColor.color === color.name
+												? styles.color_clicked
+												: styles.color
+										}
 										key={index}
 										onClick={() => (
 											setMainImage(
-												color.images.find(
+												color.images?.find(
 													(image: any) => image.isPrimary === true
-												)
+												) ??
+													color.images[0] ?? {
+														url: "/images/placeholder.png",
+														sortOrder: 0,
+													}
 											),
-											setImages(color.images)
+											setImages(color.images),
+											setClickedColor(color.name),
+											setSelectedImageIndex(mainImage.sortOrder + 1)
 										)}
+										whileHover={{ scale: 1.05, y: -2 }}
+										whileTap={{ scale: 0.95 }}
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										transition={{ delay: 0.1 * index, duration: 0.3 }}
 									>
 										{color.name}
-									</div>
+									</motion.div>
 								);
 							})}
 						</div>
-					</div>
+					</motion.div>
 
-					<div className={styles.feature_highlights}>
-						<div className={styles.feature}>
+					<motion.div
+						className={styles.feature_highlights}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 0.7, duration: 0.5 }}
+					>
+						<motion.div
+							className={styles.feature}
+							whileHover={{ scale: 1.05 }}
+							transition={{ duration: 0.2 }}
+						>
 							<Zap size={20} />
 							<span>{data.Energie}</span>
-						</div>
-						<div className={styles.feature}>
+						</motion.div>
+						<motion.div
+							className={styles.feature}
+							whileHover={{ scale: 1.05 }}
+							transition={{ duration: 0.2 }}
+						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="20"
@@ -227,87 +334,183 @@ function CarDetailsComponent(param: CarDetailsProps) {
 							</svg>
 							<span>Boite </span>
 							<span>{data.Boite}</span>
-						</div>
-						<div className={styles.feature}>
+						</motion.div>
+						<motion.div
+							className={styles.feature}
+							whileHover={{ scale: 1.05 }}
+							transition={{ duration: 0.2 }}
+						>
 							<ParkingMeter size={20} />
 							<span>{data.Kilométrage} </span>
-						</div>
-					</div>
+						</motion.div>
+					</motion.div>
 
-					<div className={styles.details_card}>
+					<motion.div
+						className={styles.details_card}
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.8, duration: 0.5 }}
+						whileHover={{ y: -5 }}
+					>
 						<h3 className={styles.details_title}>Détails du véhicule</h3>
 						<div className={styles.details}>
-							<div className={styles.detail_item}>
+							<motion.div
+								className={styles.detail_item}
+								initial={{ opacity: 0, x: -10 }}
+								animate={{ opacity: 1, x: 0 }}
+								transition={{ delay: 0.9, duration: 0.3 }}
+							>
 								<span className={styles.detail_label}>Marque :</span>
 								<span className={styles.detail_value}>
 									{data.serie.brand.name}
 								</span>
-							</div>
-							<div className={styles.detail_item}>
+							</motion.div>
+							<motion.div
+								className={styles.detail_item}
+								initial={{ opacity: 0, x: -10 }}
+								animate={{ opacity: 1, x: 0 }}
+								transition={{ delay: 0.95, duration: 0.3 }}
+							>
 								<span className={styles.detail_label}>Modèle :</span>
 								<span className={styles.detail_value}>{data.serie.name}</span>
-							</div>
-							<div className={styles.detail_item}>
+							</motion.div>
+							<motion.div
+								className={styles.detail_item}
+								initial={{ opacity: 0, x: -10 }}
+								animate={{ opacity: 1, x: 0 }}
+								transition={{ delay: 1.0, duration: 0.3 }}
+							>
 								<span className={styles.detail_label}>Finition :</span>
 								<span className={styles.detail_value}>{data.finition}</span>
-							</div>
-							<div className={styles.detail_item}>
+							</motion.div>
+							<motion.div
+								className={styles.detail_item}
+								initial={{ opacity: 0, x: -10 }}
+								animate={{ opacity: 1, x: 0 }}
+								transition={{ delay: 1.05, duration: 0.3 }}
+							>
 								<span className={styles.detail_label}>Année :</span>
 								<span className={styles.detail_value}>{data.Année}</span>
-							</div>
+							</motion.div>
 						</div>
-					</div>
+					</motion.div>
 
-					<div className={styles.actions}>
-						<button
+					<motion.div
+						className={styles.actions}
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 1.1, duration: 0.5 }}
+					>
+						<motion.button
 							className={`${styles.btn} ${styles.primary_btn}`}
 							onClick={async () => {
 								handleBuy();
 							}}
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
 						>
 							Contacter le vendeur
-						</button>
-					</div>
-				</div>
-			</div>
+						</motion.button>
+					</motion.div>
+				</motion.div>
+			</motion.div>
 
-			<div className={styles.specs_section}>
+			<motion.div
+				className={styles.specs_section}
+				initial={{ opacity: 0, y: 20 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay: 1.2, duration: 0.5 }}
+			>
 				<h2 className={styles.section_title}>Caractéristiques techniques</h2>
 				<div className={styles.specs_grid}>
-					<div className={styles.spec_item}>
+					<motion.div
+						className={styles.spec_item}
+						initial={{ opacity: 0, scale: 0.9 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ delay: 1.3, duration: 0.3 }}
+					>
 						<span className={styles.spec_label}>Moteur</span>
 						<span className={styles.spec_value}>{data.Moteur}</span>
-					</div>
-					<div className={styles.spec_item}>
+					</motion.div>
+					<motion.div
+						className={styles.spec_item}
+						initial={{ opacity: 0, scale: 0.9 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ delay: 1.35, duration: 0.3 }}
+					>
 						<span className={styles.spec_label}>Transmission</span>
 						<span className={styles.spec_value}>{data.Boite}</span>
-					</div>
-					<div className={styles.spec_item}>
+					</motion.div>
+					<motion.div
+						className={styles.spec_item}
+						initial={{ opacity: 0, scale: 0.9 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ delay: 1.4, duration: 0.3 }}
+					>
 						<span className={styles.spec_label}>Type de carburant</span>
 						<span className={styles.spec_value}>{data.Energie}</span>
-					</div>
-					<div className={styles.spec_item}>
+					</motion.div>
+					<motion.div
+						className={styles.spec_item}
+						initial={{ opacity: 0, scale: 0.9 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ delay: 1.45, duration: 0.3 }}
+					>
 						<span className={styles.spec_label}>Kilométrage</span>
 						<span className={styles.spec_value}>{data.Kilométrage} </span>
-					</div>
-					<div className={styles.spec_item}>
+					</motion.div>
+					<motion.div
+						className={styles.spec_item}
+						initial={{ opacity: 0, scale: 0.9 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ delay: 1.5, duration: 0.3 }}
+					>
 						<span className={styles.spec_label}>Année</span>
 						<span className={styles.spec_value}>{data.Année}</span>
-					</div>
-					<div className={styles.spec_item}>
+					</motion.div>
+					<motion.div
+						className={styles.spec_item}
+						initial={{ opacity: 0, scale: 0.9 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ delay: 1.55, duration: 0.3 }}
+					>
 						<span className={styles.spec_label}>Couleur</span>
 						<span className={styles.spec_value}>{data.colors[0].name}</span>
-					</div>
+					</motion.div>
+					{data.options?.map((option, index) => (
+						<motion.div
+							className={styles.spec_item}
+							key={option.id}
+							initial={{ opacity: 0, scale: 0.9 }}
+							animate={{ opacity: 1, scale: 1 }}
+							transition={{ delay: 1.6 + index * 0.05, duration: 0.3 }}
+						>
+							<span className={styles.spec_label}>{option.title}</span>
+							<span className={styles.spec_value}>{option.value}</span>
+						</motion.div>
+					))}
 				</div>
-			</div>
+			</motion.div>
 
 			{data.description && (
-				<div className={styles.description_section}>
+				<motion.div
+					className={styles.description_section}
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 1.7, duration: 0.5 }}
+				>
 					<h2 className={styles.section_title}>Description</h2>
-					<p className={styles.description}>{data.description}</p>
-				</div>
+					<motion.p
+						className={styles.description}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 1.8, duration: 0.5 }}
+					>
+						{data.description}
+					</motion.p>
+				</motion.div>
 			)}
-		</div>
+		</motion.div>
 	);
 }
 

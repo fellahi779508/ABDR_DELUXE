@@ -18,6 +18,11 @@ import { Color } from './color/color.entity';
 import { Option } from './option/option.entity';
 import { ColorModule } from './color/color.module';
 import { OptionModule } from './option/option.module';
+import { Icon } from './icon/icon.entity';
+import { IconModule } from './icon/icon.module';
+import { SoldItem } from './soldItem/soldItem.entity';
+import { Cart } from './cart/cart.entity';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -46,7 +51,19 @@ import { OptionModule } from './option/option.module';
           // ✅ Important for Supabase + Railway
           ssl: isProd ? { rejectUnauthorized: false } : false,
 
-          entities: [Admin, Brand, Serie, Car, Order, Image, Color, Option],
+          entities: [
+            Admin,
+            Brand,
+            Serie,
+            Car,
+            Order,
+            Image,
+            Color,
+            Option,
+            Icon,
+            SoldItem,
+            Cart,
+          ],
         };
       },
     }),
@@ -60,6 +77,8 @@ import { OptionModule } from './option/option.module';
     ImageModule,
     ColorModule,
     OptionModule,
+    IconModule,
+    CartModule,
   ],
 })
 export class AppModule {}

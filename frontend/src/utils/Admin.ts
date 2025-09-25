@@ -7,6 +7,7 @@ import { CreateCar, UpdateCar } from "./Types";
 import { redirect } from "next/navigation";
 import { AxiosError } from "axios";
 import { trackSynchronousPlatformIOAccessInDev } from "next/dist/server/app-render/dynamic-rendering";
+import { tr } from "framer-motion/client";
 
 type Car = {
 	Année: string;
@@ -162,8 +163,8 @@ export async function CreateBrand(name: string) {
 		if (response) {
 			return response.data;
 		}
-	} catch (error) {
-		return error;
+	} catch (error: any) {
+		return error.response.data.message;
 	}
 }
 export async function FetchSeriesByBrand(id: number) {
@@ -701,5 +702,23 @@ export async function SearchCars(searchQuery: string) {
 	} catch (error) {
 		console.error(error);
 		return [];
+	}
+}
+export async function UploadBrandIcon(brandId: number, file: File) {
+	console.log(file);
+	const formData = new FormData();
+	formData.append("file", file);
+	console.log(formData);
+	try {
+		const response = await api.post(`/brand/icons/${brandId}`, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+		if (response) {
+			return response.data;
+		}
+	} catch (error: any) {
+		return error.response.data.message;
 	}
 }

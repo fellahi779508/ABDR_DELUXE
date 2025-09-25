@@ -49,7 +49,14 @@ export class CreateCarDto {
   @IsNumber()
   @IsNotEmpty()
   serieId: number;
+  @IsNumber()
+  @IsNotEmpty()
+  oldPrice: number;
   @IsNotEmpty()
   @IsEnum(['new', 'used'], { message: 'status must be new or used' })
   status: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isShiped: boolean;
 }

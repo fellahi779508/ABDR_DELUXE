@@ -60,6 +60,7 @@ export class ImageService {
       order: { sortOrder: 'asc' },
     });
   }
+
   async updateImageToPrimary(imageId: string) {
     const image = await this.imageRepo.findOne({ where: { id: imageId } });
     if (!image) throw new NotFoundException('Image not found');
@@ -67,9 +68,12 @@ export class ImageService {
     const rest = await this.imageRepo.find({
       where: { color: { images: { id: imageId } } },
     });
-    rest.forEach((i) => ((i.isPrimary = false), this.imageRepo.save(i)));
+    if (!rest) return this.imageRepo.save(image);
+    rest.forEach((i) => (i.isPrimary = false));
+    await this.imageRepo.save(rest);
     return this.imageRepo.save(image);
   }
+
   async DeleteAllCarImages(colorId: number) {
     const images = await this.imageRepo.find({
       where: { color: { id: colorId } },

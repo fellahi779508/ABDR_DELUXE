@@ -13,23 +13,9 @@ function Header() {
 	const [isServiceOpen, setIsServiceOpen] = useState(false);
 	const dropdownRef = useRef(null);
 
-	// Close dropdown when clicking outside
-	useEffect(() => {
-		function handleClickOutside(event: { target: any }) {
-			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-				setIsServiceOpen(false);
-			}
-		}
-
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
-
 	return (
 		<header className={`${styles.header} `}>
-			<div className={styles.top_bar}>
+			{/* <div className={styles.top_bar}>
 				<div className={styles.container}>
 					<div className={styles.top_content}>
 						<div className={styles.contact_info}>
@@ -40,7 +26,7 @@ function Header() {
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> */}
 
 			<div className={styles.main_nav}>
 				<div className={styles.container}>
@@ -67,7 +53,7 @@ function Header() {
 							}`}
 						>
 							<Link
-								href="/"
+								href="/home"
 								className={styles.link}
 								onClick={() => setIsMenuOpen(false)}
 							>

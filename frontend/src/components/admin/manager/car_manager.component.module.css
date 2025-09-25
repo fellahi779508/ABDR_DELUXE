@@ -409,21 +409,21 @@
 	transition: var(--transition);
 }
 
-.visibility_btn_visible {
-	background: rgba(48, 169, 115, 0.15);
+.visibility_btn_hidden {
+	background: rgba(0, 255, 140, 0.15);
 	color: var(--success);
 }
 
-.visibility_btn_visible:hover {
+.visibility_btn_hidden:hover {
 	background: rgba(48, 169, 115, 0.25);
 }
 
-.visibility_btn_hidden {
+.visibility_btn_visible {
 	background: rgba(239, 68, 68, 0.15);
 	color: var(--accent);
 }
 
-.visibility_btn_hidden:hover {
+.visibility_btn_visible:hover {
 	background: rgba(239, 68, 68, 0.25);
 }
 

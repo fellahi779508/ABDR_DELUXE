@@ -14,6 +14,7 @@ import {
 import { Image } from 'src/image/image.entity';
 import { Color } from 'src/color/color.entity';
 import { Option } from 'src/option/option.entity';
+import { SoldItem } from 'src/soldItem/soldItem.entity';
 
 @Entity({ name: 'car' })
 export class Car {
@@ -53,12 +54,6 @@ export class Car {
   @ManyToOne(() => Serie, (serie) => serie.cars, { onDelete: 'CASCADE' })
   serie: Serie;
 
-  @OneToMany(() => Order, (order) => order.cars, {
-    nullable: true,
-    cascade: true,
-  })
-  order: Order;
-
   @Column({ nullable: true, type: 'boolean', default: true })
   isVisible: boolean;
 
@@ -78,4 +73,13 @@ export class Car {
 
   @Column({ type: 'enum', enum: ['used', 'new'], default: 'new' })
   status: string;
+
+  @Column({ nullable: true, type: 'boolean', default: false })
+  isShiped: boolean;
+
+  @Column({ nullable: true })
+  oldPrice?: number;
+  @OneToOne(() => SoldItem, (soldItem) => soldItem.car)
+  @JoinColumn({ name: 'soldItem_id' })
+  soldItem: SoldItem;
 }
