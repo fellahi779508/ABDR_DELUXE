@@ -14,7 +14,10 @@ import {
 export class Cart {
   @PrimaryGeneratedColumn()
   id: number;
-  @OneToMany(() => SoldItem, (soldItem) => soldItem.cart)
+  @OneToMany(() => SoldItem, (soldItem) => soldItem.cart, {
+    cascade: true,
+    nullable: true,
+  })
   soldItem: SoldItem[];
   @Column()
   total: number;

@@ -17,7 +17,7 @@ export class SoldItem {
   id: number;
   @Column()
   quantity: number;
-  @ManyToOne(() => Cart, (cart) => cart.soldItem)
+  @ManyToOne(() => Cart, (cart) => cart.soldItem, { onDelete: 'CASCADE' })
   cart: Cart;
   @OneToOne(() => Car, (car) => car.soldItem)
   @JoinColumn({ name: 'car_id' })

@@ -1,3 +1,3 @@
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
-export class CreateQuantityDto {}
+export class CreateCartDto {}

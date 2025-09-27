@@ -4,27 +4,14 @@ import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Status } from 'src/utils/enums';
-import { CarService } from 'src/car/car.service';
-import { Car } from 'src/car/car.entity';
+
+import { CartService } from 'src/cart/cart.service';
 
 export class OrderService {
   constructor(
     @InjectRepository(Order) private readonly orderRepo: Repository<Order>,
-    private readonly carService: CarService,
+    private readonly cartService: CartService,
   ) {}
-  // async createNewOrder(dto: CreateOrderDto) {
-  //   const { carsId, ...rest } = dto;
-  //   const cars: Car[] = [];
-  //   for (const carId of carsId) {
-  //     const car = await this.carService.GetCarById(carId);
-  //     cars.push(car);
-  //   }
-  //   const order = this.orderRepo.create({
-  //     ...rest,
-  //   });
-  //   order.cars = cars;
-  //   return await this.orderRepo.save(order);
-  // }
 
   async getAllOrders(page: number, limit: number) {
     const skip = (page - 1) * limit;
@@ -42,6 +29,18 @@ export class OrderService {
     }
   }
 
+  async createNewOrder(dto: CreateOrderDto) {
+    const { name, phone, address, email, cartId } = dto;
+    const cart = await this.cartService.getCartById(cartId);
+    const order = this.orderRepo.create({
+      name,
+      phone,
+      address,
+      email,
+      cart,
+    });
+    return await this.orderRepo.save(order);
+  }
   async getOrderById(id: string) {
     const order = await this.orderRepo.findOne({
       where: { id },

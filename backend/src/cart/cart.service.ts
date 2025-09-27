@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cart } from './cart.entity';
@@ -10,7 +10,12 @@ export class CartService {
     private readonly cartRepo: Repository<Cart>,
   ) {}
 
-  async createQuantity(quantity: Cart) {
-    return this.cartRepo.save(quantity);
+  async getCartById(id: number) {
+    const cart = await this.cartRepo.findOne({
+      where: { id },
+      relations: ['soldItem'],
+    });
+    if (!cart) throw new NotFoundException('Cart not found');
+    return cart;
   }
 }

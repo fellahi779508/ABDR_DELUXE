@@ -1,14 +1,9 @@
-import { Car } from 'src/car/car.entity';
 import { Cart } from 'src/cart/cart.entity';
 import {
-  AfterInsert,
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
-  ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
