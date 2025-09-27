@@ -1,22 +1,234 @@
 .container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
 	padding: 2rem;
 	background-color: var(--background);
 	font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
 		sans-serif;
+	min-height: 100vh;
 }
 
+.mainLayout {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2rem;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.orderSummary {
+	background: var(--surface);
+	border-radius: var(--radius);
+	padding: 1.5rem;
+	box-shadow: var(--shadow);
+	border: 1px solid var(--border);
+	height: fit-content;
+}
+
+.summaryTitle {
+	color: var(--text);
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin-bottom: 1.5rem;
+	padding-bottom: 0.8rem;
+	border-bottom: 2px solid var(--primary);
+}
+
+.cartItems {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.cartItem {
+	display: flex;
+	gap: 1rem;
+	padding: 1rem;
+	background: var(--background);
+	border-radius: var(--radius);
+	border: 1px solid var(--border);
+}
+
+.carImage {
+	flex-shrink: 0;
+}
+
+.image {
+	width: 120px;
+	height: 80px;
+	object-fit: cover;
+	border-radius: var(--radius);
+}
+
+.carDetails {
+	flex: 1;
+}
+
+.carTitle {
+	color: var(--text);
+	font-size: 1.1rem;
+	font-weight: 600;
+	margin-bottom: 0.5rem;
+	line-height: 1.3;
+}
+
+.carSpecs {
+	color: var(--text-secondary);
+	font-size: 0.9rem;
+	margin-bottom: 0.5rem;
+}
+
+.carPrice {
+	color: var(--primary);
+	font-weight: 700;
+	font-size: 1.2rem;
+	margin-bottom: 1rem;
+}
+
+.quantityControls {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+
+.quantityLabel {
+	color: var(--text);
+	font-weight: 500;
+	font-size: 0.9rem;
+}
+
+.quantityBtn {
+	width: 32px;
+	height: 32px;
+	border: 1px solid var(--border);
+	background: var(--background);
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	font-weight: bold;
+	transition: var(--transition);
+}
+
+.quantityBtn:hover:not(:disabled) {
+	background: var(--primary);
+	color: white;
+}
+
+.quantityBtn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.quantity {
+	padding: 0 1rem;
+	font-weight: 600;
+	min-width: 40px;
+	text-align: center;
+}
+
+.removeBtn {
+	background: #dc2626;
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 0.9rem;
+	margin-left: auto;
+	transition: var(--transition);
+}
+
+.removeBtn:hover {
+	background: #b91c1c;
+}
+
+.priceSummary {
+	border-top: 2px solid var(--border);
+	padding-top: 1rem;
+}
+
+.subtotal,
+.shipping,
+.total {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 0.5rem;
+}
+
+.subtotal,
+.shipping {
+	color: var(--text);
+	font-size: 1rem;
+}
+
+.total {
+	color: var(--text);
+	font-weight: 700;
+	font-size: 1.3rem;
+	border-top: 1px solid var(--border);
+	padding-top: 0.5rem;
+	margin-top: 0.5rem;
+}
+
+/* Order Form Styles */
 .orderForm {
 	background: var(--surface);
 	border-radius: var(--radius);
 	padding: 2.5rem;
 	box-shadow: var(--shadow);
-	width: 100%;
-	max-width: 500px;
 	border: 1px solid var(--border);
+	height: fit-content;
+}
+
+.contactHeader {
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+.contactHeader h2 {
+	margin: 0;
+	color: var(--text);
+}
+
+.phoneLink {
+	text-decoration: underline;
+	color: var(--text-secondary);
+	cursor: pointer;
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	justify-content: center;
+	font-weight: bold;
+}
+
+.orDivider {
+	text-decoration: none;
+	color: inherit;
+	cursor: pointer;
+	font-size: 1.5rem;
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 2rem;
+	border-bottom: 1px solid var(--border);
+	width: 100%;
+	padding: 1rem;
+	position: relative;
+}
+
+.orDivider::before,
+.orDivider::after {
+	content: "";
+	flex: 1;
+	height: 1px;
+	background: var(--border);
 }
 
 .title {
@@ -76,28 +288,6 @@
 	box-shadow: 0 0 0 3px var(--primary-hover);
 }
 
-.totalField {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 1.2rem;
-	background-color: var(--background);
-	border-radius: var(--radius);
-	margin-top: 1rem;
-}
-
-.totalLabel {
-	color: var(--text);
-	font-weight: 600;
-	font-size: 1.1rem;
-}
-
-.totalAmount {
-	color: var(--primary);
-	font-weight: 700;
-	font-size: 1.4rem;
-}
-
 .submitButton {
 	width: 100%;
 	padding: 1rem;
@@ -120,7 +310,31 @@
 	transform: translateY(0);
 }
 
+.loading {
+	text-align: center;
+	padding: 2rem;
+	font-size: 1.2rem;
+	color: var(--text);
+}
+/* Add this to your existing order.module.css */
+.carColor {
+	color: var(--text-secondary);
+	font-size: 0.9rem;
+	margin-bottom: 0.5rem;
+}
+
+.carColor strong {
+	color: var(--primary);
+	font-weight: 600;
+}
 /* Responsive design */
+@media (max-width: 968px) {
+	.mainLayout {
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+	}
+}
+
 @media (max-width: 600px) {
 	.container {
 		padding: 1rem;
@@ -130,7 +344,29 @@
 		padding: 1.5rem;
 	}
 
+	.orderSummary {
+		padding: 1rem;
+	}
+
 	.title {
 		font-size: 1.5rem;
+	}
+
+	.cartItem {
+		flex-direction: column;
+		text-align: center;
+	}
+
+	.carImage {
+		align-self: center;
+	}
+
+	.quantityControls {
+		justify-content: center;
+	}
+
+	.contactHeader {
+		flex-direction: column;
+		gap: 0.5rem;
 	}
 }

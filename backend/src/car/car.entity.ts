@@ -79,7 +79,6 @@ export class Car {
 
   @Column({ nullable: true })
   oldPrice?: number;
-  @OneToOne(() => SoldItem, (soldItem) => soldItem.car)
-  @JoinColumn({ name: 'soldItem_id' })
+  @OneToMany(() => SoldItem, (soldItem) => soldItem.car)
   soldItem: SoldItem;
 }

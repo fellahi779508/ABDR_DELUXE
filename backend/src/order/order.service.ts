@@ -18,7 +18,7 @@ export class OrderService {
     const [orders, count] = await this.orderRepo.findAndCount({
       skip,
       take: limit,
-      relations: ['cars'],
+      relations: ['cart', 'cart.soldItem', 'cart.soldItem.car'],
       order: { createdAt: 'DESC' },
     });
     if (count === 0) {

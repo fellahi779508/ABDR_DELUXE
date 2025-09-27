@@ -3,6 +3,7 @@ import { Order } from 'src/order/order.entity';
 import { SoldItem } from 'src/soldItem/soldItem.entity';
 import {
   AfterInsert,
+  BeforeInsert,
   Column,
   Entity,
   OneToMany,
@@ -19,11 +20,11 @@ export class Cart {
     nullable: true,
   })
   soldItem: SoldItem[];
-  @Column()
+  @Column({ nullable: true })
   total: number;
   @OneToOne(() => Order, (order) => order.cart)
   order: Order;
-  @AfterInsert() async calculateTotal() {
+  @BeforeInsert() async calculateTotal() {
     this.total = this.soldItem.reduce((acc, item) => acc + item.total, 0);
   }
 }

@@ -6,21 +6,16 @@ import { useState } from "react";
 import {
 	MoveLeft,
 	MoveRight,
-	Clock,
-	Shield,
 	Zap,
-	Milestone,
 	ParkingMeter,
-	Heart,
-	Share2,
 	Star,
 	Bolt,
+	Shield,
 } from "lucide-react";
 import Link from "next/link";
-import { SetCarIdCookie } from "@/utils/Admin";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { span } from "framer-motion/client";
+import { toast, ToastContainer } from "react-toastify";
 
 type CarDetailsProps = {
 	slug: string;
@@ -56,6 +51,78 @@ type Car = {
 	isShiped: boolean;
 	oldPrice: number;
 };
+
+type CartItem = {
+	slug: string;
+	color: string;
+	quantity: number;
+};
+
+// Utility functions for cart management
+const CART_STORAGE_KEY = "carDealershipCart";
+
+const getCartFromStorage = (): CartItem[] => {
+	if (typeof window === "undefined") return [];
+
+	try {
+		const cart = localStorage.getItem(CART_STORAGE_KEY);
+		return cart ? JSON.parse(cart) : [];
+	} catch (error) {
+		console.error("Error reading cart from localStorage:", error);
+		return [];
+	}
+};
+
+const addToCart = (slug: string, quantity: number = 1, color: string): void => {
+	if (typeof window === "undefined") return;
+
+	try {
+		const currentCart = getCartFromStorage();
+
+		// Check if item already exists in cart with same slug AND color
+		const existingItemIndex = currentCart.findIndex(
+			(item) => item.slug === slug && item.color === color
+		);
+
+		let newCart: CartItem[];
+
+		if (existingItemIndex >= 0) {
+			// Update quantity if item exists with same color
+			newCart = currentCart.map((item, index) =>
+				index === existingItemIndex
+					? { ...item, quantity: item.quantity + quantity }
+					: item
+			);
+		} else {
+			// Add new item
+			newCart = [...currentCart, { slug, quantity, color }];
+		}
+
+		localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newCart));
+
+		// Dispatch custom event for cart updates
+		window.dispatchEvent(new Event("cartUpdated"));
+	} catch (error) {
+		console.error("Error adding to cart:", error);
+	}
+};
+
+const clearCart = (): void => {
+	if (typeof window === "undefined") return;
+
+	try {
+		localStorage.removeItem(CART_STORAGE_KEY);
+		window.dispatchEvent(new Event("cartUpdated"));
+	} catch (error) {
+		console.error("Error clearing cart:", error);
+	}
+};
+
+const getCartItemCount = (): number => {
+	const cart = getCartFromStorage();
+	return cart.reduce((total, item) => total + item.quantity, 0);
+};
+
 function CarDetailsComponent(param: CarDetailsProps) {
 	const { data } = param;
 	const [images, setImages] = useState<any>(data.colors[0].images);
@@ -69,6 +136,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 	const [selectedImageIndex, setSelectedImageIndex] = useState(
 		images[0]?.sortOrder + 1 || 0
 	);
+	const [isLoading, setIsLoading] = useState(false);
 
 	function rightArrowClick() {
 		if (images.length < startIndex + 5) return;
@@ -86,14 +154,61 @@ function CarDetailsComponent(param: CarDetailsProps) {
 			minimumFractionDigits: 0,
 		}).format(price);
 	};
+
 	const router = useRouter();
-	async function handleBuy() {
-		await SetCarIdCookie(data.id, data.price);
-		router.push("/order");
-	}
+
+	const handleBuy = () => {
+		if (clickedColor.color === "") {
+			toast.error("Veuillez choisir une couleur");
+			return;
+		}
+		setIsLoading(true);
+
+		// Add to cart with quantity 1 and selected color
+		addToCart(data.slug, 1, clickedColor.color);
+
+		// Simulate API call delay
+		setTimeout(() => {
+			setIsLoading(false);
+			// Redirect to order page
+			router.push("/order");
+		}, 500);
+	};
+
+	const handleAddToCart = () => {
+		if (clickedColor.color === "") {
+			toast.error("Veuillez choisir une couleur");
+			return;
+		}
+		setIsLoading(true);
+
+		// Add to cart with quantity 1 and selected color
+		addToCart(data.slug, 1, clickedColor.color);
+
+		setTimeout(() => {
+			setIsLoading(false);
+			// Show success message
+			toast.success("Véhicule ajouté au panier!");
+		}, 500);
+	};
+
 	const [clickedColor, setClickedColor] = useState({
 		color: "",
 	});
+
+	const handleColorClick = (color: any) => {
+		setMainImage(
+			color.images?.find((image: any) => image.isPrimary === true) ??
+				color.images[0] ?? {
+					url: "/images/placeholder.png",
+					sortOrder: 0,
+				}
+		);
+		setImages(color.images);
+		setClickedColor({ color: color.name });
+		setSelectedImageIndex(0);
+	};
+
 	return (
 		<motion.div
 			className={styles.main}
@@ -256,45 +371,67 @@ function CarDetailsComponent(param: CarDetailsProps) {
 								fontWeight: "bold",
 								fontSize: "20px",
 								color: "var(--primary)",
+								marginBottom: "1rem",
 							}}
 						>
 							Couleurs Disponible :
 						</div>
 						<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
 							{data.colors.map((color: any, index: number) => {
+								const isSelected = clickedColor.color === color.name;
 								return (
-									<motion.div
-										className={
-											clickedColor.color === color.name
-												? styles.color_clicked
-												: styles.color
-										}
+									<motion.button
 										key={index}
-										onClick={() => (
-											setMainImage(
-												color.images?.find(
-													(image: any) => image.isPrimary === true
-												) ??
-													color.images[0] ?? {
-														url: "/images/placeholder.png",
-														sortOrder: 0,
-													}
-											),
-											setImages(color.images),
-											setClickedColor(color.name),
-											setSelectedImageIndex(mainImage.sortOrder + 1)
-										)}
+										onClick={() => handleColorClick(color)}
 										whileHover={{ scale: 1.05, y: -2 }}
 										whileTap={{ scale: 0.95 }}
 										initial={{ opacity: 0, y: 10 }}
 										animate={{ opacity: 1, y: 0 }}
 										transition={{ delay: 0.1 * index, duration: 0.3 }}
+										style={{
+											padding: "0.75rem 1.5rem",
+											border: `2px solid ${
+												isSelected ? "var(--primary)" : "var(--border)"
+											}`,
+											backgroundColor: isSelected
+												? "var(--primary)"
+												: "var(--surface)",
+											color: isSelected ? "white" : "var(--text)",
+											borderRadius: "var(--radius)",
+											fontWeight: "600",
+											fontSize: "0.9rem",
+											cursor: "pointer",
+											transition: "all 0.3s ease",
+											boxShadow: isSelected
+												? "0 4px 12px rgba(0, 0, 0, 0.15)"
+												: "none",
+											transform: isSelected ? "translateY(-2px)" : "none",
+										}}
 									>
 										{color.name}
-									</motion.div>
+									</motion.button>
 								);
 							})}
 						</div>
+						{clickedColor.color && (
+							<motion.div
+								initial={{ opacity: 0, y: 10 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.7, duration: 0.3 }}
+								style={{
+									marginTop: "1rem",
+									padding: "0.5rem",
+									backgroundColor: "var(--primary)",
+									color: "white",
+									borderRadius: "var(--radius)",
+									fontSize: "0.9rem",
+									fontWeight: "600",
+									textAlign: "center",
+								}}
+							>
+								Couleur sélectionnée : {clickedColor.color}
+							</motion.div>
+						)}
 					</motion.div>
 
 					<motion.div
@@ -403,15 +540,47 @@ function CarDetailsComponent(param: CarDetailsProps) {
 					>
 						<motion.button
 							className={`${styles.btn} ${styles.primary_btn}`}
-							onClick={async () => {
-								handleBuy();
-							}}
+							onClick={handleBuy}
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
+							disabled={isLoading || clickedColor.color === ""}
+							style={{
+								opacity: clickedColor.color === "" ? 0.6 : 1,
+								cursor: clickedColor.color === "" ? "not-allowed" : "pointer",
+							}}
 						>
-							Contacter le vendeur
+							{isLoading ? "Redirection..." : "Acheter"}
+						</motion.button>
+						<motion.button
+							className={`${styles.btn} ${styles.secondary_btn}`}
+							onClick={handleAddToCart}
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							disabled={isLoading || clickedColor.color === ""}
+							style={{
+								opacity: clickedColor.color === "" ? 0.6 : 1,
+								cursor: clickedColor.color === "" ? "not-allowed" : "pointer",
+							}}
+						>
+							{isLoading ? "Ajout..." : "Ajouter au panier"}
 						</motion.button>
 					</motion.div>
+					{clickedColor.color === "" && (
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{ delay: 1.2, duration: 0.3 }}
+							style={{
+								textAlign: "center",
+								color: "#dc2626",
+								fontSize: "0.9rem",
+								marginTop: "1rem",
+								fontWeight: "500",
+							}}
+						>
+							Veuillez sélectionner une couleur avant de continuer
+						</motion.div>
+					)}
 				</motion.div>
 			</motion.div>
 
@@ -510,6 +679,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 					</motion.p>
 				</motion.div>
 			)}
+			<ToastContainer />
 		</motion.div>
 	);
 }

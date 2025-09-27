@@ -371,24 +371,31 @@ export async function DeleteSerieById(id: any) {
 	}
 }
 export async function CreateNewOrder(data: any) {
+	const token = (await cookies()).get("access_token")?.value;
+	console.log(data);
 	try {
-		const carId = (await cookies()).get("carId")?.value;
-		if (!carId) return;
-
-		const order = { ...data, carId };
-		const response = await api.post(`/order`, order);
+		const response = await api.post(
+			`/order`,
+			{
+				name: data.name,
+				email: data.email,
+				phone: data.phone,
+				address: data.address,
+				cartId: data.cartId,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 
 		if (response) {
-			const today = new Date().toISOString().split("T")[0];
-			(await cookies()).set("OrderDate", today.toString());
 			return true;
 		}
 	} catch (error: any) {
-		console.error(error);
+		console.error(error.response);
 		return false;
-	} finally {
-		(await cookies()).delete("carId");
-		(await cookies()).delete("price");
 	}
 }
 export async function GetAllOrders(page: number) {
@@ -720,5 +727,43 @@ export async function UploadBrandIcon(brandId: number, file: File) {
 		}
 	} catch (error: any) {
 		return error.response.data.message;
+	}
+}
+export async function GetCarBySlug(slug: string) {
+	try {
+		const response = await api.get(`/car/slug/${slug}`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error);
+		return {};
+	}
+}
+export async function CreateSoldItem(
+	quantity: number,
+	carSlug: string,
+	color: string
+) {
+	console.log(quantity, carSlug, color);
+	try {
+		const response = await api.post(`/soldItem`, { quantity, carSlug, color });
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error.response);
+		return {};
+	}
+}
+export async function CreateCart(soldItemId: number[]) {
+	try {
+		const response = await api.post(`/cart`, { soldItemId });
+		if (response) {
+			return response.data;
+		}
+	} catch (error) {
+		console.error(error.response);
+		return {};
 	}
 }

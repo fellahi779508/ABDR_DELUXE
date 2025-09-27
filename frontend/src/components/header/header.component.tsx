@@ -6,6 +6,7 @@ import ThemeToggle from "../ThemeProvider/themeProvider";
 import { Car, Menu, X, Phone, MapPin, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import CartIcon from "./cart";
 
 function Header() {
 	const router = useRouter();
@@ -121,6 +122,9 @@ function Header() {
 
 							<div className={styles.theme_toggle}>
 								<ThemeToggle />
+							</div>
+							<div>
+								<CartIcon />
 							</div>
 						</div>
 

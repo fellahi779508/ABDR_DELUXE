@@ -4,6 +4,7 @@ import {
   AfterInsert,
   BeforeInsert,
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -19,13 +20,13 @@ export class SoldItem {
   quantity: number;
   @ManyToOne(() => Cart, (cart) => cart.soldItem, { onDelete: 'CASCADE' })
   cart: Cart;
-  @OneToOne(() => Car, (car) => car.soldItem)
+  @ManyToOne(() => Car, (car) => car.soldItem)
   @JoinColumn({ name: 'car_id' })
   car: Car;
-  @Column()
+  @Column({ nullable: true })
   total: number;
 
-  @AfterInsert()
+  @BeforeInsert()
   calculateTotal() {
     if (
       this.car &&
@@ -35,4 +36,8 @@ export class SoldItem {
       this.total = this.quantity * this.car.price;
     }
   }
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+  @Column({ nullable: true })
+  color: string;
 }

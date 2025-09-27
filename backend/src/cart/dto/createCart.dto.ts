@@ -1,3 +1,7 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber } from 'class-validator';
 
-export class CreateCartDto {}
+export class CreateCartDto {
+  @IsNotEmpty()
+  @IsArray()
+  soldItemId: number[];
+}
