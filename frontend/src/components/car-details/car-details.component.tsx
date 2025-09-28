@@ -223,7 +223,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 				transition={{ duration: 0.5 }}
 			>
 				<div className={styles.breadcrumb}>
-					<Link href="/" className={styles.link}>
+					<Link href="/home" className={styles.link}>
 						Accueil
 					</Link>{" "}
 					/

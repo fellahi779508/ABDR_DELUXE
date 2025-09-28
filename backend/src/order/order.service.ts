@@ -44,7 +44,7 @@ export class OrderService {
   async getOrderById(id: string) {
     const order = await this.orderRepo.findOne({
       where: { id },
-      relations: ['cars'],
+      relations: ['cart', 'cart.soldItem', 'cart.soldItem.car'],
     });
     if (!order) {
       throw new NotFoundException('Order not found');
@@ -69,7 +69,7 @@ export class OrderService {
   async acceptOrder(id: string) {
     const order = await this.orderRepo.findOne({
       where: { id },
-      relations: ['cars'],
+      relations: ['cart', 'cart.soldItem', 'cart.soldItem.car'],
     });
     if (!order) {
       throw new NotFoundException('Order not found');
@@ -80,7 +80,7 @@ export class OrderService {
   async cancelOrder(id: string) {
     const order = await this.orderRepo.findOne({
       where: { id },
-      relations: ['cars'],
+      relations: ['cart', 'cart.soldItem', 'cart.soldItem.car'],
     });
     if (!order) {
       throw new NotFoundException('Order not found');
@@ -91,12 +91,15 @@ export class OrderService {
   async completeOrder(id: string) {
     const order = await this.orderRepo.findOne({
       where: { id },
-      relations: ['cars'],
+      relations: ['cart', 'cart.soldItem', 'cart.soldItem.car'],
     });
     if (!order) {
       throw new NotFoundException('Order not found');
     }
     order.status = Status.COMPLETED;
     return await this.orderRepo.save(order);
+  }
+  async DeleteAllOrders() {
+    return await this.orderRepo.clear();
   }
 }

@@ -103,6 +103,9 @@ function OrderComponent({ price }: Props) {
 
 			// Read cart from localStorage
 			const cartItemsData = getCartFromStorage();
+			if (cartItemsData.length === 0) {
+				redirect("/buy");
+			}
 
 			// Add unique IDs to cart items
 			const cartItemsWithIds = cartItemsData.map((item) => ({
@@ -280,13 +283,8 @@ function OrderComponent({ price }: Props) {
 			}
 		} else {
 			console.log("Une erreur s'est produite lors de la commande");
+			redirect("/order/error");
 		}
-		// if (result) {
-		// 	// Clear cart after successful order
-		// 	localStorage.removeItem("carDealershipCart");
-		// 	redirect("/order/completed");
-		// }
-		// redirect("/order/error");
 	}
 
 	if (loading) {
@@ -462,7 +460,6 @@ function OrderComponent({ price }: Props) {
 				</div>
 			</div>
 			<ToastContainer />
-			<button onClick={() => console.log(cartItems)}>click</button>
 		</div>
 	);
 }

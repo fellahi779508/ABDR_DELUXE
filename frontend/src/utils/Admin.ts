@@ -391,6 +391,7 @@ export async function CreateNewOrder(data: any) {
 		);
 
 		if (response) {
+			(await cookies()).set("orderDate", new Date().toISOString());
 			return true;
 		}
 	} catch (error: any) {
@@ -401,7 +402,7 @@ export async function CreateNewOrder(data: any) {
 export async function GetAllOrders(page: number) {
 	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.get(`/order?page=${page}&limit=3`, {
+		const response = await api.get(`/order?page=${page}&limit=0`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -751,7 +752,7 @@ export async function CreateSoldItem(
 		if (response) {
 			return response.data;
 		}
-	} catch (error) {
+	} catch (error: any) {
 		console.error(error.response);
 		return {};
 	}
@@ -762,7 +763,18 @@ export async function CreateCart(soldItemId: number[]) {
 		if (response) {
 			return response.data;
 		}
-	} catch (error) {
+	} catch (error: any) {
+		console.error(error.response);
+		return {};
+	}
+}
+export async function DeleteAllOrders() {
+	try {
+		const response = await api.delete(`/order/all`);
+		if (response) {
+			return response.data;
+		}
+	} catch (error: any) {
 		console.error(error.response);
 		return {};
 	}

@@ -10,35 +10,38 @@ import {
   Post,
   Put,
   Query,
-  Sse,
   UseGuards,
+  Inject, // Add this
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { Status } from 'src/utils/enums';
 import { AuthGuard } from '../utils/guards/auth.guard';
 import { CreateOrderDto } from './dto/createOrder.dto';
-import { Subject, Observable, map } from 'rxjs';
+import { OrderGateway } from '../websockets/order.gateway'; // Add this
+
 @Controller('order')
 export class OrderController {
-  constructor(private readonly service: OrderService) {}
-  private orderStream$ = new Subject<any>();
+  constructor(
+    private readonly service: OrderService,
+    @Inject(OrderGateway) private readonly orderGateway: OrderGateway, // Inject the gateway
+  ) {}
 
   @Post()
   async createNewOrder(@Body() dto: CreateOrderDto) {
     const order = await this.service.createNewOrder(dto);
-    this.orderStream$.next({ type: 'orderCreated', data: order });
+
+    // Emit socket event for real-time update
+    this.orderGateway.emitOrderCreated(order);
+
     return order;
   }
 
-  // SSE endpoint
-  @Sse('stream')
-  streamOrders(): Observable<MessageEvent> {
-    return this.orderStream$.pipe(
-      map((event: { type: string; data: any }) => {
-        return new MessageEvent(event.type, { data: event.data });
-      }),
-    );
+  @Delete('all')
+  @UseGuards(AuthGuard)
+  async DeleteAllOrders() {
+    return await this.service.DeleteAllOrders();
   }
+
   @Get()
   @UseGuards(AuthGuard)
   async getAllOrders(
@@ -47,45 +50,68 @@ export class OrderController {
   ) {
     return await this.service.getAllOrders(page, limit);
   }
+
   @Get(':id')
   @UseGuards(AuthGuard)
   async getOrderById(@Param('id', ParseUUIDPipe) id: string) {
     return await this.service.getOrderById(id);
   }
+
   @Delete(':id')
   @UseGuards(AuthGuard)
   async deleteOrder(@Param('id', ParseUUIDPipe) id: string) {
     const order = await this.service.deleteOrder(id);
-    this.orderStream$.next({ type: 'orderDeleted', data: order });
+
+    // Emit socket event for real-time update
+    this.orderGateway.emitOrderDeleted(order);
+
     return order;
   }
+
   @Put(':id')
   @UseGuards(AuthGuard)
   async updateOrder(
     @Body() status: Status,
-    @Param('id', ParseIntPipe) id: string,
+    @Param('id', ParseUUIDPipe) id: string, // Fixed: should be ParseUUIDPipe
   ) {
-    return await this.service.updateOrder(status, id);
+    const order = await this.service.updateOrder(status, id);
+
+    // Emit socket event for real-time update
+    this.orderGateway.emitOrderUpdated(order);
+
+    return order;
   }
+
   @Put('accept/:id')
   @UseGuards(AuthGuard)
   async acceptOrder(@Param('id', ParseUUIDPipe) id: string) {
     const order = await this.service.acceptOrder(id);
-    this.orderStream$.next({ type: 'orderAccepted', data: order });
+
+    // Emit socket event for real-time update
+    this.orderGateway.emitOrderUpdated(order);
+
     return order;
   }
+
   @Put('cancel/:id')
   @UseGuards(AuthGuard)
   async cancelOrder(@Param('id', ParseUUIDPipe) id: string) {
     const order = await this.service.cancelOrder(id);
-    this.orderStream$.next({ type: 'orderCancelled', data: order });
+
+    // Emit socket event for real-time update
+    this.orderGateway.emitOrderUpdated(order);
+
     return order;
   }
+
   @Put('complete/:id')
   @UseGuards(AuthGuard)
   async completeOrder(@Param('id', ParseUUIDPipe) id: string) {
     const order = await this.service.completeOrder(id);
-    this.orderStream$.next({ type: 'orderCompleted', data: order });
+
+    // Emit socket event for real-time update
+    this.orderGateway.emitOrderUpdated(order);
+
     return order;
   }
 }

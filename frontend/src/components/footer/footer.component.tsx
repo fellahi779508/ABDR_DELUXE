@@ -54,8 +54,13 @@ function Footer() {
 								</Link>
 							</li>
 							<li>
-								<Link href="/cars" className={styles.footerLink}>
-									Voitures
+								<Link href="/buy" className={styles.footerLink}>
+									acheter
+								</Link>
+							</li>
+							<li>
+								<Link href="/rent" className={styles.footerLink}>
+									louer
 								</Link>
 							</li>
 							<li>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import Header from "@/components/header/header.component";
@@ -13,16 +14,23 @@ const geistMono = Geist_Mono({
 	subsets: ["latin"],
 });
 
+export const metadata: Metadata = {
+	title: "ABR_DELUXE Auto",
+	description: "Buy / Rent / Import Cars",
+};
+
 export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
 	return (
-		<div className={`${geistSans.variable} ${geistMono.variable}`}>
-			<Header />
-			{children}
-			<Footer />
-		</div>
+		<html>
+			<body className={`${geistSans.variable} ${geistMono.variable}`}>
+				<Header />
+				{children}
+				<Footer />
+			</body>
+		</html>
 	);
 }

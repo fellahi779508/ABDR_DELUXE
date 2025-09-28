@@ -610,21 +610,37 @@ function AddNewCar() {
 										<label>
 											{key === "status" ? "Status (new / used)" : key}
 										</label>
-										<input
-											type={
-												key === "price" || key === "oldPrice"
-													? "number"
-													: "text"
-											}
-											value={value}
-											onChange={(e) =>
-												key === "price"
-													? setCar({ ...car, [key]: Number(e.target.value) })
-													: setCar({ ...car, [key]: e.target.value })
-											}
-											className={styles.textInput}
-											required
-										/>
+										{key === "description" ? (
+											<textarea
+												style={{
+													resize: "both",
+													minHeight: "80px",
+													maxWidth: "100%",
+												}}
+												value={value}
+												onChange={(e) =>
+													setCar({ ...car, [key]: e.target.value })
+												}
+												className={styles.textInput}
+												required
+											/>
+										) : (
+											<input
+												type={
+													key === "price" || key === "oldPrice"
+														? "number"
+														: "text"
+												}
+												value={value}
+												onChange={(e) =>
+													key === "price"
+														? setCar({ ...car, [key]: Number(e.target.value) })
+														: setCar({ ...car, [key]: e.target.value })
+												}
+												className={styles.textInput}
+												required
+											/>
+										)}
 									</div>
 								);
 							})}

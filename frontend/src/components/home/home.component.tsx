@@ -223,7 +223,12 @@ export default function HomeComponent() {
 						</p>
 						<div className={styles.officeImage}>
 							<div className={styles.imagePlaceholderSmall}>
-								<span>Office Image</span>
+								<Image
+									src="/main/chlef.jfif"
+									alt="Office Image"
+									width={1000}
+									height={1000}
+								/>
 							</div>
 						</div>
 					</div>
@@ -239,7 +244,12 @@ export default function HomeComponent() {
 						</p>
 						<div className={styles.officeImage}>
 							<div className={styles.imagePlaceholderSmall}>
-								<span>Office Image</span>
+								<Image
+									src="/main/jijel.JPG"
+									alt="Office Image"
+									width={600}
+									height={600}
+								/>
 							</div>
 						</div>
 					</div>
@@ -254,7 +264,12 @@ export default function HomeComponent() {
 						</p>
 						<div className={styles.officeImage}>
 							<div className={styles.imagePlaceholderSmall}>
-								<span>Office Image</span>
+								<Image
+									src="/main/quatar.jfif"
+									alt="Office Image"
+									width={600}
+									height={600}
+								/>
 							</div>
 						</div>
 					</div>

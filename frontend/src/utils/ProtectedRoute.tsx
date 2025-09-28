@@ -23,14 +23,10 @@ export default async function ProtectedRoute() {
 	return true;
 }
 export async function OrderRoute() {
-	const carId = (await cookies()).get("carId")?.value;
-	if (!carId) {
-		return notFound();
-	}
-	// const today = new Date().toISOString().split("T")[0];
-	// const oldOrderDate = (await cookies()).get("OrderDate")?.value;
+	const today = new Date().toISOString().split("T")[0];
+	const oldOrderDate = (await cookies()).get("orderDate")?.value.split("T")[0];
 
-	// if (oldOrderDate === today) {
-	// 	return redirect("/order/oneTime");
-	// }
+	if (oldOrderDate === today) {
+		return redirect("/order/oneTime");
+	}
 }

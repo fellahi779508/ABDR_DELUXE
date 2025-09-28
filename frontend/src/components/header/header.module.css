@@ -197,6 +197,16 @@
 	background-color: var(--surface);
 }
 
+/* Cart Icon Styles */
+.desktop_cart {
+	display: flex;
+	align-items: center;
+}
+
+.mobile_cart {
+	display: none;
+}
+
 /* Responsive Design */
 @media (max-width: 968px) {
 	.top_bar {
@@ -280,6 +290,18 @@
 		justify-content: center;
 	}
 
+	.mobile_cart {
+		display: block;
+		margin-top: 1rem;
+		padding: 1rem 0;
+		border-top: 1px solid var(--border);
+		width: 100%;
+	}
+
+	.desktop_cart {
+		display: none;
+	}
+
 	.menuToggle {
 		display: flex;
 		z-index: 1002;
@@ -294,5 +316,9 @@
 	.links {
 		width: 85%;
 		padding: 4rem 1.5rem;
+	}
+
+	.logoText {
+		font-size: 1.3rem;
 	}
 }

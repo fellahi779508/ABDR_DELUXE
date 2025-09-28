@@ -6,7 +6,7 @@ import ThemeToggle from "../ThemeProvider/themeProvider";
 import { Car, Menu, X, Phone, MapPin, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import CartIcon from "./cart";
+import CartIcon from "../footer/cart"; // Import the CartIcon component
 
 function Header() {
 	const router = useRouter();
@@ -16,19 +16,6 @@ function Header() {
 
 	return (
 		<header className={`${styles.header} `}>
-			{/* <div className={styles.top_bar}>
-				<div className={styles.container}>
-					<div className={styles.top_content}>
-						<div className={styles.contact_info}>
-							<div className={styles.contact_item}>
-								<MapPin size={16} />
-								<span>Chlef, Jijel, Bouira</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div> */}
-
 			<div className={styles.main_nav}>
 				<div className={styles.container}>
 					<div className={styles.nav_content}>
@@ -37,13 +24,6 @@ function Header() {
 								className={styles.logoLink}
 								onClick={() => router.push("/")}
 							>
-								{/* <Image
-                  src="/main/abr deluxe.png"
-                  alt="Logo"
-                  width={250}
-                  height={80}
-                  className={styles.logo}
-                /> */}
 								<span className={styles.logoText}>ABR_DELUXE Auto</span>
 							</button>
 						</div>
@@ -123,9 +103,16 @@ function Header() {
 							<div className={styles.theme_toggle}>
 								<ThemeToggle />
 							</div>
-							<div>
+
+							{/* Cart Icon for Mobile */}
+							<div className={styles.mobile_cart}>
 								<CartIcon />
 							</div>
+						</div>
+
+						{/* Desktop Cart Icon */}
+						<div className={styles.desktop_cart}>
+							<CartIcon />
 						</div>
 
 						<button
