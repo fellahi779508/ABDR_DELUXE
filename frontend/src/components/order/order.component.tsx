@@ -1,4 +1,7 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import styles from "./order.module.css";
 import {
@@ -10,6 +13,7 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 type Car = {
 	finition: string;
@@ -82,6 +86,7 @@ const generateCartItemId = (slug: string, color: string) => {
 };
 
 function OrderComponent({ price }: Props) {
+	const t = useTranslations("Order");
 	const [order, setOrder] = useState({
 		name: "",
 		email: "",
@@ -116,7 +121,7 @@ function OrderComponent({ price }: Props) {
 			setCartItems(cartItemsWithIds);
 
 			if (cartItemsWithIds.length === 0) {
-				toast.error("Votre panier est vide");
+				toast.error(t("errors.cartEmpty"));
 				setLoading(false);
 				return;
 			}
@@ -141,6 +146,7 @@ function OrderComponent({ price }: Props) {
 		};
 
 		fetchCars();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const updateQuantity = (itemId: string, newQuantity: number) => {
@@ -169,7 +175,7 @@ function OrderComponent({ price }: Props) {
 
 	const removeCar = (itemId: string) => {
 		if (cartItems.length <= 1) {
-			toast.error("Vous ne pouvez pas supprimer le dernier véhicule");
+			toast.error(t("errors.cannotRemoveLast"));
 			return;
 		}
 
@@ -219,14 +225,14 @@ function OrderComponent({ price }: Props) {
 
 	async function HandleSubmit() {
 		if (!order.name || !order.email || !order.phone || !address || !wilaya) {
-			toast.error("Veuillez remplir tous les champs");
+			toast.error(t("errors.fillFields"));
 			return;
 		}
 
 		// Validate email
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!emailRegex.test(order.email)) {
-			toast.error("Veuillez entrer une adresse email valide");
+			toast.error(t("errors.invalidEmail"));
 			return;
 		}
 
@@ -246,43 +252,41 @@ function OrderComponent({ price }: Props) {
 			totalPrice: getTotalPrice(),
 		};
 
-		// const result = await CreateNewOrder(newOrder);
-		const soldItems = [];
+		const soldItems: number[] = [];
 
-		console.log(newOrder.items);
 		for (const item of newOrder.items) {
 			const soldItem = await CreateSoldItem(
 				item.quantity,
 				item.carSlug,
 				item.color
 			);
-			if (soldItem.id) {
+			if (soldItem?.id) {
 				soldItems.push(soldItem.id);
 			} else {
-				console.error("Une erreur s'est produite lors de la commande");
+				console.error(t("errors.orderFailed"));
 				return;
 			}
 		}
-		console.log(soldItems);
+
 		const cart = await CreateCart(soldItems);
-		if (cart.id) {
-			const order = await CreateNewOrder({
+		if (cart?.id) {
+			const orderRes = await CreateNewOrder({
 				name: newOrder.name,
 				email: newOrder.email,
 				phone: newOrder.phone,
 				address: newOrder.address,
 				cartId: cart.id,
 			});
-			if (order) {
-				toast.success("Commande effectuée avec succès");
+			if (orderRes) {
+				toast.success(t("notifications.success"));
 				// Clear cart after successful order
 				localStorage.removeItem("carDealershipCart");
 				redirect("/order/completed");
 			} else {
-				console.log("Une erreur s'est produite lors de la commande");
+				console.log(t("errors.orderFailed"));
 			}
 		} else {
-			console.log("Une erreur s'est produite lors de la commande");
+			console.log(t("errors.orderFailed"));
 			redirect("/order/error");
 		}
 	}
@@ -290,7 +294,7 @@ function OrderComponent({ price }: Props) {
 	if (loading) {
 		return (
 			<div className={styles.container}>
-				<div className={styles.loading}>Chargement de votre commande...</div>
+				<div className={styles.loading}>{t("loading")}</div>
 			</div>
 		);
 	}
@@ -300,7 +304,7 @@ function OrderComponent({ price }: Props) {
 			<div className={styles.mainLayout}>
 				{/* Left Column - Order Summary */}
 				<div className={styles.orderSummary}>
-					<h2 className={styles.summaryTitle}>Récapitulatif de la commande</h2>
+					<h2 className={styles.summaryTitle}>{t("summary.title")}</h2>
 
 					<div className={styles.cartItems}>
 						{cartItems.map((item) => {
@@ -329,14 +333,16 @@ function OrderComponent({ price }: Props) {
 										</p>
 										{/* Display the selected color */}
 										<p className={styles.carColor}>
-											Couleur: <strong>{item.color}</strong>
+											{t("cart.colorLabel")} <strong>{item.color}</strong>
 										</p>
 										<p className={styles.carPrice}>
 											{car.price.toLocaleString()} DZD
 										</p>
 
 										<div className={styles.quantityControls}>
-											<span className={styles.quantityLabel}>Quantité:</span>
+											<span className={styles.quantityLabel}>
+												{t("cart.quantityLabel")}
+											</span>
 											<button
 												className={styles.quantityBtn}
 												onClick={() =>
@@ -363,7 +369,7 @@ function OrderComponent({ price }: Props) {
 													className={styles.removeBtn}
 													onClick={() => removeCar(item.id!)}
 												>
-													Supprimer
+													{t("cart.remove")}
 												</button>
 											)}
 										</div>
@@ -375,12 +381,12 @@ function OrderComponent({ price }: Props) {
 
 					<div className={styles.priceSummary}>
 						<div className={styles.subtotal}>
-							<span>Sous-total:</span>
+							<span>{t("price.subtotal")}</span>
 							<span>{getTotalPrice().toLocaleString()} DZD</span>
 						</div>
 
 						<div className={styles.total}>
-							<span>Total:</span>
+							<span>{t("price.total")}</span>
 							<span>{getTotalPrice().toLocaleString()} DZD</span>
 						</div>
 					</div>
@@ -389,73 +395,73 @@ function OrderComponent({ price }: Props) {
 				{/* Right Column - Order Form */}
 				<div className={styles.orderForm}>
 					<div className={styles.contactHeader}>
-						<h2>Contacter nous : </h2>
-						<a href="tel:+213 555 123 456" className={styles.phoneLink}>
-							+213 555 123 456
+						<h2>{t("contact.title")}</h2>
+						<a href={`tel:${t("contact.phone")}`} className={styles.phoneLink}>
+							{t("contact.phone")}
 						</a>
 					</div>
 
-					<h1 className={styles.orDivider}>ou</h1>
+					<h1 className={styles.orDivider}>{t("orDivider")}</h1>
 
-					<h2 className={styles.title}>Passer votre commande</h2>
+					<h2 className={styles.title}>{t("form.title")}</h2>
 
 					<div className={styles.inputFields}>
 						<div className={styles.field}>
-							<label htmlFor="fullName">Nom complet</label>
+							<label htmlFor="fullName">{t("form.labels.fullName")}</label>
 							<input
 								type="text"
 								id="fullName"
 								required
-								placeholder="Entrez votre nom complet"
+								placeholder={t("form.placeholders.fullName")}
 								onChange={(e) => setOrder({ ...order, name: e.target.value })}
 							/>
 						</div>
 
 						<div className={styles.field}>
-							<label htmlFor="email">Email</label>
+							<label htmlFor="email">{t("form.labels.email")}</label>
 							<input
 								type="email"
 								id="email"
 								required
-								placeholder="Entrez votre adresse email"
+								placeholder={t("form.placeholders.email")}
 								onChange={(e) => setOrder({ ...order, email: e.target.value })}
 							/>
 						</div>
 
 						<div className={styles.field}>
-							<label htmlFor="wilaya">Wilaya :</label>
+							<label htmlFor="wilaya">{t("form.labels.wilaya")}</label>
 							<input
 								type="text"
 								id="wilaya"
-								placeholder="Entrez votre wilaya"
+								placeholder={t("form.placeholders.wilaya")}
 								onChange={(e) => setWilaya(e.target.value)}
 							/>
 						</div>
 
 						<div className={styles.field}>
-							<label htmlFor="address">Adresse :</label>
+							<label htmlFor="address">{t("form.labels.address")}</label>
 							<input
 								type="text"
 								id="address"
-								placeholder="Entrez votre adresse"
+								placeholder={t("form.placeholders.address")}
 								onChange={(e) => setAddress(e.target.value)}
 							/>
 						</div>
 
 						<div className={styles.field}>
-							<label htmlFor="phone">Numéro de téléphone</label>
+							<label htmlFor="phone">{t("form.labels.phone")}</label>
 							<input
 								type="number"
 								id="phone"
 								required
-								placeholder="Entrez votre numéro de téléphone"
+								placeholder={t("form.placeholders.phone")}
 								onChange={(e) => setOrder({ ...order, phone: e.target.value })}
 							/>
 						</div>
 					</div>
 
 					<button className={styles.submitButton} onClick={HandleSubmit}>
-						Commander pour {getTotalPrice().toLocaleString()} DZD
+						{t("form.submit", { total: getTotalPrice().toLocaleString() })}
 					</button>
 				</div>
 			</div>

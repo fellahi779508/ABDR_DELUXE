@@ -24,6 +24,7 @@ import { ChevronLeft, Search, Filter, X, Car, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import "@/styles/globals.css";
 import { image } from "framer-motion/client";
+import { useTranslations } from "next-intl";
 
 type Car = {
 	finition: string;
@@ -94,6 +95,7 @@ const cardVariants = {
 };
 
 function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
+	const t = useTranslations("Browser"); // <--- using Browser namespace
 	const [theme, setTheme] = useState("light");
 	useEffect(() => {
 		const storedTheme = localStorage.getItem("theme");
@@ -203,7 +205,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 		if (brands) {
 			setBrand(brands);
 			setTypeOfCars("used");
-			setBreadcrumbs(["Used Cars"]);
+			setBreadcrumbs([t("carBrowser.types.used")]);
 		}
 	};
 
@@ -214,7 +216,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 		if (brands) {
 			setBrand(brands);
 			setTypeOfCars("new");
-			setBreadcrumbs(["New Cars"]);
+			setBreadcrumbs([t("carBrowser.types.new")]);
 		}
 	};
 
@@ -267,7 +269,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.2, duration: 0.5 }}
 					>
-						Find Your Dream Car
+						{t("carBrowser.header.title")}
 					</motion.h1>
 					<motion.p
 						className={styles.subtitle}
@@ -275,7 +277,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.3, duration: 0.5 }}
 					>
-						Browse our extensive collection of new and used vehicles
+						{t("carBrowser.header.subtitle")}
 					</motion.p>
 				</div>
 
@@ -289,7 +291,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 						<Search size={20} className={styles.searchIcon} />
 						<input
 							type="text"
-							placeholder="Search by model, brand, or feature..."
+							placeholder={t("carBrowser.search.placeholder")}
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e.target.value)}
 							onKeyPress={(e) => e.key === "Enter" && handleSearch()}
@@ -299,7 +301,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 							<X size={18} className={styles.clearIcon} onClick={clearSearch} />
 						)}
 						<button className={styles.searchButton} onClick={handleSearch}>
-							Search
+							{t("carBrowser.search.button")}
 						</button>
 					</div>
 				</motion.div>
@@ -322,7 +324,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 						whileTap={{ scale: 0.95 }}
 					>
 						<Car size={20} />
-						<span>All Cars</span>
+						<span>{t("carBrowser.types.all")}</span>
 					</motion.div>
 					<motion.div
 						className={`${styles.option} ${
@@ -334,7 +336,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 						whileTap={{ scale: 0.95 }}
 					>
 						<Car size={20} />
-						<span>Used Cars</span>
+						<span>{t("carBrowser.types.used")}</span>
 					</motion.div>
 					<motion.div
 						className={`${styles.option} ${
@@ -346,7 +348,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 						whileTap={{ scale: 0.95 }}
 					>
 						<Car size={20} />
-						<span>New Cars</span>
+						<span>{t("carBrowser.types.new")}</span>
 					</motion.div>
 				</motion.div>
 			</motion.div>
@@ -361,7 +363,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 							transition={{ duration: 0.5 }}
 						>
 							<h2 className={styles.sectionTitle}>
-								<span>Popular Brands</span>
+								<span>{t("carBrowser.brands.title")}</span>
 							</h2>
 							<motion.div
 								className={styles.brands}
@@ -378,7 +380,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 									whileHover={{ scale: 1.05 }}
 									whileTap={{ scale: 0.95 }}
 								>
-									All Brands
+									{t("carBrowser.brands.all")}
 								</motion.div>
 								{brands?.map((brand) => (
 									<motion.div
@@ -416,10 +418,14 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 									transition={{ duration: 0.3 }}
 								>
 									<h2 className={styles.sectionTitle}>
-										Series for{" "}
-										{brands.find((b) => b.id === selectedBrand)?.name}
+										{t("carBrowser.series.title", {
+											brand:
+												brands.find((b) => b.id === selectedBrand)?.name ?? "",
+										})}
 										{seriesLoading && (
-											<span className={styles.loadingText}>Loading...</span>
+											<span className={styles.loadingText}>
+												{t("carBrowser.series.loading")}
+											</span>
 										)}
 									</h2>
 									{series.length > 0 ? (
@@ -450,7 +456,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 												animate={{ opacity: 1 }}
 												transition={{ delay: 0.2 }}
 											>
-												No series available for this brand
+												{t("carBrowser.series.empty")}
 											</motion.p>
 										)
 									)}
@@ -465,7 +471,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 							transition={{ duration: 0.5 }}
 						>
 							<h2 className={styles.sectionTitle}>
-								Available Vehicles ({visibleCars.length})
+								{t("carBrowser.vehicles.title", { count: visibleCars.length })}
 							</h2>
 							{visibleCars.length > 0 ? (
 								<motion.div
@@ -485,19 +491,23 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 											<div className={styles.statusBadges}>
 												<span
 													className={`${styles.statusBadge} ${
-														car.status === "Available"
-															? styles.available
+														car.status === "new"
+															? styles.comingSoon
 															: styles.comingSoon
 													}`}
 												>
-													{car.status}
+													{car.status === "new"
+														? t("carBrowser.badges.status.new")
+														: t("carBrowser.badges.status.used")}
 												</span>
 												<span
 													className={`${styles.availabilityBadge} ${
 														car.isShiped ? styles.inStock : styles.onOrder
 													}`}
 												>
-													{car.isShiped ? "In Stock" : "On Order"}
+													{car.isShiped
+														? t("carBrowser.badges.stock.in")
+														: t("carBrowser.badges.stock.order")}
 												</span>
 											</div>
 
@@ -528,7 +538,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 
 												<div className={styles.carOverlay}>
 													<span className={styles.viewDetails}>
-														View Details →
+														{t("carBrowser.car.viewDetails")}
 													</span>
 												</div>
 											</div>
@@ -553,27 +563,33 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 
 												<div className={styles.specsGrid}>
 													<div className={styles.specItem}>
-														<span className={styles.specLabel}>Year</span>
+														<span className={styles.specLabel}>
+															{t("carBrowser.car.specs.year")}
+														</span>
 														<span className={styles.specValue}>
 															{car.Année}
 														</span>
 													</div>
 													<div className={styles.specItem}>
-														<span className={styles.specLabel}>Mileage</span>
+														<span className={styles.specLabel}>
+															{t("carBrowser.car.specs.mileage")}
+														</span>
 														<span className={styles.specValue}>
 															{car.Kilométrage}
 														</span>
 													</div>
 													<div className={styles.specItem}>
 														<span className={styles.specLabel}>
-															Transmission
+															{t("carBrowser.car.specs.transmission")}
 														</span>
 														<span className={styles.specValue}>
 															{car.Boite}
 														</span>
 													</div>
 													<div className={styles.specItem}>
-														<span className={styles.specLabel}>Fuel</span>
+														<span className={styles.specLabel}>
+															{t("carBrowser.car.specs.fuel")}
+														</span>
 														<span className={styles.specValue}>
 															{car.Energie}
 														</span>
@@ -582,13 +598,17 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 
 												<div className={styles.features}>
 													<div className={styles.engineInfo}>
-														<span className={styles.engineLabel}>Engine:</span>
+														<span className={styles.engineLabel}>
+															{t("carBrowser.car.engine.label")}
+														</span>
 														<span className={styles.engineValue}>
 															{car.Moteur}
 														</span>
 													</div>
 													<div className={styles.colorsInfo}>
-														<span className={styles.colorsLabel}>Colors:</span>
+														<span className={styles.colorsLabel}>
+															{t("carBrowser.car.colors.label")}
+														</span>
 														<div className={styles.colorChips}>
 															{car.colors.slice(0, 3).map((color, index) => (
 																<span
@@ -602,7 +622,9 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 															))}
 															{car.colors.length > 3 && (
 																<span className={styles.moreColors}>
-																	+{car.colors.length - 3} more
+																	{t("carBrowser.car.colors.more", {
+																		count: car.colors.length - 3,
+																	})}
 																</span>
 															)}
 														</div>
@@ -620,8 +642,8 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 									transition={{ duration: 0.5 }}
 								>
 									<Car size={48} className={styles.emptyStateIcon} />
-									<h3>No cars found</h3>
-									<p>Try adjusting your filters or search criteria</p>
+									<h3>{t("carBrowser.vehicles.emptyTitle")}</h3>
+									<p>{t("carBrowser.vehicles.emptyDesc")}</p>
 								</motion.div>
 							)}
 						</motion.div>
@@ -634,7 +656,10 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 						transition={{ duration: 0.5 }}
 					>
 						<h2 className={styles.sectionTitle}>
-							Search Results for "{searchQuery}" ({searchResults.length})
+							{t("carBrowser.search.resultsTitle", {
+								query: searchQuery,
+								count: searchResults.length,
+							})}
 						</h2>
 						{searchResults.length > 0 ? (
 							<motion.div
@@ -678,7 +703,7 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 
 											<div className={styles.carOverlay}>
 												<span className={styles.viewDetails}>
-													View Details →
+													{t("carBrowser.car.viewDetails")}
 												</span>
 											</div>
 										</div>
@@ -711,19 +736,23 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 											<div className={styles.statusBadges}>
 												<span
 													className={`${styles.statusBadge} ${
-														car.status === "Available"
-															? styles.available
+														car.status === "new"
+															? styles.comingSoon
 															: styles.comingSoon
 													}`}
 												>
-													{car.status}
+													{car.status === "new"
+														? t("carBrowser.badges.status.new")
+														: t("carBrowser.badges.status.used")}
 												</span>
 												<span
 													className={`${styles.availabilityBadge} ${
 														car.isShiped ? styles.inStock : styles.onOrder
 													}`}
 												>
-													{car.isShiped ? "In Stock" : "On Order"}
+													{car.isShiped
+														? t("carBrowser.badges.stock.in")
+														: t("carBrowser.badges.stock.order")}
 												</span>
 											</div>
 											<div className={styles.carHeader}>
@@ -736,21 +765,29 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 											</div>
 											<div className={styles.specsGrid}>
 												<div className={styles.specItem}>
-													<span className={styles.specLabel}>Year</span>
+													<span className={styles.specLabel}>
+														{t("carBrowser.car.specs.year")}
+													</span>
 													<span className={styles.specValue}>{car.Année}</span>
 												</div>
 												<div className={styles.specItem}>
-													<span className={styles.specLabel}>Mileage</span>
+													<span className={styles.specLabel}>
+														{t("carBrowser.car.specs.mileage")}
+													</span>
 													<span className={styles.specValue}>
 														{car.Kilométrage}
 													</span>
 												</div>
 												<div className={styles.specItem}>
-													<span className={styles.specLabel}>Transmission</span>
+													<span className={styles.specLabel}>
+														{t("carBrowser.car.specs.transmission")}
+													</span>
 													<span className={styles.specValue}>{car.Boite}</span>
 												</div>
 												<div className={styles.specItem}>
-													<span className={styles.specLabel}>Fuel</span>
+													<span className={styles.specLabel}>
+														{t("carBrowser.car.specs.fuel")}
+													</span>
 													<span className={styles.specValue}>
 														{car.Energie}
 													</span>
@@ -758,13 +795,17 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 											</div>
 											<div className={styles.features}>
 												<div className={styles.engineInfo}>
-													<span className={styles.engineLabel}>Engine:</span>
+													<span className={styles.engineLabel}>
+														{t("carBrowser.car.engine.label")}
+													</span>
 													<span className={styles.engineValue}>
 														{car.Moteur}
 													</span>
 												</div>
 												<div className={styles.colorsInfo}>
-													<span className={styles.colorsLabel}>Colors:</span>
+													<span className={styles.colorsLabel}>
+														{t("carBrowser.car.colors.label")}
+													</span>
 													<div className={styles.colorChips}>
 														{car.colors.slice(0, 3).map((color, index) => (
 															<span key={color.id} className={styles.colorChip}>
@@ -775,7 +816,9 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 														))}
 														{car.colors.length > 3 && (
 															<span className={styles.moreColors}>
-																+{car.colors.length - 3} more
+																{t("carBrowser.car.colors.more", {
+																	count: car.colors.length - 3,
+																})}
 															</span>
 														)}
 													</div>
@@ -793,15 +836,15 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 								transition={{ duration: 0.5 }}
 							>
 								<Search size={48} className={styles.emptyStateIcon} />
-								<h3>No results found</h3>
-								<p>Try different search terms or browse all categories</p>
+								<h3>{t("carBrowser.search.noResultsTitle")}</h3>
+								<p>{t("carBrowser.search.noResultsDesc")}</p>
 								<motion.button
 									className={styles.primaryButton}
 									onClick={clearSearch}
 									whileHover={{ scale: 1.05 }}
 									whileTap={{ scale: 0.95 }}
 								>
-									Clear Search
+									{t("carBrowser.search.clear")}
 								</motion.button>
 							</motion.div>
 						)}

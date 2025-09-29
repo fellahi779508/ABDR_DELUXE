@@ -1,13 +1,16 @@
 /* eslint-disable react/no-unescaped-entities */
 import styles from "./about.module.css";
+import { useTranslations } from "next-intl";
 
 function AboutComponent() {
+	const t = useTranslations("About.about");
+
 	return (
 		<div className={styles.container}>
 			<header className={styles.header}>
 				<div className={styles.headerContent}>
-					<h1 className={styles.title}>ABR Deluxe</h1>
-					<p className={styles.subtitle}>L'excellence automobile depuis 2005</p>
+					<h1 className={styles.title}>{t("header.title")}</h1>
+					<p className={styles.subtitle}>{t("header.subtitle")}</p>
 					<div className={styles.accentLine}></div>
 				</div>
 			</header>
@@ -17,11 +20,10 @@ function AboutComponent() {
 					<div className={styles.videoContainer}>
 						<div className={styles.sectionHeader}>
 							<h2 className={styles.sectionTitle}>
-								Présentation de Notre Entreprise
+								{t("sections.companyIntro.title")}
 							</h2>
 							<p className={styles.sectionDescription}>
-								Découvrez l'histoire et les valeurs qui font d'Abr Deluxe un
-								leader dans le secteur automobile de luxe.
+								{t("sections.companyIntro.description")}
 							</p>
 						</div>
 						<div className={styles.videoWrapper}>
@@ -31,7 +33,7 @@ function AboutComponent() {
 								poster="/videos/video1-poster.png"
 							>
 								<source src="/videos/video1.mp4" type="video/mp4" />
-								Votre navigateur ne supporte pas la lecture de vidéos.
+								{t("video.fallback")}
 							</video>
 							<div className={styles.videoOverlay}></div>
 						</div>
@@ -42,11 +44,10 @@ function AboutComponent() {
 					<div className={styles.videoContainer}>
 						<div className={styles.sectionHeader}>
 							<h2 className={styles.sectionTitle}>
-								Notre Processus de Livraison
+								{t("sections.deliveryProcess.title")}
 							</h2>
 							<p className={styles.sectionDescription}>
-								Voyez comment notre propriétaire garantit une expérience de
-								livraison exceptionnelle pour chaque client.
+								{t("sections.deliveryProcess.description")}
 							</p>
 						</div>
 						<div className={styles.videoWrapper}>
@@ -56,7 +57,7 @@ function AboutComponent() {
 								poster="/videos/video2-poster.png"
 							>
 								<source src="/videos/video2.mp4" type="video/mp4" />
-								Votre navigateur ne supporte pas la lecture de vidéos.
+								{t("video.fallback")}
 							</video>
 							<div className={styles.videoOverlay}></div>
 						</div>
@@ -65,10 +66,11 @@ function AboutComponent() {
 
 				<section className={styles.infoSection}>
 					<div className={styles.sectionHeader}>
-						<h2 className={styles.infoTitle}>Pourquoi Nous Choisir?</h2>
+						<h2 className={styles.infoTitle}>
+							{t("sections.whyChooseUs.title")}
+						</h2>
 						<p className={styles.infoSubtitle}>
-							Découvrez les avantages exclusifs qui nous distinguent de la
-							concurrence
+							{t("sections.whyChooseUs.subtitle")}
 						</p>
 					</div>
 					<div className={styles.features}>
@@ -76,30 +78,35 @@ function AboutComponent() {
 							<div className={styles.featureIconContainer}>
 								<div className={styles.featureIcon}>✓</div>
 							</div>
-							<h3>Service Personnalisé</h3>
+							<h3>
+								{t("sections.whyChooseUs.features.personalizedService.title")}
+							</h3>
 							<p>
-								Une attention particulière à chaque client pour répondre à ses
-								besoins spécifiques.
+								{t(
+									"sections.whyChooseUs.features.personalizedService.description"
+								)}
 							</p>
 						</div>
 						<div className={styles.feature}>
 							<div className={styles.featureIconContainer}>
 								<div className={styles.featureIcon}>✓</div>
 							</div>
-							<h3>Véhicules de Luxe</h3>
+							<h3>{t("sections.whyChooseUs.features.luxuryVehicles.title")}</h3>
 							<p>
-								Une sélection rigoureuse des meilleurs modèles premium du
-								marché.
+								{t("sections.whyChooseUs.features.luxuryVehicles.description")}
 							</p>
 						</div>
 						<div className={styles.feature}>
 							<div className={styles.featureIconContainer}>
 								<div className={styles.featureIcon}>✓</div>
 							</div>
-							<h3>Livraison Exceptionnelle</h3>
+							<h3>
+								{t("sections.whyChooseUs.features.exceptionalDelivery.title")}
+							</h3>
 							<p>
-								Un processus de livraison qui respecte les plus hauts standards
-								de qualité.
+								{t(
+									"sections.whyChooseUs.features.exceptionalDelivery.description"
+								)}
 							</p>
 						</div>
 					</div>

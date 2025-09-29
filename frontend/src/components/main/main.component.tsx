@@ -1,116 +1,153 @@
+"use client";
 import Image from "next/image";
+import style from "./main.module.css";
 import Link from "next/link";
-import styles from "./main.module.css";
+import { useTranslations } from "next-intl";
 
-function Main() {
+const Main = () => {
+	const t = useTranslations("Main"); // 👈 scope = folder of JSON keys
+
 	return (
-		<div className={styles.container}>
-			{/* Section 1: Bienvenue */}
-			<section className={`${styles.section} ${styles.s1}`}>
-				<div className={styles.sectionContent}>
-					<div className={styles.imageContainer}>
-						<Image
-							src="/main/section1.jpg"
-							alt="Voitures de luxe dans notre concession"
-							width={600}
-							height={400}
-							className={styles.image}
-							priority
-						/>
-					</div>
-					<div className={styles.textContent}>
-						<h1 className={styles.mainTitle}>Bienvenue chez ABR_DELUXE</h1>
-						<p className={styles.description}>
-							Découvrez la voiture de vos rêves parmi notre collection exclusive
-							de véhicules de luxe. Profitez d’un service inégalé et d’une
-							qualité qui nous distingue.
-						</p>
-						<Link href="/cars" className={styles.ctaButton}>
-							Explorer l’inventaire
-						</Link>
-					</div>
-				</div>
-			</section>
+		<div className={`landing-page ${style["landing-page"]}`}>
+			{/* Main Content */}
+			<main className={`main-content ${style["main-content"]}`}>
+				<div className={`content-wrapper ${style["content-wrapper"]}`}>
+					{/* Text Content */}
+					<div className={`text-content ${style["text-content"]}`}>
+						<div className={`badge ${style["badge"]}`}>
+							<span>{t("badge")}</span>
+						</div>
 
-			{/* Section 2: Comment ça marche */}
-			<section className={`${styles.section} ${styles.s2}`}>
-				<div className={styles.sectionContent}>
-					<div className={styles.textContent}>
-						<h2 className={styles.sectionTitle}>
-							Comment fonctionne notre processus de commande
-						</h2>
-						<ol className={styles.processList}>
-							<li className={styles.processStep}>
-								<span className={styles.stepNumber}>1</span>
-								<div className={styles.stepContent}>
-									<h3>Soumettez votre commande</h3>
-									<p>
-										Choisissez le véhicule de votre choix et les options de
-										personnalisation
-									</p>
-								</div>
-							</li>
-							<li className={styles.processStep}>
-								<span className={styles.stepNumber}>2</span>
-								<div className={styles.stepContent}>
-									<h3>Nous vous contactons</h3>
-									<p>
-										Un de nos conseillers commerciaux vous contactera sous 24
-										heures
-									</p>
-								</div>
-							</li>
-							<li className={styles.processStep}>
-								<span className={styles.stepNumber}>3</span>
-								<div className={styles.stepContent}>
-									<h3>Finalisez les détails</h3>
-									<p>
-										Complétez les formalités administratives et organisez la
-										livraison
-									</p>
-								</div>
-							</li>
-						</ol>
-					</div>
-					<div className={styles.imageContainer}>
-						<Image
-							src="/main/section2.jpg"
-							alt="Processus de commande d’une voiture"
-							width={500}
-							height={500}
-							className={styles.image}
-						/>
-					</div>
-				</div>
-			</section>
+						<h1 className={`main-title ${style["main-title"]}`}>
+							<span className={`title-line ${style["title-line"]}`}>
+								{t("title.line1")}
+							</span>
+							<span
+								className={`title-line accent ${style["title-line"]} ${style["accent"]}`}
+							>
+								{t("title.line2")}
+							</span>
+						</h1>
 
-			{/* Section 3: À propos de nous */}
-			<section className={`${styles.section} ${styles.s3}`}>
-				<div className={styles.sectionContent}>
-					<div className={styles.imageContainer}>
-						<Image
-							src="/main/section3.jpg"
-							alt="Notre équipe de concession"
-							width={550}
-							height={400}
-							className={styles.image}
-						/>
-					</div>
-					<div className={styles.textContent}>
-						<h2 className={styles.sectionTitle}>À propos de ABR_DELUXE</h2>
-						<p className={styles.description}>
-							Nous sommes fiers de proposer des véhicules exceptionnels et un
-							service client irréprochable. Notre équipe expérimentée est dédiée
-							à vous aider à trouver la voiture parfaite.
+						<p className={`description ${style["description"]}`}>
+							{t("description")}
 						</p>
-						<Link href="/about" className={styles.ctaButton}>
-							En savoir plus sur nous
-						</Link>
+
+						<div className={`features-grid ${style["features-grid"]}`}>
+							<div className={`feature ${style["feature"]}`}>
+								<span>{t("features.global")}</span>
+							</div>
+							<div className={`feature ${style["feature"]}`}>
+								<span>{t("features.delivery")}</span>
+							</div>
+							<div className={`feature ${style["feature"]}`}>
+								<span>{t("features.quality")}</span>
+							</div>
+						</div>
+
+						<div className={`button-group ${style["button-group"]}`}>
+							<Link
+								href="/buy"
+								className={`btn btn-primary ${style["btn"]} ${style["btn-primary"]}`}
+							>
+								<span>{t("buttons.browse")}</span>
+							</Link>
+							<Link
+								href="/contact"
+								className={`btn btn-secondary ${style["btn"]} ${style["btn-secondary"]}`}
+							>
+								<span>{t("buttons.contact")}</span>
+							</Link>
+						</div>
+
+						<div className={`stats ${style["stats"]}`}>
+							<div className={`stat ${style["stat"]}`}>
+								<div className={`stat-number ${style["stat-number"]}`}>
+									{t("stats.vehicles.number")}
+								</div>
+								<div className={`stat-label ${style["stat-label"]}`}>
+									{t("stats.vehicles.label")}
+								</div>
+							</div>
+							<div className={`stat ${style["stat"]}`}>
+								<div className={`stat-number ${style["stat-number"]}`}>
+									{t("stats.countries.number")}
+								</div>
+								<div className={`stat-label ${style["stat-label"]}`}>
+									{t("stats.countries.label")}
+								</div>
+							</div>
+							<div className={`stat ${style["stat"]}`}>
+								<div className={`stat-number ${style["stat-number"]}`}>
+									{t("stats.support.number")}
+								</div>
+								<div className={`stat-label ${style["stat-label"]}`}>
+									{t("stats.support.label")}
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* Image Content */}
+					<div className={`image-content ${style["image-content"]}`}>
+						<div className={`image-container ${style["image-container"]}`}>
+							<Image
+								src="/images/tee.png"
+								alt="Premium Car"
+								width={600}
+								height={400}
+								className={`car-image ${style["car-image"]}`}
+								priority
+							/>
+
+							{/* Floating Cards */}
+							<div
+								className={`floating-card card-1 ${style["floating-card"]} ${style["card-1"]}`}
+							>
+								<div className={`card-icon ${style["card-icon"]}`}>🚙</div>
+								<div className={`card-content ${style["card-content"]}`}>
+									<div className={`card-title ${style["card-title"]}`}>
+										{t("cards.china.title")}
+									</div>
+									<div className={`card-subtitle ${style["card-subtitle"]}`}>
+										{t("cards.china.subtitle")}
+									</div>
+								</div>
+							</div>
+
+							<div
+								className={`floating-card card-2 ${style["floating-card"]} ${style["card-2"]}`}
+							>
+								<div className={`card-icon ${style["card-icon"]}`}>🏎️</div>
+								<div className={`card-content ${style["card-content"]}`}>
+									<div className={`card-title ${style["card-title"]}`}>
+										{t("cards.uae.title")}
+									</div>
+									<div className={`card-subtitle ${style["card-subtitle"]}`}>
+										{t("cards.uae.subtitle")}
+									</div>
+								</div>
+							</div>
+
+							<div
+								className={`floating-card card-3 ${style["floating-card"]} ${style["card-3"]}`}
+							>
+								<div className={`card-icon ${style["card-icon"]}`}>✨</div>
+								<div className={`card-content ${style["card-content"]}`}>
+									<div className={`card-title ${style["card-title"]}`}>
+										{t("cards.qatar.title")}
+									</div>
+									<div className={`card-subtitle ${style["card-subtitle"]}`}>
+										{t("cards.qatar.subtitle")}
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-			</section>
+			</main>
 		</div>
 	);
-}
+};
 
 export default Main;

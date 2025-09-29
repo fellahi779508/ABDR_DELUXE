@@ -4,11 +4,12 @@ import { IconController } from './icon.controller';
 import { Icon } from './icon.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   controllers: [IconController],
   providers: [IconService],
   exports: [IconService],
-  imports: [TypeOrmModule.forFeature([Icon]), CloudinaryModule],
+  imports: [TypeOrmModule.forFeature([Icon]), CloudinaryModule, JwtModule],
 })
 export class IconModule {}

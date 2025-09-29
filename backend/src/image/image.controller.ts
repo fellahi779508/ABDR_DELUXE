@@ -25,6 +25,7 @@ export class ImageController {
     return this.imageService.getCarImages(colorId);
   }
   @Put('MakePrimary/:id')
+  @UseGuards(AuthGuard)
   updateImageToPrimary(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.imageService.updateImageToPrimary(id);
   }

@@ -1,0 +1,367 @@
+{
+	"Main": {
+		"badge": "Premium Auto Dealer",
+		"title": {
+			"line1": "ABR_DELUXE",
+			"line2": "Auto"
+		},
+		"description": "Discover premium vehicles sourced directly from China, Qatar, and UAE. Experience luxury, performance, and reliability with our exclusive collection of new and pre-owned automobiles.",
+		"features": {
+			"global": "Global Sourcing",
+			"delivery": "Fast Delivery",
+			"quality": "Premium Quality"
+		},
+		"buttons": {
+			"browse": "Browse Collection",
+			"contact": "Contact Us"
+		},
+		"stats": {
+			"vehicles": {
+				"number": "150+",
+				"label": "Vehicles"
+			},
+			"countries": {
+				"number": "3",
+				"label": "Countries"
+			},
+			"support": {
+				"number": "24/7",
+				"label": "Support"
+			}
+		},
+		"cards": {
+			"china": {
+				"title": "China Import",
+				"subtitle": "Latest Models"
+			},
+			"uae": {
+				"title": "UAE Luxury",
+				"subtitle": "Premium Selection"
+			},
+			"qatar": {
+				"title": "Qatar Edition",
+				"subtitle": "Exclusive Models"
+			}
+		}
+	},
+	"Home": {
+		"hero": {
+			"badge": "ABR_DELUXE Auto",
+			"title1": "New & Used Cars",
+			"title2": "Buy, Rent or Import",
+			"lead": "Premium car dealership operating in Algeria & Qatar. Buy vehicles available locally, import directly from China / Qatar / UAE, or rent flexible cars for short and long term use.",
+			"button": "Browse Inventory",
+			"stats": {
+				"brands": { "number": "20+", "label": "Brands" },
+				"cars": { "number": "150+", "label": "Cars" },
+				"offices": { "number": "3", "label": "Offices" }
+			}
+		},
+		"services": {
+			"title": "What We Offer",
+			"subtitle": "Comprehensive automotive solutions tailored to your needs",
+			"buy": {
+				"title": "Buy Locally",
+				"description": "Wide selection of new and certified used cars available within Algeria — immediate delivery options from Chlef & Jijel locations."
+			},
+			"import": {
+				"title": "Import from China / Qatar / UAE",
+				"description": "We handle the paperwork, shipping, and customs clearance — choose a car from our partners or supply your wishlist and we'll source it for you."
+			},
+			"rent": {
+				"title": "Rentals & Leasing",
+				"description": "Short-term and long-term rental plans for individuals and businesses. Flexible pickup from any of our offices."
+			},
+			"support": {
+				"title": "After-sales & Support",
+				"description": "Professional assistance with maintenance, warranty claims and parts sourcing — we stay with you after the sale."
+			}
+		},
+		"offices": {
+			"title": "Our Offices",
+			"subtitle": "Global presence with local expertise",
+			"chlef": {
+				"title": "Chlef — Algeria",
+				"label": "Main (Sales & Service)",
+				"description": "Address and contact details go here. In-person inspections and test drives available."
+			},
+			"jijel": {
+				"title": "Jijel — Algeria",
+				"label": "Local Branch",
+				"description": "Local stock, quick delivery to nearby cities, and after-sales pickup point."
+			},
+			"doha": {
+				"title": "Doha — Qatar",
+				"label": "Regional Hub",
+				"description": "Coordination with international suppliers and export logistics."
+			}
+		},
+		"cta": {
+			"title": "Ready to find your next car?",
+			"description": "Whether it's buying locally, importing, or renting — our team at ABR_DELUXE Auto makes the process simple and transparent.",
+			"button": "Contact Sales"
+		}
+	},
+	"Browser": {
+		"carBrowser": {
+			"header": {
+				"title": "Find Your Dream Car",
+				"subtitle": "Browse our extensive collection of new and used vehicles"
+			},
+			"search": {
+				"placeholder": "Search by model, brand, or serie...",
+				"button": "Search",
+				"clear": "Clear Search",
+				"noResultsTitle": "No results found",
+				"noResultsDesc": "Try different search terms or browse all categories",
+				"resultsTitle": "Search Results for \"{query}\" ({count})"
+			},
+			"types": {
+				"all": "All Cars",
+				"used": "Used Cars",
+				"new": "New Cars"
+			},
+			"brands": {
+				"title": "Popular Brands",
+				"all": "All Brands"
+			},
+			"series": {
+				"title": "Series for {brand}",
+				"loading": "Loading...",
+				"empty": "No series available for this brand"
+			},
+			"vehicles": {
+				"title": "Available Vehicles ({count})",
+				"emptyTitle": "No cars found",
+				"emptyDesc": "Try adjusting your filters or search criteria"
+			},
+			"badges": {
+				"status": {
+					"new": "New",
+					"used": "Used"
+				},
+				"stock": {
+					"in": "In Stock",
+					"order": "On Order"
+				}
+			},
+			"car": {
+				"viewDetails": "View Details →",
+				"price": {
+					"current": "{price} DZD",
+					"old": "{oldPrice} DZD"
+				},
+				"specs": {
+					"year": "Year",
+					"mileage": "Mileage",
+					"transmission": "Transmission",
+					"fuel": "Fuel"
+				},
+				"engine": {
+					"label": "Engine:",
+					"value": "{engine}"
+				},
+				"colors": {
+					"label": "Colors:",
+					"more": "+{count} more"
+				}
+			}
+		}
+	},
+	"carDetails": {
+		"carDetails": {
+			"breadcrumb": {
+				"home": "Home",
+				"cars": "Cars"
+			},
+			"availability": {
+				"available": "Available",
+				"byOrder": "By Order"
+			},
+			"status": {
+				"new": "New",
+				"used": "Used"
+			},
+			"price": {
+				"promo": "Promo:",
+				"oldPrice": "Price:"
+			},
+			"colors": {
+				"title": "Available Colors:",
+				"selected": "Selected color:"
+			},
+			"details": {
+				"title": "Vehicle Details",
+				"brand": "Brand:",
+				"model": "Serie:",
+				"finish": "Model:",
+				"year": "Year:"
+			},
+			"actions": {
+				"buy": "Buy",
+				"redirecting": "Redirecting...",
+				"add": "Add to cart",
+				"adding": "Adding..."
+			},
+			"errors": {
+				"chooseColor": "Please choose a color",
+				"mustSelectColor": "Please select a color before continuing"
+			},
+			"notifications": {
+				"added": "Vehicle added to cart!"
+			},
+			"specs": {
+				"title": "Technical Specifications",
+				"engine": "Engine",
+				"transmission": "Transmission",
+				"fuel": "Fuel type",
+				"mileage": "Mileage",
+				"year": "Year",
+				"color": "Color"
+			},
+			"description": {
+				"title": "Description"
+			}
+		}
+	},
+	"About": {
+		"about": {
+			"header": {
+				"title": "ABR Deluxe",
+				"subtitle": "Automotive excellence since 2005"
+			},
+			"sections": {
+				"companyIntro": {
+					"title": "Company Presentation",
+					"description": "Discover the history and values..."
+				},
+				"deliveryProcess": {
+					"title": "Our Delivery Process",
+					"description": "See how our owner ensures..."
+				},
+				"whyChooseUs": {
+					"title": "Why Choose Us?",
+					"subtitle": "Discover the exclusive advantages...",
+					"features": {
+						"personalizedService": {
+							"title": "Personalized Service",
+							"description": "Special attention to each client..."
+						},
+						"luxuryVehicles": {
+							"title": "Luxury Vehicles",
+							"description": "A rigorous selection..."
+						},
+						"exceptionalDelivery": {
+							"title": "Exceptional Delivery",
+							"description": "A delivery process that meets..."
+						}
+					}
+				}
+			},
+			"video": {
+				"fallback": "Your browser does not support video playback."
+			}
+		}
+	},
+	"Order": {
+		"loading": "Loading your order...",
+		"errors": {
+			"cartEmpty": "Your cart is empty",
+			"cannotRemoveLast": "You can't remove the last vehicle",
+			"fillFields": "Please fill in all fields",
+			"invalidEmail": "Please enter a valid email address",
+			"orderFailed": "An error occurred while placing your order"
+		},
+		"summary": {
+			"title": "Order Summary"
+		},
+		"cart": {
+			"colorLabel": "Color:",
+			"quantityLabel": "Quantity:",
+			"remove": "Remove"
+		},
+		"price": {
+			"subtotal": "Subtotal:",
+			"total": "Total:"
+		},
+		"contact": {
+			"title": "Contact us:",
+			"phone": "+213 555 123 456"
+		},
+		"orDivider": "or",
+		"form": {
+			"title": "Place your order",
+			"labels": {
+				"fullName": "Full name",
+				"email": "Email",
+				"wilaya": "Wilaya",
+				"address": "Address",
+				"phone": "Phone number"
+			},
+			"placeholders": {
+				"fullName": "Enter your full name",
+				"email": "Enter your email address",
+				"wilaya": "Enter your wilaya",
+				"address": "Enter your address",
+				"phone": "Enter your phone number"
+			},
+			"submit": "Order for {total} DZD"
+		},
+		"notifications": {
+			"success": "Order placed successfully"
+		}
+	},
+	"Footer": {
+		"description": "Premium car dealership offering the best selection of luxury vehicles with exceptional service and customer experience.",
+		"links": {
+			"title": "Quick Links",
+			"home": "Home",
+			"buy": "Buy",
+			"rent": "Rent",
+			"contact": "Contact",
+			"about": "About"
+		},
+		"contact": {
+			"title": "Contact Us",
+			"email": "abrdeluxeauto@gmail.com",
+			"dz": "Dz:",
+			"qa": "Qa:",
+			"address": "Chlef, Jijel, Bouira"
+		},
+		"copyright": "All rights reserved."
+	},
+	"Header": {
+		"brand": "ABR_DELUXE Auto",
+		"navigation": {
+			"home": "Home",
+			"services": "Services",
+			"contact": "Contact",
+			"buy": "Buy",
+			"rent": "Rent"
+		},
+		"aria": {
+			"toggleMenu": "Toggle menu"
+		}
+	},
+	"Cart": {
+		"aria": {
+			"cart": "Shopping cart",
+			"remove": "Remove"
+		},
+		"header": "Your Cart ({count} items)",
+		"loading": "Loading...",
+		"empty": {
+			"title": "Your cart is empty"
+		},
+		"item": {
+			"color": "Color:",
+			"price": "DZD"
+		},
+		"total": "Total:",
+		"checkout": "Checkout",
+		"quantity": {
+			"decrease": "Decrease quantity",
+			"increase": "Increase quantity"
+		}
+	}
+}

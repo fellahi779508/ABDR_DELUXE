@@ -5,6 +5,7 @@ import { GetCarBySlug } from "@/utils/Admin";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./CartIcon.module.css";
+import { useTranslations } from "next-intl";
 
 type Car = {
 	finition: string;
@@ -45,6 +46,7 @@ type CartItem = {
 };
 
 const CartIcon = () => {
+	const t = useTranslations("Cart");
 	const [isOpen, setIsOpen] = useState(false);
 	const [cartItems, setCartItems] = useState<CartItem[]>([]);
 	const [cars, setCars] = useState<Car[]>([]);
@@ -168,7 +170,7 @@ const CartIcon = () => {
 			<button
 				className={styles.cartButton}
 				onClick={() => setIsOpen(!isOpen)}
-				aria-label="Panier"
+				aria-label={t("aria.cart")}
 			>
 				<ShoppingCart size={24} />
 				{cartItems.length > 0 && (
@@ -179,7 +181,7 @@ const CartIcon = () => {
 			{isOpen && (
 				<div className={styles.cartDropdown}>
 					<div className={styles.cartHeader}>
-						<h3>Votre Panier ({getTotalItems()} articles)</h3>
+						<h3>{t("header", { count: getTotalItems() })}</h3>
 						<button
 							className={styles.closeButton}
 							onClick={() => setIsOpen(false)}
@@ -190,11 +192,11 @@ const CartIcon = () => {
 
 					<div className={styles.cartContent}>
 						{loading ? (
-							<div className={styles.loading}>Chargement...</div>
+							<div className={styles.loading}>{t("loading")}</div>
 						) : cartItems.length === 0 ? (
 							<div className={styles.emptyCart}>
 								<ShoppingCart size={48} />
-								<p>Votre panier est vide</p>
+								<p>{t("empty.title")}</p>
 							</div>
 						) : (
 							<div className={styles.cartItems}>
@@ -216,9 +218,11 @@ const CartIcon = () => {
 												<h4 className={styles.carName}>
 													{car.serie.brand.name} {car.serie.name}
 												</h4>
-												<p className={styles.carColor}>Couleur: {item.color}</p>
+												<p className={styles.carColor}>
+													{t("item.color")} {item.color}
+												</p>
 												<p className={styles.carPrice}>
-													{car.price.toLocaleString()} DZD
+													{car.price.toLocaleString()} {t("item.price")}
 												</p>
 
 												<div className={styles.quantityControls}>
@@ -228,6 +232,7 @@ const CartIcon = () => {
 															updateQuantity(item.id, item.quantity - 1)
 														}
 														disabled={item.quantity <= 1}
+														aria-label={t("quantity.decrease")}
 													>
 														-
 													</button>
@@ -239,6 +244,7 @@ const CartIcon = () => {
 														onClick={() =>
 															updateQuantity(item.id, item.quantity + 1)
 														}
+														aria-label={t("quantity.increase")}
 													>
 														+
 													</button>
@@ -248,7 +254,7 @@ const CartIcon = () => {
 											<button
 												className={styles.removeItemButton}
 												onClick={() => removeFromCart(item.id)}
-												aria-label="Supprimer"
+												aria-label={t("aria.remove")}
 											>
 												<X size={16} />
 											</button>
@@ -262,8 +268,10 @@ const CartIcon = () => {
 					{cartItems.length > 0 && (
 						<div className={styles.cartFooter}>
 							<div className={styles.cartTotal}>
-								<span>Total:</span>
-								<span>{getTotalPrice().toLocaleString()} DZD</span>
+								<span>{t("total")}</span>
+								<span>
+									{getTotalPrice().toLocaleString()} {t("item.price")}
+								</span>
 							</div>
 
 							<Link
@@ -271,7 +279,7 @@ const CartIcon = () => {
 								className={styles.checkoutButton}
 								onClick={() => setIsOpen(false)}
 							>
-								<span>Finaliser la commande</span>
+								<span>{t("checkout")}</span>
 								<ArrowRight size={20} />
 							</Link>
 						</div>

@@ -201,9 +201,11 @@
 .desktop_cart {
 	display: flex;
 	align-items: center;
+	gap: 1rem;
 }
 
-.mobile_cart {
+.mobile_cart,
+.mobile_Cart {
 	display: none;
 }
 
@@ -237,6 +239,7 @@
 		box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
 		z-index: 1001;
 		overflow-y: auto;
+		border: none;
 	}
 
 	.linksOpen {
@@ -279,25 +282,33 @@
 
 	.dropdown_link {
 		padding: 0.75rem 0;
-		border-bottom: 1px solid var(--border);
+		border: none;
 	}
 
 	.theme_toggle {
 		margin-top: 2rem;
 		padding: 1rem 0;
-		border-top: 1px solid var(--border);
 		width: 100%;
 		justify-content: center;
 	}
 
 	.mobile_cart {
-		display: block;
+		display: flex;
 		margin-top: 1rem;
 		padding: 1rem 0;
-		border-top: 1px solid var(--border);
 		width: 100%;
+		align-items: center;
+		gap: 1rem;
+		justify-content: center;
 	}
-
+	.mobile_Cart {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		position: relative;
+		cursor: pointer;
+		left: 30px;
+	}
 	.desktop_cart {
 		display: none;
 	}
@@ -316,6 +327,7 @@
 	.links {
 		width: 85%;
 		padding: 4rem 1.5rem;
+		border: none;
 	}
 
 	.logoText {

@@ -1,0 +1,255 @@
+.contact-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 2rem;
+	background: var(--background);
+	min-height: 100vh;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.brand-header {
+	text-align: center;
+	margin-bottom: 3rem;
+	padding: 2rem;
+	background: var(--primary);
+	border-radius: var(--radius);
+	color: white;
+	box-shadow: var(--shadow);
+}
+
+.brand-name {
+	font-size: 3rem;
+	font-weight: 700;
+	margin: 0;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+.brand-subtitle {
+	font-size: 1.2rem;
+	margin: 0.5rem 0 0 0;
+	opacity: 0.9;
+	font-weight: 300;
+}
+
+.filter-section {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	margin-bottom: 2rem;
+	flex-wrap: wrap;
+}
+
+.filter-btn {
+	padding: 0.75rem 1.5rem;
+	border: 2px solid var(--border);
+	background: var(--surface);
+	color: var(--text);
+	border-radius: var(--radius);
+	cursor: pointer;
+	font-weight: 600;
+	transition: var(--transition);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.filter-btn:hover {
+	border-color: var(--primary);
+	color: var(--primary);
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-hover);
+}
+
+.filter-btn.active {
+	background: var(--primary);
+	color: var(--background);
+	border-color: var(--primary);
+}
+
+.contacts-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+	gap: 2rem;
+	margin-top: 2rem;
+}
+
+.contact-card {
+	background: var(--surface);
+	border-radius: var(--radius);
+	padding: 2rem;
+	box-shadow: var(--shadow);
+	transition: var(--transition);
+	border: 1px solid var(--border);
+	position: relative;
+	overflow: hidden;
+}
+
+.contact-card::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background: var(--primary);
+}
+
+.contact-card:hover {
+	transform: translateY(-5px);
+	box-shadow: var(--shadow-hover);
+}
+
+.contact-name {
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: var(--text);
+	margin: 0 0 1.5rem 0;
+	padding-bottom: 1rem;
+	border-bottom: 2px solid var(--border);
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.phone-section {
+	margin-bottom: 1.5rem;
+}
+
+.country-flag {
+	display: inline-block;
+	font-size: 1.5rem;
+}
+
+.country-label {
+	font-weight: 600;
+	color: var(--text-secondary);
+	margin-bottom: 1rem;
+	display: flex;
+	align-items: center;
+}
+
+.phone-number {
+	font-size: 1.1rem;
+	color: var(--text);
+	margin: 0.5rem 0;
+	padding: 0.75rem;
+	background: var(--surface);
+	border-radius: calc(var(--radius) / 2);
+	transition: var(--transition);
+	cursor: pointer;
+	border: 1px solid transparent;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.phone-number:hover {
+	background: var(--primary);
+	color: white;
+	transform: translateX(5px);
+}
+
+.phone-actions {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.whatsapp-icon {
+	color: inherit;
+	text-decoration: none;
+	font-size: 1.2rem;
+	padding: 0.25rem;
+	border-radius: 4px;
+	transition: var(--transition);
+}
+
+.whatsapp-icon:hover {
+	background: rgba(255, 255, 255, 0.2);
+	transform: scale(1.1);
+}
+
+.action-buttons {
+	display: flex;
+	gap: 1rem;
+	margin-top: 2rem;
+}
+
+.btn {
+	padding: 0.75rem 1.5rem;
+	border: none;
+	border-radius: var(--radius);
+	font-weight: 600;
+	cursor: pointer;
+	transition: var(--transition);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	flex: 1;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+}
+
+.btn-primary {
+	background: var(--primary);
+	color: white;
+}
+
+.btn-primary:hover {
+	background: var(--primary-hover);
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-hover);
+}
+
+.btn-whatsapp {
+	background: #25d366;
+	color: white;
+}
+
+.btn-whatsapp:hover {
+	background: #128c7e;
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-hover);
+}
+
+.no-contacts {
+	text-align: center;
+	color: var(--text-secondary);
+	font-size: 1.2rem;
+	grid-column: 1 / -1;
+	padding: 3rem;
+	background: white;
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+}
+
+@media (max-width: 768px) {
+	.contact-container {
+		padding: 1rem;
+	}
+
+	.brand-name {
+		font-size: 2rem;
+	}
+
+	.contacts-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.filter-section {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.filter-btn {
+		text-align: center;
+	}
+
+	.phone-number {
+		font-size: 1rem;
+		padding: 0.5rem;
+	}
+
+	.action-buttons {
+		flex-direction: column;
+	}
+}

@@ -6,9 +6,12 @@ import ThemeToggle from "../ThemeProvider/themeProvider";
 import { Car, Menu, X, Phone, MapPin, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import CartIcon from "../footer/cart"; // Import the CartIcon component
+import CartIcon from "../footer/cart";
+import LanguageSwitcher from "../lang/languageSwitcher";
+import { useTranslations } from "next-intl";
 
 function Header() {
+	const t = useTranslations("Header");
 	const router = useRouter();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isServiceOpen, setIsServiceOpen] = useState(false);
@@ -24,8 +27,11 @@ function Header() {
 								className={styles.logoLink}
 								onClick={() => router.push("/")}
 							>
-								<span className={styles.logoText}>ABR_DELUXE Auto</span>
+								<span className={styles.logoText}>{t("brand")}</span>
 							</button>
+						</div>
+						<div className={styles.mobile_Cart}>
+							<CartIcon />
 						</div>
 
 						<div
@@ -38,7 +44,7 @@ function Header() {
 								className={styles.link}
 								onClick={() => setIsMenuOpen(false)}
 							>
-								Home
+								{t("navigation.home")}
 							</Link>
 
 							<div
@@ -55,7 +61,7 @@ function Header() {
 									className={styles.service_trigger}
 									onClick={() => setIsServiceOpen(!isServiceOpen)}
 								>
-									<span>Service</span>
+									<span>{t("navigation.services")}</span>
 									<ChevronDown
 										size={16}
 										className={`${styles.chevron} ${
@@ -77,7 +83,7 @@ function Header() {
 											setIsServiceOpen(false);
 										}}
 									>
-										Buy
+										{t("navigation.buy")}
 									</Link>
 									<Link
 										href="/rent"
@@ -87,7 +93,7 @@ function Header() {
 											setIsServiceOpen(false);
 										}}
 									>
-										Rent
+										{t("navigation.rent")}
 									</Link>
 								</div>
 							</div>
@@ -97,7 +103,7 @@ function Header() {
 								className={styles.link}
 								onClick={() => setIsMenuOpen(false)}
 							>
-								Contact
+								{t("navigation.contact")}
 							</Link>
 
 							<div className={styles.theme_toggle}>
@@ -106,18 +112,20 @@ function Header() {
 
 							{/* Cart Icon for Mobile */}
 							<div className={styles.mobile_cart}>
-								<CartIcon />
+								<LanguageSwitcher />
 							</div>
 						</div>
 
 						{/* Desktop Cart Icon */}
 						<div className={styles.desktop_cart}>
 							<CartIcon />
+							<LanguageSwitcher />
 						</div>
+						<div></div>
 
 						<button
 							className={styles.menuToggle}
-							aria-label="Toggle menu"
+							aria-label={t("aria.toggleMenu")}
 							onClick={() => setIsMenuOpen(!isMenuOpen)}
 						>
 							{isMenuOpen ? <X size={24} /> : <Menu size={24} />}

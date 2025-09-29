@@ -510,8 +510,17 @@ export async function GetCarsOfBrand(BrandId: number) {
 	}
 }
 export async function UpdateColorName(id: number, name: string) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.put(`/color/${id}`, { name });
+		const response = await api.put(
+			`/color/${id}`,
+			{ name },
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 		if (response) {
 			return "updated";
 		}
@@ -520,8 +529,17 @@ export async function UpdateColorName(id: number, name: string) {
 	}
 }
 export async function CreateNewColor(name: string, CarId: string) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.post(`/color`, { name, CarId });
+		const response = await api.post(
+			`/color`,
+			{ name, CarId },
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 		if (response) {
 			return response.data;
 		}
@@ -531,9 +549,14 @@ export async function CreateNewColor(name: string, CarId: string) {
 	}
 }
 export async function UpdateOption(id: number, title?: string, value?: string) {
+	const token = (await cookies()).get("access_token")?.value;
 	const data = { title, value };
 	try {
-		const response = await api.put(`/option/${id}`, data);
+		const response = await api.put(`/option/${id}`, data, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			console.log(response.data);
 			return response.data;
@@ -544,8 +567,13 @@ export async function UpdateOption(id: number, title?: string, value?: string) {
 	}
 }
 export async function DeleteOptionById(id: number) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.delete(`/option/${id}`);
+		const response = await api.delete(`/option/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			return "deleted";
 		}
@@ -569,8 +597,17 @@ export async function CreateNewOption(
 	value: string,
 	CarId: string
 ) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.post(`/option`, { title, value, CarId });
+		const response = await api.post(
+			`/option`,
+			{ title, value, CarId },
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 		if (response) {
 			return response.data;
 		}
@@ -713,14 +750,14 @@ export async function SearchCars(searchQuery: string) {
 	}
 }
 export async function UploadBrandIcon(brandId: number, file: File) {
-	console.log(file);
+	const token = (await cookies()).get("access_token")?.value;
 	const formData = new FormData();
 	formData.append("file", file);
-	console.log(formData);
 	try {
 		const response = await api.post(`/brand/icons/${brandId}`, formData, {
 			headers: {
 				"Content-Type": "multipart/form-data",
+				Authorization: `Bearer ${token}`,
 			},
 		});
 		if (response) {
@@ -769,8 +806,13 @@ export async function CreateCart(soldItemId: number[]) {
 	}
 }
 export async function DeleteAllOrders() {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.delete(`/order/all`);
+		const response = await api.delete(`/order/all`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			return response.data;
 		}
