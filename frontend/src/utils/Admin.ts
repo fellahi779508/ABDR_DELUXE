@@ -583,12 +583,18 @@ export async function DeleteOptionById(id: number) {
 	}
 }
 export async function DeleteColorById(id: number) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.delete(`/color/${id}`);
+		const response = await api.delete(`/color/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		if (response) {
 			return "deleted";
 		}
-	} catch (error) {
+	} catch (error: any) {
+		console.error(error.response);
 		return "error";
 	}
 }

@@ -4,8 +4,8 @@
 
 /* Light Theme (default) */
 :root[data-theme="light"] {
-	--primary: hsl(210, 100%, 25%);
-	--primary-hover: hsla(210, 100%, 25%, 0.8);
+	--primary: hsl(156, 88%, 35%);
+	--primary-hover: hsla(156, 88%, 35%, 0.8);
 	--background: hsl(210, 20%, 98%);
 	--surface: hsl(204, 9%, 90%);
 	--text: hsl(210, 20%, 10%);
@@ -21,8 +21,8 @@
 
 /* Dark Theme */
 :root[data-theme="dark"] {
-	--primary: hsl(208, 83%, 25%);
-	--primary-hover: hsla(208, 83%, 25%, 0.493);
+	--primary: hsl(156, 88%, 30%);
+	--primary-hover: hsla(156, 88%, 30%, 0.493);
 	--background: hsl(210, 20%, 8%);
 	--surface: hsl(210, 20%, 12%);
 	--text: hsl(210, 20%, 95%);
@@ -35,7 +35,6 @@
 	--radius: 12px;
 	--transition: all 0.2s ease;
 }
-
 /* ===============================
    GLOBAL RESETS
 ================================= */
