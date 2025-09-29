@@ -92,7 +92,7 @@ const Main = () => {
 					<div className={`image-content ${style["image-content"]}`}>
 						<div className={`image-container ${style["image-container"]}`}>
 							<Image
-								src="/images/tee.png"
+								src="/images/hero.png"
 								alt="Premium Car"
 								width={600}
 								height={400}
