@@ -22,7 +22,7 @@ export class Cart {
   soldItem: SoldItem[];
   @Column({ nullable: true })
   total: number;
-  @OneToOne(() => Order, (order) => order.cart)
+  @OneToOne(() => Order, (order) => order.cart, { onDelete: 'CASCADE' })
   order: Order;
   @BeforeInsert() async calculateTotal() {
     this.total = this.soldItem.reduce((acc, item) => acc + item.total, 0);

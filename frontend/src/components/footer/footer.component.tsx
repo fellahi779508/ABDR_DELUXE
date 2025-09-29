@@ -89,18 +89,22 @@ function Footer() {
 							</div>
 							<div className={styles.contactItem}>
 								<Phone />
-								<span>{t("contact.dz")}</span>
-								<a href="tel:+213772278102">+213 77 22 78 102</a>
+								<Link href="/contact">contact</Link>
 							</div>
-							<div className={styles.contactItem}>
-								<Phone />
-								<span>{t("contact.qa")}</span>
-								<a href="tel:+97477005529">+974 77 00 55 29</a>
-							</div>
-							<div className={styles.contactItem}>
+							<Link
+								href="https://maps.app.goo.gl/eNhG4sJcpDcArbhv9?g_st=ipc"
+								className={styles.contactItem}
+							>
 								<MapPin />
-								<span>{t("contact.address")}</span>
-							</div>
+								<span>Chlef</span>
+							</Link>
+							<Link
+								href="https://maps.app.goo.gl/DdgPyHgVq6AtJX566?g_st=ipc"
+								className={styles.contactItem}
+							>
+								<MapPin />
+								<span>Jijel</span>
+							</Link>
 						</div>
 					</div>
 				</div>

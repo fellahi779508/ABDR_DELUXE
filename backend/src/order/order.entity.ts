@@ -27,7 +27,7 @@ export class Order {
   updatedAt: Date;
   @Column({ enum: ['pending', 'new', 'cancelled', 'accepted'], default: 'new' })
   status: string;
-  @OneToOne(() => Cart, (cart) => cart.order)
+  @OneToOne(() => Cart, (cart) => cart.order, { cascade: true })
   @JoinColumn({ name: 'cart_id' })
   cart: Cart;
 }

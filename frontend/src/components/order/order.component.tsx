@@ -14,6 +14,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 
 type Car = {
 	finition: string;
@@ -395,10 +396,9 @@ function OrderComponent({ price }: Props) {
 				{/* Right Column - Order Form */}
 				<div className={styles.orderForm}>
 					<div className={styles.contactHeader}>
-						<h2>{t("contact.title")}</h2>
-						<a href={`tel:${t("contact.phone")}`} className={styles.phoneLink}>
-							{t("contact.phone")}
-						</a>
+						<Link href="/contact" className={styles.phoneLink}>
+							{t("contact.title")}
+						</Link>
 					</div>
 
 					<h1 className={styles.orDivider}>{t("orDivider")}</h1>
