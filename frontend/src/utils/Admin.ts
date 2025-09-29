@@ -286,8 +286,17 @@ export async function DeleteImageById(id: string) {
 	}
 }
 export async function UpdateImageToPrimary(id: string) {
+	const token = (await cookies()).get("access_token")?.value;
 	try {
-		const response = await api.put(`/image/MakePrimary/${id}`);
+		const response = await api.put(
+			`/image/MakePrimary/${id}`,
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 		if (response) {
 			return "updated";
 		}
