@@ -11,7 +11,12 @@ const ContactList = () => {
 		{
 			id: 1,
 			name: "Chlef",
-			numbers: ["0553747261", "0772278102", "0540822898", "0553679758"],
+			numbers: [
+				"+213553747261",
+				"+213772278102",
+				"+213540822898",
+				"+213553679758",
+			],
 			mapLink: "https://maps.app.goo.gl/eNhG4sJcpDcArbhv9?g_st=ipc",
 			flag: "🇩🇿",
 			country: "algeria",
@@ -19,7 +24,7 @@ const ContactList = () => {
 		{
 			id: 2,
 			name: "Jijel",
-			numbers: ["0556648331", "0777884152"],
+			numbers: ["+213556648331", "+213777884152"],
 			mapLink: "https://maps.app.goo.gl/DdgPyHgVq6AtJX566?g_st=ipc",
 			flag: "🇩🇿",
 			country: "algeria",
@@ -27,7 +32,7 @@ const ContactList = () => {
 		{
 			id: 3,
 			name: "Qatar",
-			numbers: ["0097477005529", "+974 5583 4328", "00974 66584214"],
+			numbers: ["+974 77005529", "+974 5583 4328", "+974 66584214"],
 			mapLink: null,
 			flag: "🇶🇦",
 			country: "qatar",

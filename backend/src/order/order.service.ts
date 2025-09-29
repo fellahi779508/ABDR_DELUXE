@@ -100,6 +100,7 @@ export class OrderService {
     return await this.orderRepo.save(order);
   }
   async DeleteAllOrders() {
-    return await this.orderRepo.clear();
+    const orders = await this.orderRepo.find();
+    return await this.orderRepo.remove(orders);
   }
 }
