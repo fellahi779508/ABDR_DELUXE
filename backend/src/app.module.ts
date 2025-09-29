@@ -45,7 +45,8 @@ import { CartModule } from './cart/cart.module';
           database: config.get<string>('DB_DATABASE'),
 
           // ✅ Auto-sync only in dev
-          synchronize: !isProd,
+          syncronize: true,
+          // synchronize: !isProd,
 
           // ✅ Important for Supabase + Railway
           ssl: isProd ? { rejectUnauthorized: false } : false,
