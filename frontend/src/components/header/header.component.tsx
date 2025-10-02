@@ -25,8 +25,8 @@ function Header() {
 						<div className={styles.brand}>
 							<div className={styles.logoWrapper}>
 								<Image
-									src="/images/Logo.png"
-									alt="Logo"
+									src="/images/logo.png"
+									alt="logo"
 									width={180}
 									height={100}
 									className={styles.logo}
