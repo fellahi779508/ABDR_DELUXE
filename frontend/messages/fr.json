@@ -42,6 +42,9 @@
 				"title": "Édition Qatar",
 				"subtitle": "Modèles Exclusifs"
 			}
+		},
+		"ads": {
+			"noAds": "Aucune annonce disponible pour le moment"
 		}
 	},
 	"Home": {
@@ -175,12 +178,12 @@
 				"cars": "Voitures"
 			},
 			"availability": {
-				"available": "Disponible",
+				"available": "Disponible Localement",
 				"byOrder": "Par Commande"
 			},
 			"status": {
-				"new": "Nouveau",
-				"used": "Occasion"
+				"new": "Nouveau Voiture",
+				"used": "Voiture Occasion"
 			},
 			"price": {
 				"promo": "Promo :",
@@ -364,5 +367,6 @@
 			"decrease": "Diminuer la quantité",
 			"increase": "Augmenter la quantité"
 		}
-	}
+	},
+	"Ads": {}
 }

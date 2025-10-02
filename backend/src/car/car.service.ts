@@ -315,4 +315,8 @@ export class CarService {
 
     return cars ?? [];
   }
+  async GetAllSlugs() {
+    const cars = await this.carRepo.find({ select: ['slug'] });
+    return cars.map((car) => car.slug);
+  }
 }

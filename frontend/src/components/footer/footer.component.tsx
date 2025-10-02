@@ -8,27 +8,35 @@ import { useTranslations } from "next-intl";
 function Footer() {
 	const t = useTranslations("Footer");
 	const year = new Date().getFullYear();
-	const brand = "ABR_DELUXE";
+	const brand = "ABR DELUXE AUTO";
 
 	return (
 		<footer className={styles.footer}>
 			<div className={styles.container}>
 				<div className={styles.mainContent}>
 					<div className={styles.brandSection}>
-						<div className={styles.logo}>{brand}</div>
+						<div className={styles.logo}>
+							<span style={{ color: "var(--primary)" }}>ABR</span>
+							<span style={{ color: "var(--text)" }}>DELUXE</span>
+							<span style={{ color: "var(--primary)" }}>AUTO</span>
+						</div>
 						<p className={styles.description}>{t("description")}</p>
 						<div className={styles.socialLinks}>
 							<Link
 								href="https://www.facebook.com/profile.php?id=61578296488657"
 								aria-label="Facebook"
 								className={styles.socialLink}
+								target="_blank"
+								rel="noopener noreferrer"
 							>
 								<Facebook />
 							</Link>
 							<Link
-								href="https://www.instagram.com/abr_delux_auto"
+								href="https://www.instagram.com/abr_deluxe_auto"
 								aria-label="Instagram"
 								className={styles.socialLink}
+								target="_blank"
+								rel="noopener noreferrer"
 							>
 								<Instagram />
 							</Link>
@@ -36,6 +44,8 @@ function Footer() {
 								href="https://www.tiktok.com/@abrdeluxeautochina?_t=ZS-8ziobk4aG0o&_r=1"
 								aria-label="Tiktok"
 								className={styles.socialLink}
+								target="_blank"
+								rel="noopener noreferrer"
 							>
 								<Image
 									src="/images/tik-tok.png"
@@ -83,17 +93,21 @@ function Footer() {
 						<div className={styles.contactInfo}>
 							<div className={styles.contactItem}>
 								<Mail />
-								<a href={`mailto:${t("contact.email")}`}>
+								<Link href={`mailto:${t("contact.email")}`}>
 									{t("contact.email")}
-								</a>
+								</Link>
 							</div>
 							<div className={styles.contactItem}>
 								<Phone />
-								<Link href="/contact">contact</Link>
+								<Link href="/contact" target="_blank" rel="noopener noreferrer">
+									contact
+								</Link>
 							</div>
 							<Link
 								href="https://maps.app.goo.gl/eNhG4sJcpDcArbhv9?g_st=ipc"
 								className={styles.contactItem}
+								target="_blank"
+								rel="noopener noreferrer"
 							>
 								<MapPin />
 								<span>Chlef</span>
@@ -101,6 +115,8 @@ function Footer() {
 							<Link
 								href="https://maps.app.goo.gl/DdgPyHgVq6AtJX566?g_st=ipc"
 								className={styles.contactItem}
+								target="_blank"
+								rel="noopener noreferrer"
 							>
 								<MapPin />
 								<span>Jijel</span>
@@ -111,7 +127,7 @@ function Footer() {
 
 				<div className={styles.bottomBar}>
 					<div className={styles.copyright}>
-						&copy; {year} {brand} Auto. {t("copyright")}
+						&copy; {year} {brand}. {t("copyright")}
 					</div>
 				</div>
 			</div>

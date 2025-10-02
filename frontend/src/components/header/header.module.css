@@ -14,6 +14,19 @@
 	font-size: 0.85rem;
 	width: 100%;
 }
+.logoWrapper {
+	position: relative;
+	height: 60px; /* header height */
+	width: 150px; /* adjust as needed */
+	top: -26px;
+	padding: 0.5rem;
+}
+
+.logo {
+	object-fit: cover;
+	position: relative;
+	left: -35px;
+}
 
 .container {
 	max-width: 1200px;
@@ -74,9 +87,27 @@
 
 .logoText {
 	font-size: 1.5rem;
-	font-weight: 700;
-	color: var(--primary);
-	letter-spacing: -0.5px;
+	font-weight: 400;
+	color: var(--text);
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	font-style: italic;
+	position: relative;
+}
+.logoText::after {
+	content: "";
+	width: 0;
+	height: 2px;
+	background-color: var(--primary);
+	transition: width 0.3s ease;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+.logoText:hover::after {
+	width: 100%;
 }
 
 .links {
@@ -331,6 +362,6 @@
 	}
 
 	.logoText {
-		font-size: 1.3rem;
+		font-size: 0.9rem;
 	}
 }

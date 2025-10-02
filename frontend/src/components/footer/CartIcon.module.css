@@ -286,4 +286,11 @@
 	.cartHeader h3 {
 		font-size: 1rem;
 	}
+	.cartButton {
+		width: 35px;
+		height: 35px;
+	}
+	.cartDropdown {
+		right: -70px;
+	}
 }

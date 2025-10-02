@@ -42,6 +42,9 @@
 				"title": "Qatar Edition",
 				"subtitle": "Exclusive Models"
 			}
+		},
+		"ads": {
+			"noAds": "No Offers Available For Now"
 		}
 	},
 	"Home": {
@@ -175,12 +178,12 @@
 				"cars": "Cars"
 			},
 			"availability": {
-				"available": "Available",
-				"byOrder": "By Order"
+				"available": "Available Locally",
+				"byOrder": "On Order"
 			},
 			"status": {
-				"new": "New",
-				"used": "Used"
+				"new": "New Car",
+				"used": "Used Car"
 			},
 			"price": {
 				"promo": "Promo:",

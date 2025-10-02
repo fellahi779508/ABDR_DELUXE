@@ -52,6 +52,10 @@ export class CarController {
   GetAllNewCars() {
     return this.service.GetAllNewCars();
   }
+  @Get('AllSlugs')
+  GetAllCarsSlug() {
+    return this.service.GetAllSlugs();
+  }
   @Get('visible/new')
   GetAllVisibleNewCars() {
     return this.service.GetAllVisibleNewCars();

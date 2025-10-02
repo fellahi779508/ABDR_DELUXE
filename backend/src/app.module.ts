@@ -23,6 +23,10 @@ import { IconModule } from './icon/icon.module';
 import { SoldItem } from './soldItem/soldItem.entity';
 import { Cart } from './cart/cart.entity';
 import { CartModule } from './cart/cart.module';
+import { PromoPic } from './promoPic/promoPic.entity';
+import { PromoPicModule } from './promoPic/promoPic.module';
+import { Gallery } from './gallery/gallery.entity';
+import { GalleryModule } from './gallery/gallery.module';
 
 @Module({
   imports: [
@@ -62,6 +66,8 @@ import { CartModule } from './cart/cart.module';
             Icon,
             SoldItem,
             Cart,
+            PromoPic,
+            Gallery,
           ],
         };
       },
@@ -78,6 +84,8 @@ import { CartModule } from './cart/cart.module';
     OptionModule,
     IconModule,
     CartModule,
+    PromoPicModule,
+    GalleryModule,
   ],
 })
 export class AppModule {}

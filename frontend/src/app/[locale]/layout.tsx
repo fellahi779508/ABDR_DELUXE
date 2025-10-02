@@ -16,7 +16,6 @@ export default async function LocaleLayout({ children, params }: Props) {
 	} catch (error) {
 		notFound();
 	}
-
 	return (
 		<html lang={locale}>
 			<body>

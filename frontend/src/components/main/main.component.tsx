@@ -4,8 +4,41 @@ import style from "./main.module.css";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
+import { useEffect, useState } from "react";
+import { GetAllGallery, GetAllPromotions } from "@/utils/Admin";
+import AdsCarousel from "./AdsCarousel"; // Import the new component
+import PhotoGallery from "./photoGallery";
+import { div } from "framer-motion/client";
+
+type Ad = {
+	id: number;
+	publicId: string;
+	url: string;
+	carSlug: string;
+};
+type Gallery = {
+	id: number;
+	publicId: string;
+	url: string;
+};
+
 const Main = () => {
-	const t = useTranslations("Main"); // 👈 scope = folder of JSON keys
+	const t = useTranslations("Main");
+	const [ads, setAds] = useState<Ad[]>([]);
+	const [gallery, setGallery] = useState<Gallery[]>([]);
+
+	useEffect(() => {
+		const fetchAds = async () => {
+			const ads = await GetAllPromotions();
+			setAds(ads);
+		};
+		const fetchGallery = async () => {
+			const gallery = await GetAllGallery();
+			setGallery(gallery);
+		};
+		fetchAds();
+		fetchGallery();
+	}, []);
 
 	return (
 		<div className={`landing-page ${style["landing-page"]}`}>
@@ -14,20 +47,34 @@ const Main = () => {
 				<div className={`content-wrapper ${style["content-wrapper"]}`}>
 					{/* Text Content */}
 					<div className={`text-content ${style["text-content"]}`}>
-						<div className={`badge ${style["badge"]}`}>
-							<span>{t("badge")}</span>
-						</div>
-
-						<h1 className={`main-title ${style["main-title"]}`}>
-							<span className={`title-line ${style["title-line"]}`}>
-								{t("title.line1")}
-							</span>
-							<span
-								className={`title-line accent ${style["title-line"]} ${style["accent"]}`}
+						<div className={`main-title ${style["main-title"]}`}>
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									gap: "0.5rem",
+									fontWeight: "800",
+								}}
+								className={style.title}
 							>
-								{t("title.line2")}
-							</span>
-						</h1>
+								<span style={{ color: "var(--primary)" }}>ABR</span>
+								<span style={{ color: "var(--text)" }}>DELUXE</span>
+								<span style={{ color: "var(--primary)" }}>AUTO</span>
+							</div>
+							<div
+								style={{
+									fontWeight: "400",
+									fontStyle: "normal",
+									display: "flex",
+									gap: "0.5rem",
+								}}
+								className={style.sub_title}
+							>
+								<span style={{ color: "var(--text)" }}>Buy,Sale</span>
+								<span style={{ color: "var(--primary)" }}>&</span>
+								<span style={{ color: "var(--text)" }}>Car Rental</span>
+							</div>
+						</div>
 
 						<p className={`description ${style["description"]}`}>
 							{t("description")}
@@ -45,26 +92,9 @@ const Main = () => {
 							</div>
 						</div>
 
-						<div className={`button-group ${style["button-group"]}`}>
-							<Link
-								href="/buy"
-								className={`btn btn-primary ${style["btn"]} ${style["btn-primary"]}`}
-							>
-								<span>{t("buttons.browse")}</span>
-							</Link>
-							<Link
-								href="/contact"
-								className={`btn btn-secondary ${style["btn"]} ${style["btn-secondary"]}`}
-							>
-								<span>{t("buttons.contact")}</span>
-							</Link>
-						</div>
-
 						<div className={`stats ${style["stats"]}`}>
 							<div className={`stat ${style["stat"]}`}>
-								<div className={`stat-number ${style["stat-number"]}`}>
-									{t("stats.vehicles.number")}
-								</div>
+								<div className={`stat-number ${style["stat-number"]}`}>+50</div>
 								<div className={`stat-label ${style["stat-label"]}`}>
 									{t("stats.vehicles.label")}
 								</div>
@@ -85,6 +115,20 @@ const Main = () => {
 									{t("stats.support.label")}
 								</div>
 							</div>
+						</div>
+						<div className={`button-group ${style["button-group"]}`}>
+							<Link
+								href="/buy"
+								className={`btn btn-primary ${style["btn"]} ${style["btn-primary"]}`}
+							>
+								<span>{t("buttons.browse")}</span>
+							</Link>
+							<Link
+								href="/contact"
+								className={`btn btn-secondary ${style["btn"]} ${style["btn-secondary"]}`}
+							>
+								<span>{t("buttons.contact")}</span>
+							</Link>
 						</div>
 					</div>
 
@@ -146,6 +190,32 @@ const Main = () => {
 					</div>
 				</div>
 			</main>
+
+			{/* Photo Gallery and Ads Section */}
+
+			<div className={style.galleryAdsSection}>
+				<div>
+					<PhotoGallery gallery={gallery} />
+				</div>
+				{ads.length ? (
+					<div>
+						<AdsCarousel ads={ads} />
+					</div>
+				) : (
+					<div
+						style={{
+							textAlign: "center",
+							color: "var(--text)",
+							height: "100vh",
+							display: "flex",
+							justifyContent: "center",
+							alignItems: "center",
+						}}
+					>
+						<span> {t("ads.noAds")}</span>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

@@ -23,12 +23,15 @@ function Header() {
 				<div className={styles.container}>
 					<div className={styles.nav_content}>
 						<div className={styles.brand}>
-							<button
-								className={styles.logoLink}
-								onClick={() => router.push("/")}
-							>
-								<span className={styles.logoText}>{t("brand")}</span>
-							</button>
+							<Link href="/" className={styles.logoWrapper}>
+								<Image
+									src="/images/Logo.png"
+									alt="Logo"
+									width={150}
+									height={100}
+									className={styles.logo}
+								/>
+							</Link>
 						</div>
 						<div className={styles.mobile_Cart}>
 							<CartIcon />

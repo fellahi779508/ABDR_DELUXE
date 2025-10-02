@@ -836,3 +836,158 @@ export async function DeleteAllOrders() {
 		return {};
 	}
 }
+export async function UploadPromotionPic(carSlug: string | null, file: File) {
+	const token = (await cookies()).get("access_token")?.value;
+	const formData = new FormData();
+	formData.append("file", file);
+	try {
+		const response = await api.post(`/promoPic/${carSlug}`, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			return response.data;
+		}
+	} catch (error: any) {
+		console.log(error.response);
+		return [];
+	}
+}
+export async function DeletePromoById(id: number) {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.delete(`/promoPic/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			return true;
+		}
+	} catch (error: any) {
+		console.error(error.response.data.message);
+		return false;
+	}
+}
+
+export async function DeleteAllPromotions() {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.delete(`/promoPic`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			return true;
+		}
+	} catch (error: any) {
+		console.error(error.response.data.message);
+		return false;
+	}
+}
+export async function GetAllCarsSlug() {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.get(`/car/AllSlugs`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			return response.data;
+		}
+	} catch (error: any) {
+		console.error(error.response.data.message);
+		return error.response.data.message;
+	}
+}
+export async function GetAllPromotions() {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.get(`/promoPic`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			return response.data;
+		}
+	} catch (error: any) {
+		console.error(error.response.data.message);
+		return [];
+	}
+}
+export async function UploadGalleryPic(files: File[]) {
+	const token = (await cookies()).get("access_token")?.value;
+	const formData = new FormData();
+	for (const file of files) {
+		formData.append("files", file);
+	}
+	try {
+		const response = await api.post(`/gallery`, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			return true;
+		}
+	} catch (error: any) {
+		console.log(error.response);
+		return [];
+	}
+}
+export async function DeleteGalleryPic(id: number) {
+	const token = (await cookies()).get("access_token")?.value;
+	console.log(id);
+	try {
+		const response = await api.delete(`/gallery/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			return true;
+		}
+	} catch (error: any) {
+		console.error(error.response);
+		return false;
+	}
+}
+export async function DeleteAllGallery() {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.delete(`/gallery`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			return true;
+		}
+	} catch (error: any) {
+		console.error(error.response.data.message);
+		return false;
+	}
+}
+export async function GetAllGallery() {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.get(`/gallery`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			console.log(response.data);
+			return response.data;
+		}
+	} catch (error: any) {
+		console.error(error.response.data.message);
+		return error.response.data.message;
+	}
+}

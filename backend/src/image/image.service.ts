@@ -82,4 +82,9 @@ export class ImageService {
     await this.imageRepo.remove(images);
     return { success: true };
   }
+  async addPromotionImg(file: Express.Multer.File) {
+    const upload = await this.cloudinaryService.uploadFile(file, `promotions`);
+
+    return { publicId: upload.public_id, url: upload.secure_url };
+  }
 }
