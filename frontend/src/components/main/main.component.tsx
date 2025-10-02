@@ -58,8 +58,8 @@ const Main = () => {
 								className={style.title}
 							>
 								<Image
-									src="/images/Logo.png"
-									alt="Logo"
+									src="/images/logo.png"
+									alt="logo"
 									width={200}
 									height={200}
 									className={style.logo}
