@@ -53,10 +53,10 @@ const ContactList = () => {
 	return (
 		<div className={style["contact-container"]}>
 			{/* Brand Header */}
-			<div className={style["brand-header"]}>
+			{/* <div className={style["brand-header"]}>
 				<h1 className={style["brand-name"]}>ABR_DELUXE Auto</h1>
 				<p className={style["brand-subtitle"]}>Premium Automotive Services</p>
-			</div>
+			</div> */}
 
 			{/* Filter Section */}
 			<div className={style["filter-section"]}>

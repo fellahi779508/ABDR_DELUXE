@@ -49,62 +49,65 @@
 	},
 	"Home": {
 		"hero": {
-			"badge": "ABR_DELUXE Auto",
-			"title1": "Voitures Neuves & d'Occasion",
-			"title2": "Achetez, Louez ou Importez",
-			"lead": "Concessionnaire automobile premium opérant en Algérie et au Qatar. Achetez des véhicules disponibles localement, importez directement de Chine / Qatar / Émirats Arabes Unis, ou louez des voitures flexibles pour une utilisation à court et long terme.",
-			"button": "Parcourir l'Inventaire",
-			"stats": {
-				"brands": { "number": "20+", "label": "Marques" },
-				"cars": { "number": "150+", "label": "Voitures" },
-				"offices": { "number": "3", "label": "Bureaux" }
+			"title": "Excellence Automobile Premium",
+			"subtitle": "ABR Deluxe Auto est spécialisée dans les véhicules neufs et d'occasion, les locations de luxe et les solutions d'importation mondiales. Partenaire de confiance pour le luxe, la performance et la fiabilité.",
+			"browseCars": "Parcourir les voitures",
+			"contactUs": "Contactez-nous"
+		},
+		"about": {
+			"title": "ABR Deluxe Auto – Profil de l’entreprise",
+			"p1": "ABR Deluxe Auto est une société automobile spécialisée dans le commerce de véhicules neufs et d'occasion, ainsi que dans la location de voitures haut de gamme. Depuis notre création, nous nous sommes positionnés comme un partenaire de confiance sur le marché automobile en offrant des véhicules de haute qualité alliant luxe, performance et fiabilité.",
+			"p2": "Nous achetons et importons une grande variété d’automobiles directement auprès des marchés automobiles les plus réputés au monde, notamment la Chine, Dubaï, le Qatar et l’Europe. Ce réseau diversifié nous permet de fournir une large gamme de véhicules répondant aux différents besoins de nos clients — qu’il s’agisse d’un usage personnel, professionnel ou de flottes spécialisées.",
+			"p3": "Nos activités ne se limitent pas aux ventes et aux locations ; nous nous engageons également à élargir notre présence géographique sur les marchés régionaux et internationaux. Grâce à un approvisionnement stratégique et à de solides relations avec les fournisseurs, ABR Deluxe Auto vise à construire un écosystème automobile durable et autonome, garantissant une disponibilité continue des véhicules à des prix compétitifs.",
+			"p4": "Avec une approche centrée sur le client, nous nous concentrons sur la livraison non seulement de voitures, mais aussi de confiance, de commodité et de valeur. Notre objectif est d’être reconnu comme un fournisseur automobile de premier plan qui dépasse constamment les attentes, établissant de nouvelles normes dans l’achat, la vente et la location de véhicules.",
+			"p5": "Chez ABR Deluxe Auto, nous ne vendons pas seulement des voitures — nous offrons des expériences de conduite.",
+			"visionTitle": "Notre Vision",
+			"visionText": "Devenir une entreprise automobile de confiance et leader dans la région et au-delà, reconnue pour son innovation, sa fiabilité et son excellence.",
+			"missionTitle": "Notre Mission",
+			"missionText": "Fournir une large gamme de véhicules neufs et d'occasion avec des solutions de location haut de gamme, en servant les clients avec intégrité et professionnalisme.",
+			"valuesTitle": "Nos Valeurs Fondamentales",
+			"values": {
+				"integrity": "Intégrité : Honnêteté et transparence dans toutes nos activités",
+				"excellence": "Excellence : Les normes les plus élevées en matière de véhicules et de services",
+				"innovation": "Innovation : Solutions modernes dans le domaine automobile",
+				"customer": "Orientation client : Les clients au cœur de chaque décision",
+				"sustainability": "Durabilité : Un écosystème automobile fiable et pérenne"
 			}
 		},
 		"services": {
-			"title": "Nos Services",
-			"subtitle": "Solutions automobiles complètes adaptées à vos besoins",
-			"buy": {
-				"title": "Acheter Localement",
-				"description": "Large sélection de voitures neuves et d'occasion certifiées disponibles en Algérie — options de livraison immédiate depuis nos sites de Chlef et Jijel."
-			},
-			"import": {
-				"title": "Importer de Chine / Qatar / Émirats",
-				"description": "Nous gérons les formalités administratives, l'expédition et les procédures douanières — choisissez une voiture parmi nos partenaires ou fournissez votre liste de souhaits et nous nous en occuperons."
-			},
-			"rent": {
-				"title": "Locations & LLD",
-				"description": "Plans de location à court et long terme pour particuliers et professionnels. Prise en charge flexible depuis l'un de nos bureaux."
-			},
-			"support": {
-				"title": "Service Après-vente & Support",
-				"description": "Assistance professionnelle pour l'entretien, les réclamations de garantie et l'approvisionnement en pièces détachées — nous restons avec vous après la vente."
-			}
+			"title": "Nos Services Premium",
+			"subtitle": "Des solutions automobiles complètes adaptées à vos besoins",
+			"salesTitle": "Vente de Voitures Premium",
+			"salesText": "Découvrez une large gamme de véhicules neufs et certifiés d’occasion, soigneusement sélectionnés en Chine, à Dubaï, au Qatar et en Europe. Que vous recherchiez l’élégance, la performance ou la praticité — nous avons le véhicule idéal pour vous.",
+			"rentalsTitle": "Location de Voitures de Luxe",
+			"rentalsText": "Conduisez avec style grâce à nos options de location à court et long terme. Des voitures économiques aux SUV de luxe et modèles haute performance, notre flotte est conçue pour offrir confort, flexibilité et prestige.",
+			"importTitle": "Solutions d’Import & Export",
+			"importText": "Nous simplifions le processus d’importation de voitures depuis les plus grands marchés automobiles mondiaux. Grâce à notre réseau d’approvisionnement international, nous gérons la logistique, les douanes et l’immatriculation — afin que vous puissiez profiter de votre voiture en toute tranquillité.",
+			"fleetTitle": "Services de Flottes d’Entreprise",
+			"fleetText": "Renforcez votre entreprise avec des solutions de gestion de flotte personnalisées. Nous fournissons des véhicules fiables et économiques ainsi que des contrats à long terme adaptés à vos besoins professionnels.",
+			"supportTitle": "Service Client & Support",
+			"supportText": "Notre relation ne s’arrête pas à la vente. Nous offrons un accompagnement après-vente, une assistance documentaire et un service client dédié, garantissant votre tranquillité d’esprit à chaque trajet."
 		},
 		"offices": {
-			"title": "Nos Bureaux",
-			"subtitle": "Présence mondiale avec expertise locale",
-			"chlef": {
-				"title": "Chlef — Algérie",
-				"label": "Principal (Ventes & Service)",
-				"description": "Adresse et coordonnées ici. Inspections en personne et essais routiers disponibles."
-			},
-			"jijel": {
-				"title": "Jijel — Algérie",
-				"label": "Succursale Locale",
-				"description": "Stock local, livraison rapide vers les villes voisines, et point de retrait après-vente."
-			},
-			"doha": {
-				"title": "Doha — Qatar",
-				"label": "Hub Régional",
-				"description": "Coordination avec les fournisseurs internationaux et logistique d'exportation."
-			}
+			"title": "Nos Bureaux Mondiaux",
+			"subtitle": "Des implantations stratégiques au service des clients dans le monde entier",
+			"chlefTitle": "Bureau de Chlef",
+			"chlefBadge": "Siège Social",
+			"chlefText": "Centre opérationnel principal avec un vaste inventaire de véhicules et des installations de service client.",
+			"jijelTitle": "Bureau de Jijel",
+			"jijelBadge": "Pôle Régional",
+			"jijelText": "Implantation stratégique desservant les régions de l’est avec des véhicules haut de gamme et des services de location.",
+			"dohaTitle": "Bureau de Doha",
+			"dohaBadge": "International",
+			"dohaText": "Approvisionnement mondial et services clients internationaux au cœur du Qatar."
 		},
 		"cta": {
-			"title": "Prêt à trouver votre prochaine voiture ?",
-			"description": "Que ce soit pour acheter localement, importer ou louer — notre équipe chez ABR_DELUXE Auto rend le processus simple et transparent.",
-			"button": "Contacter les Ventes"
+			"title": "Prêt à Conduire la Voiture de Vos Rêves ?",
+			"subtitle": "Contactez-nous dès aujourd’hui pour des véhicules premium et un service exceptionnel",
+			"button": "Commencer"
 		}
 	},
+
 	"Browser": {
 		"carBrowser": {
 			"header": {

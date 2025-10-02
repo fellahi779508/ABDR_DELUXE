@@ -112,6 +112,7 @@
 .title {
 	font-size: 3.5rem;
 	font-weight: 700;
+	height: 70px;
 }
 .sub_title {
 	font-size: 2rem;
@@ -543,7 +544,11 @@
 		width: 100%;
 	}
 }
-
+@media (max-width: 700px) {
+	.title {
+		font-size: 2.5rem;
+	}
+}
 /* Responsive adjustments */
 @media (max-width: 768px) {
 	.gallery-header {
@@ -690,6 +695,18 @@
 		font-size: 1rem;
 	}
 	.title {
-		font-size: 2.2rem;
+		font-size: 2rem;
 	}
+	.logo {
+		display: none;
+	}
+}
+@media (max-width: 320px) {
+	.title {
+		font-size: 2rem;
+	}
+}
+.logo {
+	width: 9rem;
+	height: 10rem;
 }

@@ -25,7 +25,7 @@
 	display: flex;
 	align-items: center;
 	flex: 1;
-	background: var(--surface);
+	background: var(--background);
 	border-radius: var(--radius);
 	padding: 0.5rem 0.75rem;
 	border: 1px solid var(--border);
@@ -83,23 +83,24 @@
 
 .carTypeTabs {
 	display: flex;
-	background: var(--surface);
 	border-radius: var(--radius);
 	padding: 0.25rem;
 	margin-bottom: 1rem;
+	gap: 1rem;
 }
 
 .typeTab {
 	flex: 1;
 	padding: 0.5rem;
 	border: none;
-	background: transparent;
+	background: var(--surface);
 	border-radius: calc(var(--radius) - 2px);
 	font-size: 0.8rem;
 	font-weight: 500;
 	color: var(--text-secondary);
 	cursor: pointer;
 	transition: var(--transition);
+	border: 2px solid var(--border);
 }
 
 .typeTab.active {

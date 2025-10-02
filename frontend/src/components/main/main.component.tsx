@@ -57,6 +57,13 @@ const Main = () => {
 								}}
 								className={style.title}
 							>
+								<Image
+									src="/images/Logo.png"
+									alt="Logo"
+									width={200}
+									height={200}
+									className={style.logo}
+								/>
 								<span style={{ color: "var(--primary)" }}>ABR</span>
 								<span style={{ color: "var(--text)" }}>DELUXE</span>
 								<span style={{ color: "var(--primary)" }}>AUTO</span>

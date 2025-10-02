@@ -3,7 +3,7 @@
 	position: relative;
 	font-family: "Segoe UI", system-ui, sans-serif;
 	width: 180px;
-	z-index: 100;
+	z-index: 1000;
 	color: var(--text);
 }
 

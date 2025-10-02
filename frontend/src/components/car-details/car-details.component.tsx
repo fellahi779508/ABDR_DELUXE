@@ -359,13 +359,24 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						transition={{ delay: 0.5, duration: 0.5 }}
 					>
 						<div className={styles.price}>
-							<span>{t("carDetails.price.promo")} </span>
-							{formatPrice(data.price)} DZD
+							{data.oldPrice !== 0 ? (
+								<>
+									<span>{t("carDetails.price.promo")} </span>
+									{formatPrice(data.price)} DZD
+								</>
+							) : (
+								<>
+									<span>{t("carDetails.price.oldPrice")} </span>
+									{formatPrice(data.price)} DZD
+								</>
+							)}
 						</div>
-						<div className={styles.OldPrice}>
-							<span>{t("carDetails.price.oldPrice")} </span>{" "}
-							{formatPrice(data.oldPrice)} DZD
-						</div>
+						{data.oldPrice !== 0 && (
+							<div className={styles.OldPrice}>
+								<span>{t("carDetails.price.oldPrice")} </span>{" "}
+								{formatPrice(data.oldPrice)} DZD
+							</div>
+						)}
 					</motion.div>
 
 					<motion.div

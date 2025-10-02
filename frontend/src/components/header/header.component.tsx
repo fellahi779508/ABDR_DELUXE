@@ -23,15 +23,17 @@ function Header() {
 				<div className={styles.container}>
 					<div className={styles.nav_content}>
 						<div className={styles.brand}>
-							<Link href="/" className={styles.logoWrapper}>
+							<div className={styles.logoWrapper}>
 								<Image
 									src="/images/Logo.png"
 									alt="Logo"
-									width={150}
+									width={180}
 									height={100}
 									className={styles.logo}
+									onClick={() => router.push("/")}
+									style={{ cursor: "pointer" }}
 								/>
-							</Link>
+							</div>
 						</div>
 						<div className={styles.mobile_Cart}>
 							<CartIcon />

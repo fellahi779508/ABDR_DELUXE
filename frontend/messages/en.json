@@ -49,62 +49,65 @@
 	},
 	"Home": {
 		"hero": {
-			"badge": "ABR_DELUXE Auto",
-			"title1": "New & Used Cars",
-			"title2": "Buy, Rent or Import",
-			"lead": "Premium car dealership operating in Algeria & Qatar. Buy vehicles available locally, import directly from China / Qatar / UAE, or rent flexible cars for short and long term use.",
-			"button": "Browse Inventory",
-			"stats": {
-				"brands": { "number": "20+", "label": "Brands" },
-				"cars": { "number": "150+", "label": "Cars" },
-				"offices": { "number": "3", "label": "Offices" }
+			"title": "Premium Automotive Excellence",
+			"subtitle": "ABR Deluxe Auto specializes in new & pre-owned vehicles, luxury rentals, and global import solutions. Trusted partner for luxury, performance, and reliability.",
+			"browseCars": "Browse Cars",
+			"contactUs": "Contact Us"
+		},
+		"about": {
+			"title": "ABR Deluxe Auto – Company Profile",
+			"p1": "ABR Deluxe Auto is a specialized automotive company dedicated to the trade of new and pre-owned vehicles, as well as offering premium car rental services. Since our establishment, we have positioned ourselves as a trusted partner in the automotive market by providing clients with high-quality vehicles that combine luxury, performance, and reliability.",
+			"p2": "We source and import a wide variety of automobiles directly from some of the world’s most reputable automotive markets, including China, Dubai, Qatar, and Europe. This diverse network allows us to supply an extensive range of vehicles that meet the different needs of our customers—whether for personal use, business, or specialized fleets.",
+			"p3": "Our operations are not limited to sales and rentals; we are also committed to expanding our geographical presence across regional and international markets. Through strategic sourcing and strong supplier relationships, ABR Deluxe Auto aims to build a sustainable and self-sufficient automotive ecosystem that ensures continuous availability of vehicles at competitive prices.",
+			"p4": "With a customer-centric approach, we focus on delivering not only cars but also trust, convenience, and value. Our goal is to be recognized as a leading automotive provider that consistently exceeds expectations, setting new standards in the buying, selling, and rental of vehicles.",
+			"p5": "At ABR Deluxe Auto, we don’t just sell cars — we deliver driving experiences.",
+			"visionTitle": "Our Vision",
+			"visionText": "To become a leading and trusted automotive company in the region and beyond, recognized for innovation, reliability, and excellence.",
+			"missionTitle": "Our Mission",
+			"missionText": "To deliver a wide range of new and pre-owned vehicles with premium rental solutions, serving customers with integrity and professionalism.",
+			"valuesTitle": "Our Core Values",
+			"values": {
+				"integrity": "Integrity: Honesty and transparency in all business conduct",
+				"excellence": "Excellence: Highest standards in vehicles and services",
+				"innovation": "Innovation: Modern solutions in automotive field",
+				"customer": "Customer Focus: Clients at heart of every decision",
+				"sustainability": "Sustainability: Reliable long-term automotive ecosystem"
 			}
 		},
 		"services": {
-			"title": "What We Offer",
+			"title": "Our Premium Services",
 			"subtitle": "Comprehensive automotive solutions tailored to your needs",
-			"buy": {
-				"title": "Buy Locally",
-				"description": "Wide selection of new and certified used cars available within Algeria — immediate delivery options from Chlef & Jijel locations."
-			},
-			"import": {
-				"title": "Import from China / Qatar / UAE",
-				"description": "We handle the paperwork, shipping, and customs clearance — choose a car from our partners or supply your wishlist and we'll source it for you."
-			},
-			"rent": {
-				"title": "Rentals & Leasing",
-				"description": "Short-term and long-term rental plans for individuals and businesses. Flexible pickup from any of our offices."
-			},
-			"support": {
-				"title": "After-sales & Support",
-				"description": "Professional assistance with maintenance, warranty claims and parts sourcing — we stay with you after the sale."
-			}
+			"salesTitle": "Premium Car Sales",
+			"salesText": "Discover a wide range of brand-new and certified pre-owned vehicles, carefully sourced from China, Dubai, Qatar, and Europe. Whether you seek elegance, performance, or practicality — we have the perfect match for you.",
+			"rentalsTitle": "Luxury Car Rentals",
+			"rentalsText": "Drive in style with our short-term and long-term rental options. From economy cars to luxury SUVs and high-performance models, our fleet is designed to offer comfort, flexibility, and prestige.",
+			"importTitle": "Import & Export Solutions",
+			"importText": "We simplify the process of bringing cars from the world’s top automotive markets. With our global sourcing network, we handle logistics, customs, and registration — so you can enjoy your car hassle-free.",
+			"fleetTitle": "Corporate Fleet Services",
+			"fleetText": "Empower your business with customized fleet management solutions. We provide reliable, cost-effective vehicles and long-term contracts tailored to meet your corporate needs.",
+			"supportTitle": "Customer Care & Support",
+			"supportText": "Our relationship doesn’t end with the sale. We provide after-sales guidance, documentation support, and dedicated customer service, ensuring peace of mind with every drive"
 		},
 		"offices": {
-			"title": "Our Offices",
-			"subtitle": "Global presence with local expertise",
-			"chlef": {
-				"title": "Chlef — Algeria",
-				"label": "Main (Sales & Service)",
-				"description": "Address and contact details go here. In-person inspections and test drives available."
-			},
-			"jijel": {
-				"title": "Jijel — Algeria",
-				"label": "Local Branch",
-				"description": "Local stock, quick delivery to nearby cities, and after-sales pickup point."
-			},
-			"doha": {
-				"title": "Doha — Qatar",
-				"label": "Regional Hub",
-				"description": "Coordination with international suppliers and export logistics."
-			}
+			"title": "Our Global Offices",
+			"subtitle": "Strategic locations serving customers worldwide",
+			"chlefTitle": "Chlef Office",
+			"chlefBadge": "Headquarters",
+			"chlefText": "Main operational center with extensive vehicle inventory and customer service facilities.",
+			"jijelTitle": "Jijel Office",
+			"jijelBadge": "Regional Hub",
+			"jijelText": "Strategic location serving eastern regions with premium vehicles and rental services.",
+			"dohaTitle": "Doha Office",
+			"dohaBadge": "International",
+			"dohaText": "Global sourcing and international client services in the heart of Qatar."
 		},
 		"cta": {
-			"title": "Ready to find your next car?",
-			"description": "Whether it's buying locally, importing, or renting — our team at ABR_DELUXE Auto makes the process simple and transparent.",
-			"button": "Contact Sales"
+			"title": "Ready to Drive Your Dream Car?",
+			"subtitle": "Contact us today for premium vehicles and exceptional service",
+			"button": "Get Started"
 		}
 	},
+
 	"Browser": {
 		"carBrowser": {
 			"header": {

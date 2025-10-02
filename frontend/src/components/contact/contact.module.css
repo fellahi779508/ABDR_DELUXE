@@ -1,7 +1,7 @@
 .contact-container {
-	max-width: 1200px;
+	max-width: 1400px;
 	margin: 0 auto;
-	padding: 2rem;
+	padding: 1rem;
 	background: var(--background);
 	min-height: 100vh;
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -9,7 +9,7 @@
 
 .brand-header {
 	text-align: center;
-	margin-bottom: 3rem;
+	margin-bottom: 1rem;
 	padding: 2rem;
 	background: var(--primary);
 	border-radius: var(--radius);

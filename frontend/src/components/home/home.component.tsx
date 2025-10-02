@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import React, { useState, useEffect } from "react";
 import styles from "./home.module.css";
@@ -17,66 +18,38 @@ export default function HomeComponent() {
 	return (
 		<main className={styles.container} role="main">
 			{/* HERO */}
-			<section
-				className={`${styles.hero} ${isVisible ? styles.visible : ""}`}
-				aria-labelledby="hero-title"
-			>
-				<div className={styles.heroBackground}></div>
+			<section className={`${styles.hero} ${isVisible ? styles.visible : ""}`}>
 				<div className={styles.heroContent}>
 					<div className={styles.heroLeft}>
-						<div className={styles.badgeContainer}>
-							<span className={styles.badge}>{t("hero.badge")}</span>
-							<div className={styles.badgeGlow}></div>
+						<div className={styles.badge}>
+							<span style={{ color: "var(--primary)" }}>ABR</span>
+							<span style={{ color: "var(--text)" }}>DELUXE</span>
+							<span style={{ color: "var(--primary)" }}>AUTO</span>
 						</div>
-						<h1 id="hero-title">
-							<span className={styles.titleLine}>{t("hero.title1")}</span>
-							<span className={styles.titleLine}>{t("hero.title2")}</span>
-						</h1>
-						<p className={styles.lead}>{t("hero.lead")}</p>
+
+						<h1>{t("hero.title")}</h1>
+						<p className={styles.lead}>{t("hero.subtitle")}</p>
 
 						<div className={styles.heroActions}>
 							<button
 								className={styles.primaryBtn}
 								onClick={() => router.push("/buy")}
 							>
-								<span>{t("hero.button")}</span>
-								<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+								{t("hero.browseCars")}
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
 									<path
 										d="M5 12H19M19 12L12 5M19 12L12 19"
 										stroke="currentColor"
 										strokeWidth="2"
-										strokeLinecap="round"
-										strokeLinejoin="round"
 									/>
 								</svg>
 							</button>
-						</div>
-
-						<div className={styles.quickStats}>
-							<div className={styles.statItem}>
-								<div className={styles.statNumber}>
-									{t("hero.stats.brands.number")}
-								</div>
-								<div className={styles.statLabel}>
-									{t("hero.stats.brands.label")}
-								</div>
-							</div>
-							<div className={styles.statItem}>
-								<div className={styles.statNumber}>
-									{t("hero.stats.cars.number")}
-								</div>
-								<div className={styles.statLabel}>
-									{t("hero.stats.cars.label")}
-								</div>
-							</div>
-							<div className={styles.statItem}>
-								<div className={styles.statNumber}>
-									{t("hero.stats.offices.number")}
-								</div>
-								<div className={styles.statLabel}>
-									{t("hero.stats.offices.label")}
-								</div>
-							</div>
+							<button
+								className={styles.ghostBtn}
+								onClick={() => router.push("/contact")}
+							>
+								{t("hero.contactUs")}
+							</button>
 						</div>
 					</div>
 
@@ -84,222 +57,190 @@ export default function HomeComponent() {
 						<div className={styles.imageContainer}>
 							<Image
 								src={"/images/homeHero.jpg"}
-								alt="ABR_DELUXE main office"
+								alt="Luxury cars at ABR Deluxe Auto"
 								className={styles.mainImage}
 								priority
-								width={2000}
-								height={2000}
+								width={1000}
+								height={1000}
 							/>
-							<div className={styles.imageOverlay}></div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{/* ABOUT */}
+			<section className={styles.about}>
+				<div className={styles.aboutContent}>
+					<div className={styles.aboutText}>
+						<h2>{t("about.title")}</h2>
+						<p>{t("about.p1")}</p>
+						<p>{t("about.p2")}</p>
+						<p>{t("about.p3")}</p>
+						<p>{t("about.p4")}</p>
+						<p>{t("about.p5")}</p>
+					</div>
+
+					<div className={styles.missionGrid}>
+						<div className={styles.missionCard}>
+							<h3>{t("about.visionTitle")}</h3>
+							<p>{t("about.visionText")}</p>
+						</div>
+						<div className={styles.missionCard}>
+							<h3>{t("about.missionTitle")}</h3>
+							<p>{t("about.missionText")}</p>
+						</div>
+					</div>
+
+					<div className={styles.values}>
+						<h3>{t("about.valuesTitle")}</h3>
+						<div className={styles.valuesGrid}>
+							<div className={styles.valueItem}>
+								<span className={styles.valueIcon}>✓</span>
+								<span>{t("about.values.integrity")}</span>
+							</div>
+							<div className={styles.valueItem}>
+								<span className={styles.valueIcon}>✓</span>
+								<span>{t("about.values.excellence")}</span>
+							</div>
+							<div className={styles.valueItem}>
+								<span className={styles.valueIcon}>✓</span>
+								<span>{t("about.values.innovation")}</span>
+							</div>
+							<div className={styles.valueItem}>
+								<span className={styles.valueIcon}>✓</span>
+								<span>{t("about.values.customer")}</span>
+							</div>
+							<div className={styles.valueItem}>
+								<span className={styles.valueIcon}>✓</span>
+								<span>{t("about.values.sustainability")}</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</section>
 
 			{/* SERVICES */}
-			<section className={styles.services} aria-labelledby="services-title">
+			<section className={styles.services}>
 				<div className={styles.sectionHeader}>
-					<h2 id="services-title">{t("services.title")}</h2>
-					<p className={styles.sectionSubtitle}>{t("services.subtitle")}</p>
+					<h2>{t("services.title")}</h2>
+					<p>{t("services.subtitle")}</p>
 				</div>
 
 				<div className={styles.serviceGrid}>
-					<article className={styles.serviceCard}>
-						<div className={styles.cardBackground}></div>
-						<div className={styles.iconWrap}>
-							<svg viewBox="0 0 24 24" fill="none">
-								{" "}
-								<path
-									d="M3 13l1.5-4.5A2 2 0 0 1 6.3 7h11.4a2 2 0 0 1 1.8 1.5L21 13"
-									stroke="currentColor"
-									strokeWidth="1.2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>{" "}
-								<path
-									d="M5 16v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1M17 16v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1"
-									stroke="currentColor"
-									strokeWidth="1.2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>{" "}
-							</svg>
-						</div>
-						<h3>{t("services.buy.title")}</h3>
-						<p>{t("services.buy.description")}</p>
-						<div className={styles.cardHover}></div>
-					</article>
+					<div className={styles.serviceCard}>
+						<div className={styles.serviceIcon}>🚗</div>
+						<h3>{t("services.salesTitle")}</h3>
+						<p>{t("services.salesText")}</p>
+					</div>
 
-					<article className={styles.serviceCard}>
-						<div className={styles.cardBackground}></div>
-						<div className={styles.iconWrap}>
-							<svg viewBox="0 0 24 24" fill="none">
-								{" "}
-								<path
-									d="M4 7h16M4 12h10M4 17h7"
-									stroke="currentColor"
-									strokeWidth="1.6"
-									strokeLinecap="round"
-								/>{" "}
-							</svg>
-						</div>
-						<h3>{t("services.import.title")}</h3>
-						<p>{t("services.import.description")}</p>
-						<div className={styles.flagsRow}>
-							<span className={styles.flag}>🇨🇳</span>
-							<span className={styles.flag}>🇶🇦</span>
-							<span className={styles.flag}>🇦🇪</span>
-						</div>
-						<div className={styles.cardHover}></div>
-					</article>
+					<div className={styles.serviceCard}>
+						<div className={styles.serviceIcon}>⭐</div>
+						<h3>{t("services.rentalsTitle")}</h3>
+						<p>{t("services.rentalsText")}</p>
+					</div>
 
-					<article className={styles.serviceCard}>
-						<div className={styles.cardBackground}></div>
-						<div className={styles.iconWrap}>
-							<svg viewBox="0 0 24 24" fill="none">
-								{" "}
-								<path
-									d="M3 7h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"
-									stroke="currentColor"
-									strokeWidth="1.2"
-								/>{" "}
-								<path
-									d="M8 7V5a4 4 0 0 1 8 0v2"
-									stroke="currentColor"
-									strokeWidth="1.2"
-								/>{" "}
-							</svg>
-						</div>
-						<h3>{t("services.rent.title")}</h3>
-						<p>{t("services.rent.description")}</p>
-						<div className={styles.cardHover}></div>
-					</article>
+					<div className={styles.serviceCard}>
+						<div className={styles.serviceIcon}>🌍</div>
+						<h3>{t("services.importTitle")}</h3>
+						<p>{t("services.importText")}</p>
+					</div>
 
-					<article className={styles.serviceCard}>
-						<div className={styles.cardBackground}></div>
-						<div className={styles.iconWrap}>
-							<svg viewBox="0 0 24 24" fill="none">
-								{" "}
-								<path
-									d="M12 2v6"
-									stroke="currentColor"
-									strokeWidth="1.2"
-									strokeLinecap="round"
-								/>{" "}
-								<path
-									d="M20 12h-6M4 12h6"
-									stroke="currentColor"
-									strokeWidth="1.2"
-									strokeLinecap="round"
-								/>{" "}
-							</svg>
-						</div>
-						<h3>{t("services.support.title")}</h3>
-						<p>{t("services.support.description")}</p>
-						<div className={styles.cardHover}></div>
-					</article>
+					<div className={styles.serviceCard}>
+						<div className={styles.serviceIcon}>🏢</div>
+						<h3>{t("services.fleetTitle")}</h3>
+						<p>{t("services.fleetText")}</p>
+					</div>
+
+					<div className={styles.serviceCard}>
+						<div className={styles.serviceIcon}>🔧</div>
+						<h3>{t("services.supportTitle")}</h3>
+						<p>{t("services.supportText")}</p>
+					</div>
 				</div>
 			</section>
 
 			{/* OFFICES */}
-			<section className={styles.offices} aria-labelledby="offices-title">
+			<section className={styles.offices}>
 				<div className={styles.sectionHeader}>
-					<h2 id="offices-title">{t("offices.title")}</h2>
-					<p className={styles.sectionSubtitle}>{t("offices.subtitle")}</p>
+					<h2>{t("offices.title")}</h2>
+					<p>{t("offices.subtitle")}</p>
 				</div>
 
 				<div className={styles.officesGrid}>
 					<div className={styles.officeCard}>
-						<div className={styles.officeHeader}>
-							<h3>{t("offices.chlef.title")}</h3>
-							<span className={styles.officeLabel}>
-								{t("offices.chlef.label")}
-							</span>
-						</div>
-						<p className={styles.officeText}>
-							{t("offices.chlef.description")}
-						</p>
 						<div className={styles.officeImage}>
-							<div className={styles.imagePlaceholderSmall}>
-								<Image
-									src="/main/chlef.JPG"
-									alt="Office Image"
-									width={1000}
-									height={1000}
-								/>
-							</div>
+							<Image
+								src="/main/chlef.JPG"
+								alt="Chlef Office"
+								width={400}
+								height={250}
+							/>
+						</div>
+						<div className={styles.officeInfo}>
+							<h3>{t("offices.chlefTitle")}</h3>
+							<span className={styles.officeBadge}>
+								{t("offices.chlefBadge")}
+							</span>
+							<p>{t("offices.chlefText")}</p>
 						</div>
 					</div>
 
 					<div className={styles.officeCard}>
-						<div className={styles.officeHeader}>
-							<h3>{t("offices.jijel.title")}</h3>
-							<span className={styles.officeLabel}>
-								{t("offices.jijel.label")}
-							</span>
-						</div>
-						<p className={styles.officeText}>
-							{t("offices.jijel.description")}
-						</p>
 						<div className={styles.officeImage}>
-							<div className={styles.imagePlaceholderSmall}>
-								<Image
-									src="/main/jijel.JPG"
-									alt="Office Image"
-									width={600}
-									height={600}
-								/>
-							</div>
+							<Image
+								src="/main/jijel.JPG"
+								alt="Jijel Office"
+								width={400}
+								height={250}
+							/>
+						</div>
+						<div className={styles.officeInfo}>
+							<h3>{t("offices.jijelTitle")}</h3>
+							<span className={styles.officeBadge}>
+								{t("offices.jijelBadge")}
+							</span>
+							<p>{t("offices.jijelText")}</p>
 						</div>
 					</div>
 
 					<div className={styles.officeCard}>
-						<div className={styles.officeHeader}>
-							<h3>{t("offices.doha.title")}</h3>
-							<span className={styles.officeLabel}>
-								{t("offices.doha.label")}
-							</span>
-						</div>
-						<p className={styles.officeText}>{t("offices.doha.description")}</p>
 						<div className={styles.officeImage}>
-							<div className={styles.imagePlaceholderSmall}>
-								<Image
-									src="/main/quatar.JPG"
-									alt="Office Image"
-									width={600}
-									height={600}
-								/>
-							</div>
+							<Image
+								src="/main/quatar.JPG"
+								alt="Doha Office"
+								width={400}
+								height={250}
+							/>
+						</div>
+						<div className={styles.officeInfo}>
+							<h3>{t("offices.dohaTitle")}</h3>
+							<span className={styles.officeBadge}>
+								{t("offices.dohaBadge")}
+							</span>
+							<p>{t("offices.dohaText")}</p>
 						</div>
 					</div>
 				</div>
 			</section>
 
 			{/* CTA */}
-			<section className={styles.ctaSection} aria-labelledby="cta-title">
-				<div className={styles.ctaBackground}></div>
-				<div className={styles.ctaInner}>
-					<div className={styles.ctaContent}>
-						<h2 id="cta-title">{t("cta.title")}</h2>
-						<p>{t("cta.description")}</p>
-					</div>
-					<div className={styles.ctaActions}>
-						<button
-							className={styles.primaryBtn}
-							onClick={() => router.push("/contact")}
-						>
-							<span>{t("cta.button")}</span>
-							<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-								<path
-									d="M5 12H19M19 12L12 5M19 12L12 19"
-									stroke="currentColor"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-						</button>
-					</div>
+			<section className={styles.cta}>
+				<div className={styles.ctaContent}>
+					<h2>{t("cta.title")}</h2>
+					<p>{t("cta.subtitle")}</p>
+					<button
+						className={styles.primaryBtn}
+						onClick={() => router.push("/contact")}
+					>
+						{t("cta.button")}
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+							<path
+								d="M5 12H19M19 12L12 5M19 12L12 19"
+								stroke="currentColor"
+								strokeWidth="2"
+							/>
+						</svg>
+					</button>
 				</div>
 			</section>
 		</main>
