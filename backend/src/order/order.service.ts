@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './order.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Status } from 'src/utils/enums';
@@ -18,7 +18,15 @@ export class OrderService {
     const [orders, count] = await this.orderRepo.findAndCount({
       skip,
       take: limit,
-      relations: ['cart', 'cart.soldItem', 'cart.soldItem.car'],
+      relations: [
+        'cart',
+        'cart.soldItem',
+        'cart.soldItem.car',
+        'cart.soldItem.car.colors',
+        'cart.soldItem.car.colors.images',
+        'cart.soldItem.car.serie',
+        'cart.soldItem.car.serie.brand',
+      ],
       order: { createdAt: 'DESC' },
     });
     if (count === 0) {
@@ -30,7 +38,7 @@ export class OrderService {
   }
 
   async createNewOrder(dto: CreateOrderDto) {
-    const { name, phone, address, email, cartId } = dto;
+    const { name, phone, address, email, cartId, passport } = dto;
     const cart = await this.cartService.getCartById(cartId);
     const order = this.orderRepo.create({
       name,
@@ -38,8 +46,19 @@ export class OrderService {
       address,
       email,
       cart,
+      passport,
     });
-    return await this.orderRepo.save(order);
+    const orderCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const isFound = await this.orderRepo.findOne({
+      where: { OrderCode: orderCode },
+    });
+    if (isFound) {
+      const newCode = Math.floor(100000 + Math.random() * 900000).toString();
+      return await this.orderRepo.save({ ...order, OrderCode: newCode });
+    }
+    order.OrderCode = orderCode;
+    await this.orderRepo.save(order);
+    return order.OrderCode;
   }
   async getOrderById(id: string) {
     const order = await this.orderRepo.findOne({
@@ -99,8 +118,51 @@ export class OrderService {
     order.status = Status.COMPLETED;
     return await this.orderRepo.save(order);
   }
+  async deliverOrder(id: string) {
+    const order = await this.orderRepo.findOne({
+      where: { id },
+      relations: ['cart', 'cart.soldItem', 'cart.soldItem.car'],
+    });
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    order.status = Status.DELIVERED;
+    return await this.orderRepo.save(order);
+  }
+  async refundOrder(id: string) {
+    const order = await this.orderRepo.findOne({
+      where: { id },
+      relations: ['cart', 'cart.soldItem', 'cart.soldItem.car'],
+    });
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    order.status = Status.REFUNDED;
+    return await this.orderRepo.save(order);
+  }
   async DeleteAllOrders() {
     const orders = await this.orderRepo.find();
     return await this.orderRepo.remove(orders);
+  }
+  async SearchOrders(query: string) {
+    const orders = await this.orderRepo.find({
+      where: [
+        { name: ILike(`%${query}%`) },
+        { phone: ILike(`%${query}%`) },
+        { address: ILike(`%${query}%`) },
+        { email: ILike(`%${query}%`) },
+        { OrderCode: ILike(`%${query}%`) },
+      ],
+      relations: [
+        'cart',
+        'cart.soldItem',
+        'cart.soldItem.car',
+        'cart.soldItem.car.colors',
+        'cart.soldItem.car.colors.images',
+        'cart.soldItem.car.serie',
+        'cart.soldItem.car.serie.brand',
+      ],
+    });
+    return orders;
   }
 }

@@ -7,6 +7,7 @@ import {
 	DeleteCarById,
 	DeleteColorById,
 	DeleteOptionById,
+	ResetCarViews,
 	UpdateCarById,
 	UpdateColorName,
 	UpdateOption,
@@ -29,6 +30,8 @@ function SelectedCarDetails({ car }: CarProps) {
 			if (response.id) {
 				toast.success("Car updated successfully");
 				setSelectedCar({ ...selectedCar, ...data });
+			} else {
+				toast.error(response.message);
 			}
 		} catch (error) {
 			console.error(error);
@@ -244,7 +247,9 @@ function SelectedCarDetails({ car }: CarProps) {
 						if (key === "isShiped")
 							return (
 								<div key={key} className={styles.detail_item}>
-									<span className={styles.detail_label}>Available ?</span>
+									<span className={styles.detail_label}>
+										Available locally ?
+									</span>
 									<input
 										type="checkbox"
 										className={styles.checkbox}
@@ -258,7 +263,18 @@ function SelectedCarDetails({ car }: CarProps) {
 									/>
 								</div>
 							);
-
+						if (key === "views")
+							return (
+								<div key={key} className={styles.detail_item}>
+									<span className={styles.detail_label}>Views</span>
+									<button
+										className={styles.btn}
+										onClick={() => ResetCarViews(selectedCar.id)}
+									>
+										Reset
+									</button>
+								</div>
+							);
 						return (
 							<div key={key} className={styles.detail_item}>
 								<span className={styles.detail_label}>

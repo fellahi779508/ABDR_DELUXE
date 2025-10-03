@@ -241,7 +241,9 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 							type="text"
 							placeholder={t("carBrowser.search.placeholder")}
 							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
+							onChange={(e) => (
+								setSearchQuery(e.target.value), setSelectedBrand(-1)
+							)}
 							onKeyPress={(e) => e.key === "Enter" && handleSearch()}
 							className={styles.searchInput}
 						/>
@@ -276,7 +278,9 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 									onClick={() => (
 										setTypeOfCars("all"),
 										setBrand(SVbrands),
-										setVisibleCars(AllCars)
+										setVisibleCars(AllCars),
+										setIsSearching(false),
+										setSearchQuery("")
 									)}
 								>
 									{t("carBrowser.types.all")}
@@ -304,7 +308,11 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 									className={`${styles.brandPill} ${
 										selectedBrand === null ? styles.active : ""
 									}`}
-									onClick={handleAllBtnCLick}
+									onClick={() => (
+										handleAllBtnCLick(),
+										setIsSearching(false),
+										setSelectedBrand(null)
+									)}
 								>
 									All
 								</button>
@@ -315,7 +323,9 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 											selectedBrand === brand.id ? styles.active : ""
 										}`}
 										onClick={() => (
-											GetSeriesOfBrand(brand.id), getCarsOfBrand(brand.id)
+											GetSeriesOfBrand(brand.id),
+											getCarsOfBrand(brand.id),
+											setIsSearching(false)
 										)}
 									>
 										<Image

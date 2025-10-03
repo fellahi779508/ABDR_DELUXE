@@ -235,6 +235,46 @@
 	align-items: center;
 	gap: 1rem;
 }
+/* Add to your existing CSS */
+.linkWithBadge {
+	position: relative;
+	display: inline-block;
+}
+
+.notificationBadge {
+	position: absolute;
+	top: -8px;
+	right: -8px;
+	background-color: #ef4444;
+	color: white;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.75rem;
+	font-weight: bold;
+	animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+/* Make sure the link has relative positioning for the badge */
+.link {
+	position: relative;
+	/* your existing link styles */
+}
 
 .mobile_cart,
 .mobile_Cart {

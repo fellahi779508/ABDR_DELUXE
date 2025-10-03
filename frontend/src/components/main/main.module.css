@@ -69,9 +69,6 @@
 	height: 100%;
 	z-index: 2;
 	position: relative;
-	/* background: url("../../../public/images/Logo.PNG") no-repeat center center;
-	background-size: contain;
-	background-position: 520px 60px; */
 }
 
 .content-wrapper {

@@ -26,4 +26,19 @@ export class SoldItemService {
     if (!soldItem) throw new NotFoundException('SoldItem not found');
     return soldItem;
   }
+  async DeleteSoldItemById(id: number) {
+    const soldItem = await this.soldItemRepo.findOne({
+      where: { id },
+      relations: ['cart', 'cart.soldItem', 'cart.soldItem.car'],
+    });
+    if (!soldItem) throw new NotFoundException('SoldItem not found');
+    console.log(soldItem.id);
+    return await this.soldItemRepo.remove(soldItem);
+  }
+  async UpdateSoldItemById(id: number, quantity: number) {
+    const soldItem = await this.soldItemRepo.findOne({ where: { id } });
+    if (!soldItem) throw new NotFoundException('SoldItem not found');
+    soldItem.quantity = quantity;
+    return await this.soldItemRepo.save(soldItem);
+  }
 }

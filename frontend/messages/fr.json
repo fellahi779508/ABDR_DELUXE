@@ -223,7 +223,8 @@
 				"fuel": "Type de carburant",
 				"mileage": "Kilométrage",
 				"year": "Année",
-				"color": "Couleur"
+				"color": "Couleur",
+				"views": "Vues : "
 			},
 			"description": {
 				"title": "Description"
@@ -277,6 +278,7 @@
 			"cannotRemoveLast": "Vous ne pouvez pas supprimer le dernier véhicule",
 			"fillFields": "Veuillez remplir tous les champs",
 			"invalidEmail": "Veuillez entrer une adresse email valide",
+			"invalidPhone": "Veuillez entrer un numéro de téléphone valide",
 			"orderFailed": "Une erreur s'est produite lors de la commande"
 		},
 		"summary": {
@@ -371,5 +373,11 @@
 			"increase": "Augmenter la quantité"
 		}
 	},
-	"Ads": {}
+	"orderError": {
+		"title": "Commande annulée",
+		"message1": "Vous ne pouvez commander qu'une seule fois, la commande est limitée.",
+		"message2": "Veuillez nous contacter pour plus de commandes.",
+		"homeBtn": "Retour à l'accueil",
+		"contactBtn": "Contacter le support"
+	}
 }

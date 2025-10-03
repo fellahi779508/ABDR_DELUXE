@@ -135,6 +135,8 @@ export default function Ads({ ads }: AdsComponentProps) {
 										? "pointer"
 										: "default",
 							}}
+							onMouseEnter={() => setIsAutoPlaying(false)}
+							onMouseLeave={() => setIsAutoPlaying(true)}
 						>
 							<Image
 								src={currentAd.url}

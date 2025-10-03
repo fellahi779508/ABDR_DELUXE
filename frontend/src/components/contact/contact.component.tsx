@@ -3,6 +3,7 @@
 "use client";
 import { useState } from "react";
 import style from "./contact.module.css";
+import { Phone, MessageCircle } from "lucide-react";
 
 const ContactList = () => {
 	const [selectedLocation, setSelectedLocation] = useState("all");
@@ -12,10 +13,10 @@ const ContactList = () => {
 			id: 1,
 			name: "Chlef",
 			numbers: [
-				"+213553747261",
-				"+213772278102",
-				"+213540822898",
-				"+213553679758",
+				"+213 553 74 72 61",
+				"+213 772 27 81 02",
+				"+213 540 82 28 98",
+				"+213 553 67 97 58",
 			],
 			mapLink: "https://maps.app.goo.gl/eNhG4sJcpDcArbhv9?g_st=ipc",
 			flag: "🇩🇿",
@@ -24,7 +25,7 @@ const ContactList = () => {
 		{
 			id: 2,
 			name: "Jijel",
-			numbers: ["+213556648331", "+213777884152"],
+			numbers: ["+213 556 64 83 31", "+213 777 88 41 52"],
 			mapLink: "https://maps.app.goo.gl/DdgPyHgVq6AtJX566?g_st=ipc",
 			flag: "🇩🇿",
 			country: "algeria",
@@ -46,18 +47,8 @@ const ContactList = () => {
 		return true;
 	});
 
-	const copyToClipboard = (text: any) => {
-		navigator.clipboard.writeText(text.replace(/\s/g, "").replace("+", ""));
-	};
-
 	return (
 		<div className={style["contact-container"]}>
-			{/* Brand Header */}
-			{/* <div className={style["brand-header"]}>
-				<h1 className={style["brand-name"]}>ABR_DELUXE Auto</h1>
-				<p className={style["brand-subtitle"]}>Premium Automotive Services</p>
-			</div> */}
-
 			{/* Filter Section */}
 			<div className={style["filter-section"]}>
 				<button
@@ -100,25 +91,28 @@ const ContactList = () => {
 							<div className={style["phone-section"]}>
 								<div className={style["country-label"]}>Phone Numbers</div>
 								{location.numbers.map((number, index) => (
-									<div
-										key={index}
-										className={style["phone-number"]}
-										onClick={() => copyToClipboard(number)}
-										title="Click to copy"
-									>
-										{number}
+									<div key={index} className={style["phone-number"]}>
+										<span>{number}</span>
 										<div className={style["phone-actions"]}>
+											{/* WhatsApp */}
 											<a
 												href={`https://wa.me/${number
 													.replace(/\s/g, "")
 													.replace("+", "")}`}
-												className={style["whatsapp-icon"]}
 												target="_blank"
 												rel="noopener noreferrer"
+												className={style["whatsapp-icon"]}
 												title="Chat on WhatsApp"
-												onClick={(e) => e.stopPropagation()}
 											>
-												💬
+												<MessageCircle size={20} color="#25D366" />
+											</a>
+											{/* Call */}
+											<a
+												href={`tel:${number.replace(/\s/g, "")}`}
+												className={style["whatsapp-icon"]}
+												title="Call"
+											>
+												<Phone size={20} color="#007bff" />
 											</a>
 										</div>
 									</div>
@@ -135,18 +129,6 @@ const ContactList = () => {
 										rel="noopener noreferrer"
 									>
 										Map
-									</a>
-								)}
-								{location.numbers[0] && (
-									<a
-										href={`https://wa.me/${location.numbers[0]
-											.replace(/\s/g, "")
-											.replace("+", "")}`}
-										className={`${style["btn"]} ${style["btn-whatsapp"]}`}
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										WhatsApp
 									</a>
 								)}
 							</div>

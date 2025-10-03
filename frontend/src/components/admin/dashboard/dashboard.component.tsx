@@ -1,5 +1,12 @@
 "use client";
-import { Car, Clipboard, GalleryHorizontalIcon, LogOut } from "lucide-react";
+import {
+	Car,
+	Clipboard,
+	GalleryHorizontal,
+	GalleryHorizontalIcon,
+	GalleryThumbnails,
+	LogOut,
+} from "lucide-react";
 import styles from "./dashboard.component.module.css";
 import { logout } from "@/utils/Admin";
 import Link from "next/link";
@@ -30,6 +37,10 @@ function Dashboard_Component() {
 				<Link href="/admin/dashboard/promotions" className={styles.option}>
 					<GalleryHorizontalIcon />
 					<span>Manage Promotions</span>
+				</Link>
+				<Link href="/admin/dashboard/promotions" className={styles.option}>
+					<GalleryThumbnails />
+					<span>Manage Gallery</span>
 				</Link>
 				<div className={styles.option} onClick={() => handleLogout()}>
 					<LogOut />

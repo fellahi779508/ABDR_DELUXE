@@ -8,6 +8,21 @@
 	padding: 0.5rem;
 	font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
 		sans-serif;
+	position: relative;
+}
+.main::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: url("../../../public/images/logo.png") no-repeat center center;
+	background-size: clamp(100px, 100vw, 950px, 100vh);
+	opacity: 0.2;
+	pointer-events: none;
+	background-position: center center center;
+	z-index: -2;
 }
 
 .header {

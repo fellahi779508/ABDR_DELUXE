@@ -93,6 +93,7 @@ function OrderComponent({ price }: Props) {
 		email: "",
 		phone: "",
 		address: "",
+		passport: "",
 	});
 	const [address, setAddress] = useState("");
 	const [wilaya, setWilaya] = useState("");
@@ -102,6 +103,7 @@ function OrderComponent({ price }: Props) {
 	const [quantities, setQuantities] = useState<{ [itemId: string]: number }>(
 		{}
 	);
+	const [orderCode, setOrderCode] = useState(0);
 
 	useEffect(() => {
 		const fetchCars = async () => {
@@ -225,7 +227,14 @@ function OrderComponent({ price }: Props) {
 	};
 
 	async function HandleSubmit() {
-		if (!order.name || !order.email || !order.phone || !address || !wilaya) {
+		if (
+			!order.name ||
+			!order.email ||
+			!order.phone ||
+			!address ||
+			!wilaya ||
+			!order.passport
+		) {
 			toast.error(t("errors.fillFields"));
 			return;
 		}
@@ -234,6 +243,11 @@ function OrderComponent({ price }: Props) {
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!emailRegex.test(order.email)) {
 			toast.error(t("errors.invalidEmail"));
+			return;
+		}
+		const phoneRegex = /^(00213|\+213|0)(5|6|7)[0-9]{8}$/;
+		if (!phoneRegex.test(order.phone)) {
+			toast.error(t("errors.invalidPhone"));
 			return;
 		}
 
@@ -277,12 +291,13 @@ function OrderComponent({ price }: Props) {
 				phone: newOrder.phone,
 				address: newOrder.address,
 				cartId: cart.id,
+				passport: newOrder.passport,
 			});
 			if (orderRes) {
 				toast.success(t("notifications.success"));
 				// Clear cart after successful order
 				localStorage.removeItem("carDealershipCart");
-				redirect("/order/completed");
+				redirect(`/order/${orderRes}`);
 			} else {
 				console.log(t("errors.orderFailed"));
 			}
@@ -456,6 +471,18 @@ function OrderComponent({ price }: Props) {
 								required
 								placeholder={t("form.placeholders.phone")}
 								onChange={(e) => setOrder({ ...order, phone: e.target.value })}
+							/>
+						</div>
+						<div className={styles.field}>
+							<label htmlFor="passport">Passport number : </label>
+							<input
+								type="text"
+								id="passport"
+								required
+								placeholder="Passport"
+								onChange={(e) =>
+									setOrder({ ...order, passport: e.target.value })
+								}
 							/>
 						</div>
 					</div>

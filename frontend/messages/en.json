@@ -223,7 +223,8 @@
 				"fuel": "Fuel type",
 				"mileage": "Mileage",
 				"year": "Year",
-				"color": "Color"
+				"color": "Color",
+				"views": "Views : "
 			},
 			"description": {
 				"title": "Description"
@@ -276,6 +277,7 @@
 			"cannotRemoveLast": "You can't remove the last vehicle",
 			"fillFields": "Please fill in all fields",
 			"invalidEmail": "Please enter a valid email address",
+			"invalidPhone": "Please enter a valid phone number",
 			"orderFailed": "An error occurred while placing your order"
 		},
 		"summary": {
@@ -369,5 +371,12 @@
 			"decrease": "Decrease quantity",
 			"increase": "Increase quantity"
 		}
+	},
+	"orderError": {
+		"title": "Order Cancelled",
+		"message1": "You can only order once, ordering is limited.",
+		"message2": "Please contact us for more orders.",
+		"homeBtn": "Back to Home",
+		"contactBtn": "Contact Support"
 	}
 }

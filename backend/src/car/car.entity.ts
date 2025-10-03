@@ -81,4 +81,10 @@ export class Car {
   oldPrice?: number;
   @OneToMany(() => SoldItem, (soldItem) => soldItem.car)
   soldItem: SoldItem;
+  @Column({ nullable: true })
+  views: number;
+  @BeforeInsert()
+  generateViews() {
+    this.views = 0;
+  }
 }

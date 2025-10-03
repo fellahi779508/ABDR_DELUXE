@@ -11,6 +11,7 @@ import {
 	Star,
 	Bolt,
 	Shield,
+	Eye,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -23,6 +24,7 @@ type CarDetailsProps = {
 	data: Car;
 };
 type Car = {
+	views: number;
 	finition: string;
 	id: string;
 	price: number;
@@ -498,6 +500,16 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						>
 							<ParkingMeter size={20} />
 							<span>{data.Kilométrage} </span>
+						</motion.div>
+						<motion.div
+							className={styles.feature}
+							whileHover={{ scale: 1.05 }}
+							transition={{ duration: 0.2 }}
+						>
+							<Eye size={20} />
+							<span>
+								{t("carDetails.specs.views")} {data.views}{" "}
+							</span>
 						</motion.div>
 					</motion.div>
 

@@ -7,7 +7,7 @@ import { CreateCar, UpdateCar } from "./Types";
 import { redirect } from "next/navigation";
 import { AxiosError } from "axios";
 import { trackSynchronousPlatformIOAccessInDev } from "next/dist/server/app-render/dynamic-rendering";
-import { tr } from "framer-motion/client";
+import { a, q, tr } from "framer-motion/client";
 
 type Car = {
 	Année: string;
@@ -391,6 +391,7 @@ export async function CreateNewOrder(data: any) {
 				phone: data.phone,
 				address: data.address,
 				cartId: data.cartId,
+				passport: data.passport,
 			},
 			{
 				headers: {
@@ -401,7 +402,7 @@ export async function CreateNewOrder(data: any) {
 
 		if (response) {
 			(await cookies()).set("orderDate", new Date().toISOString());
-			return true;
+			return response.data;
 		}
 	} catch (error: any) {
 		console.error(error.response);
@@ -493,6 +494,63 @@ export async function CompleteOrder(id: string) {
 		return false;
 	}
 }
+export async function DeliverOrder(id: string) {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.put(
+			`/order/deliver/${id}`,
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		if (response) {
+			return true;
+		}
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+export async function RefundOrder(id: string) {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.put(
+			`/order/refund/${id}`,
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		if (response) {
+			return true;
+		}
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+export async function SearchOrders(query: string) {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.get(`/order/search/${query}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			console.log(response.data);
+			return response.data;
+		}
+	} catch (error: any) {
+		console.error(error.response.data.message);
+		return [{}];
+	}
+}
 export async function DeleteOrderById(id: string) {
 	const token = (await cookies()).get("access_token")?.value;
 	try {
@@ -506,6 +564,27 @@ export async function DeleteOrderById(id: string) {
 		}
 	} catch (error) {
 		return "error";
+	}
+}
+export async function ResetCarViews(id: string) {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.put(
+			`/car/views/reset/${id}`,
+
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		if (response) {
+			console.log(response.data);
+			return true;
+		}
+	} catch (error) {
+		console.error(error.response);
+		return false;
 	}
 }
 export async function GetCarsOfBrand(BrandId: number) {
@@ -809,6 +888,44 @@ export async function CreateSoldItem(
 		return {};
 	}
 }
+export async function DeleteSoldItemById(id: number) {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.delete(`/soldItem/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			console.log(response.data);
+			return response.data;
+		}
+	} catch (error: any) {
+		console.log(error.response);
+		return {};
+	}
+}
+export async function UpdateSoldItemQantity(id: number, quantity: number) {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.put(
+			`/soldItem/${id}?quantity=${quantity}`,
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		if (response) {
+			console.log(response.data);
+			return true;
+		}
+	} catch (error: any) {
+		console.log(error.response.data.message);
+		return {};
+	}
+}
 export async function CreateCart(soldItemId: number[]) {
 	try {
 		const response = await api.post(`/cart`, { soldItemId });
@@ -900,7 +1017,7 @@ export async function GetAllCarsSlug() {
 			return response.data;
 		}
 	} catch (error: any) {
-		console.error(error.response.data.message);
+		console.error(error.response);
 		return error.response.data.message;
 	}
 }
@@ -916,7 +1033,7 @@ export async function GetAllPromotions() {
 			return response.data;
 		}
 	} catch (error: any) {
-		console.error(error.response.data.message);
+		console.error(error.response);
 		return [];
 	}
 }
@@ -970,7 +1087,7 @@ export async function DeleteAllGallery() {
 			return true;
 		}
 	} catch (error: any) {
-		console.error(error.response.data.message);
+		console.error(error.response);
 		return false;
 	}
 }
@@ -987,7 +1104,24 @@ export async function GetAllGallery() {
 			return response.data;
 		}
 	} catch (error: any) {
-		console.error(error.response.data.message);
+		console.error(error.response);
 		return error.response.data.message;
+	}
+}
+export async function IncrementViews(slug: string) {
+	const view = (await cookies()).get(`${slug}_view`);
+	console.log(view);
+	if (view) {
+		return;
+	}
+	try {
+		const response = await api.post(`/car/view/${slug}`);
+		if (response) {
+			(await cookies()).set(`${slug}_view`, "true");
+			return response.data;
+		}
+	} catch (error: any) {
+		console.log(error.data);
+		return [];
 	}
 }

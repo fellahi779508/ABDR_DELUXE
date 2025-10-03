@@ -38,6 +38,14 @@ export class CarController {
   ) {
     return this.service.GetAllCars(page, limit);
   }
+  @Put('views/reset/:id')
+  ResetViews(@Param('id', ParseUUIDPipe) id: string) {
+    return this.service.resetViews(id);
+  }
+  @Post('view/:slug')
+  IncrementView(@Param('slug') slug: string) {
+    return this.service.incrementViews(slug);
+  }
 
   @Get('visible')
   GetAllVisibleCars() {

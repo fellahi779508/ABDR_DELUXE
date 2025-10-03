@@ -3,4 +3,6 @@ export enum Status {
   NEW = 'new',
   CANCELLED = 'cancelled',
   COMPLETED = 'completed',
+  DELIVERED = 'delivered',
+  REFUNDED = 'refunded',
 }

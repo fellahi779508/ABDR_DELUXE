@@ -16,6 +16,7 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsString()
   phone: string;
+
   @IsString()
   @IsNotEmpty()
   address: string;
@@ -25,4 +26,7 @@ export class CreateOrderDto {
   @IsNumber()
   @IsNotEmpty()
   cartId: number;
+  @IsNotEmpty()
+  @IsString()
+  passport: string;
 }

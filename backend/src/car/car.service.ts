@@ -319,4 +319,14 @@ export class CarService {
     const cars = await this.carRepo.find({ select: ['slug'] });
     return cars.map((car) => car.slug);
   }
+  async incrementViews(slug: string) {
+    const car = await this.getCarBySlug(slug);
+    car.views += 1;
+    return await this.carRepo.save(car);
+  }
+  async resetViews(id: string) {
+    const car = await this.GetCarById(id);
+    car.views = 0;
+    return await this.carRepo.save(car);
+  }
 }
