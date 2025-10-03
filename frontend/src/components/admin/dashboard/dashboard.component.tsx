@@ -38,7 +38,7 @@ function Dashboard_Component() {
 					<GalleryHorizontalIcon />
 					<span>Manage Promotions</span>
 				</Link>
-				<Link href="/admin/dashboard/promotions" className={styles.option}>
+				<Link href="/admin/dashboard/gallery" className={styles.option}>
 					<GalleryThumbnails />
 					<span>Manage Gallery</span>
 				</Link>
