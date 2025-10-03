@@ -484,6 +484,9 @@ s .price_note {
 	.feature_highlights {
 		flex-wrap: wrap;
 	}
+	.main::before {
+		opacity: 0;
+	}
 }
 
 @media (max-width: 768px) {
