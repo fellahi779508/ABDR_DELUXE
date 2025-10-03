@@ -29,7 +29,12 @@ function Footer() {
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								<Facebook />
+								<Image
+									src="/images/facebook.png"
+									alt="facebook"
+									width={28}
+									height={28}
+								/>
 							</Link>
 							<Link
 								href="https://www.instagram.com/abr_deluxe_auto"
@@ -38,7 +43,12 @@ function Footer() {
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								<Instagram />
+								<Image
+									src="/images/insta.png"
+									alt="Instagram"
+									width={24}
+									height={24}
+								/>
 							</Link>
 							<Link
 								href="https://www.tiktok.com/@abrdeluxeautochina?_t=ZS-8ziobk4aG0o&_r=1"
