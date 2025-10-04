@@ -1,3 +1,4 @@
+"use server";
 import { io, Socket } from "socket.io-client";
 
 class SocketService {
@@ -10,7 +11,8 @@ class SocketService {
 
 		this.isConnecting = true;
 
-		const backendUrl = process.env.MAIN_API_URL || "http://localhost:7777";
+		const backendUrl =
+			process.env.MAIN_API_URL || process.env.NEXT_PUBLIC_API_URL;
 		console.log("🔌 Connecting to socket server:", backendUrl);
 
 		this.socket = io(backendUrl, {
