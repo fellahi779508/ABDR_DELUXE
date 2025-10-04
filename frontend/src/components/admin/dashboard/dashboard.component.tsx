@@ -26,19 +26,19 @@ function Dashboard_Component() {
 			</div>
 
 			<div className={styles.Admin_options}>
-				<Link href="/admin/dashboard/orders" className={styles.option}>
+				<Link href="/0218213/dashboard/orders" className={styles.option}>
 					<Clipboard />
 					<span>Manage Orders</span>
 				</Link>
-				<Link href="/admin/dashboard/cars" className={styles.option}>
+				<Link href="/0218213/dashboard/cars" className={styles.option}>
 					<Car />
 					<span>Manage Cars</span>
 				</Link>
-				<Link href="/admin/dashboard/promotions" className={styles.option}>
+				<Link href="/0218213/dashboard/promotions" className={styles.option}>
 					<GalleryHorizontalIcon />
 					<span>Manage Promotions</span>
 				</Link>
-				<Link href="/admin/dashboard/gallery" className={styles.option}>
+				<Link href="/0218213/dashboard/gallery" className={styles.option}>
 					<GalleryThumbnails />
 					<span>Manage Gallery</span>
 				</Link>

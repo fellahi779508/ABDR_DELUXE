@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// components/ContactList.js
 "use client";
+
 import { useState } from "react";
 import style from "./contact.module.css";
 import { Phone, MessageCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const ContactList = () => {
 	const [selectedLocation, setSelectedLocation] = useState("all");
+	const t = useTranslations("contacts");
 
 	const locations = [
 		{
@@ -42,9 +44,7 @@ const ContactList = () => {
 
 	const filteredLocations = locations.filter((location) => {
 		if (selectedLocation === "all") return true;
-		if (selectedLocation === "algeria") return location.country === "algeria";
-		if (selectedLocation === "qatar") return location.country === "qatar";
-		return true;
+		return location.country === selectedLocation;
 	});
 
 	return (
@@ -57,7 +57,7 @@ const ContactList = () => {
 					}`}
 					onClick={() => setSelectedLocation("all")}
 				>
-					All Locations
+					{t("filters.all")}
 				</button>
 				<button
 					className={`${style["filter-btn"]} ${
@@ -65,7 +65,7 @@ const ContactList = () => {
 					}`}
 					onClick={() => setSelectedLocation("algeria")}
 				>
-					Algeria
+					{t("filters.algeria")}
 				</button>
 				<button
 					className={`${style["filter-btn"]} ${
@@ -73,7 +73,7 @@ const ContactList = () => {
 					}`}
 					onClick={() => setSelectedLocation("qatar")}
 				>
-					Qatar
+					{t("filters.qatar")}
 				</button>
 			</div>
 
@@ -89,7 +89,9 @@ const ContactList = () => {
 
 							{/* Phone Numbers */}
 							<div className={style["phone-section"]}>
-								<div className={style["country-label"]}>Phone Numbers</div>
+								<div className={style["country-label"]}>
+									{t("labels.phoneNumbers")}
+								</div>
 								{location.numbers.map((number, index) => (
 									<div key={index} className={style["phone-number"]}>
 										<span>{number}</span>
@@ -102,7 +104,7 @@ const ContactList = () => {
 												target="_blank"
 												rel="noopener noreferrer"
 												className={style["whatsapp-icon"]}
-												title="Chat on WhatsApp"
+												title={t("actions.chat")}
 											>
 												<MessageCircle size={20} color="#25D366" />
 											</a>
@@ -110,7 +112,7 @@ const ContactList = () => {
 											<a
 												href={`tel:${number.replace(/\s/g, "")}`}
 												className={style["whatsapp-icon"]}
-												title="Call"
+												title={t("actions.call")}
 											>
 												<Phone size={20} color="#007bff" />
 											</a>
@@ -128,16 +130,14 @@ const ContactList = () => {
 										target="_blank"
 										rel="noopener noreferrer"
 									>
-										Map
+										{t("labels.map")}
 									</a>
 								)}
 							</div>
 						</div>
 					))
 				) : (
-					<div className={style["no-contacts"]}>
-						No locations found for the selected filter.
-					</div>
+					<div className={style["no-contacts"]}>{t("labels.noContacts")}</div>
 				)}
 			</div>
 		</div>

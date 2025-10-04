@@ -13,7 +13,7 @@ function Login() {
 	async function HandleSubmit() {
 		const response = await login(admin.username, admin.password);
 		if (response) {
-			router.push("/admin/dashboard");
+			router.push("/0218213/dashboard");
 		} else {
 			alert("Invalid username or password");
 		}

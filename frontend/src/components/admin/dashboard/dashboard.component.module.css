@@ -1,11 +1,25 @@
 .container {
 	display: flex;
 	align-items: center;
-	justify-content: center;
 	flex-direction: column;
 	padding: 2rem;
 	width: 100vw;
 	height: 100vh;
+}
+.container::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: url("../../../../public/images/logo.png") no-repeat center center;
+	background-size: clamp(100px, 60vw, 950px);
+	opacity: 0.2;
+	pointer-events: none;
+	background-size: 900px;
+	background-position: center center center;
+	z-index: -2;
 }
 .Admin_options {
 	display: flex;
@@ -65,6 +79,8 @@
 		transform 0.2s ease-in-out 0s, color 0.3s ease-in-out 0s;
 	cursor: pointer;
 	border: 1px solid var(--border);
+	background-color: var(--surface);
+	color: var(--text);
 }
 .option:hover {
 	background-color: var(--primary);

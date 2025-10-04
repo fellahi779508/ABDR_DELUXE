@@ -7,6 +7,7 @@ import { Car, Menu, X, Phone, MapPin, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSocket } from "@/hooks/useSocket";
 import { toast, ToastContainer } from "react-toastify";
+import Image from "next/image";
 
 function AdminHeader() {
 	const router = useRouter();
@@ -33,12 +34,17 @@ function AdminHeader() {
 				<div className={styles.container}>
 					<div className={styles.nav_content}>
 						<div className={styles.brand}>
-							<button
-								className={styles.logoLink}
-								onClick={() => router.push("/admin/dashboard")}
-							>
-								<span className={styles.logoText}>ABR DELUXE Admin</span>
-							</button>
+							<div className={styles.logoWrapper}>
+								<Image
+									src="/images/logo.png"
+									alt="logo"
+									width={180}
+									height={100}
+									className={styles.logo}
+									onClick={() => router.push("/0218213/dashboard")}
+									style={{ cursor: "pointer" }}
+								/>
+							</div>
 						</div>
 
 						<div
@@ -48,7 +54,7 @@ function AdminHeader() {
 						>
 							<div className={styles.linkWithBadge}>
 								<Link
-									href="/admin/dashboard/orders"
+									href="/0218213/dashboard/orders"
 									className={styles.link}
 									onClick={handleOrdersClick}
 								>
@@ -62,21 +68,21 @@ function AdminHeader() {
 							</div>
 
 							<Link
-								href="/admin/dashboard/cars"
+								href="/0218213/dashboard/cars"
 								className={styles.link}
 								onClick={() => setIsMenuOpen(false)}
 							>
 								Cars
 							</Link>
 							<Link
-								href="/admin/dashboard/promotions"
+								href="/0218213/dashboard/promotions"
 								className={styles.link}
 								onClick={() => setIsMenuOpen(false)}
 							>
 								promotions
 							</Link>
 							<Link
-								href="/admin/dashboard/gallery"
+								href="/0218213/dashboard/gallery"
 								className={styles.link}
 								onClick={() => setIsMenuOpen(false)}
 							>

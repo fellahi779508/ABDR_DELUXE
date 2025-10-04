@@ -166,7 +166,6 @@ function PromotionsComp() {
 									placeholder="Choose a car (optional)..."
 									className={styles.select}
 									isLoading={carSlugs.length === 0}
-									defaultInputValue="Select a car..."
 								/>
 							)}
 						</div>

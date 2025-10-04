@@ -29,7 +29,7 @@
 }
 
 .uploadCard {
-	background: white;
+	background: var(--surface);
 	border-radius: var(--radius);
 	padding: 1.5rem;
 	box-shadow: var(--shadow);

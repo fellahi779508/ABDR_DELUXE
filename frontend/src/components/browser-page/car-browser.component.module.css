@@ -274,13 +274,14 @@
 .price {
 	font-size: 1.1rem;
 	font-weight: 700;
-	color: var(--primary);
+	color: rgb(133, 34, 34);
 }
 
 .oldPrice {
 	font-size: 0.8rem;
 	color: var(--text-secondary);
 	text-decoration: line-through;
+	text-decoration-color: rgb(133, 34, 34);
 }
 
 .carTitle h3 {

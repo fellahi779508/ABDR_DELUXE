@@ -7,6 +7,7 @@ import "./languageSwitcher.css";
 const locales = [
 	{ code: "en", label: "🇺🇸 English" },
 	{ code: "fr", label: "🇫🇷 Français" },
+	{ code: "ar", label: "🇸🇦 العربية" },
 ];
 
 export default function LanguageSwitcher() {

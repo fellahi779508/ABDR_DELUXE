@@ -379,5 +379,21 @@
 		"message2": "Veuillez nous contacter pour plus de commandes.",
 		"homeBtn": "Retour à l'accueil",
 		"contactBtn": "Contacter le support"
+	},
+	"contacts": {
+		"filters": {
+			"all": "Toutes les localisations",
+			"algeria": "Algérie",
+			"qatar": "Qatar"
+		},
+		"labels": {
+			"phoneNumbers": "Numéros de téléphone",
+			"map": "Carte",
+			"noContacts": "Aucune localisation trouvée pour le filtre sélectionné."
+		},
+		"actions": {
+			"chat": "Discuter sur WhatsApp",
+			"call": "Appeler"
+		}
 	}
 }
