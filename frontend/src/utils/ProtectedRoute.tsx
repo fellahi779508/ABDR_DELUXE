@@ -7,7 +7,7 @@ import { notFound, redirect } from "next/navigation";
 export default async function ProtectedRoute() {
 	const token = (await cookies()).get("access_token")?.value;
 	if (!token) {
-		redirect("/admin");
+		redirect("/0218213");
 	}
 	try {
 		const { payload } = await jwtVerify(
@@ -15,17 +15,17 @@ export default async function ProtectedRoute() {
 			new TextEncoder().encode(process.env.JWT_SECRET!)
 		);
 		if (payload.username !== process.env.ADMIN_USERNAME) {
-			redirect("/admin");
+			redirect("/0218213");
 		}
 	} catch (error) {
-		redirect("/admin");
+		redirect("/0218213");
 	}
 	return true;
 }
 export async function OrderRoute() {
-	const today = new Date().toISOString().split("T")[0];
-	const oldOrderDate = (await cookies()).get("orderDate")?.value.split("T")[0];
-	if (oldOrderDate === today) {
-		return redirect("/order/oneTime");
-	}
+		// const today = new Date().toISOString().split("T")[0];
+		// const oldOrderDate = (await cookies()).get("orderDate")?.value.split("T")[0];
+		// if (oldOrderDate === today) {
+		// 	return redirect("/order/oneTime");
+		// }
 }

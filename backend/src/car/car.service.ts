@@ -202,14 +202,23 @@ export class CarService {
     const car = await this.carRepo.findOne({
       where: { slug, isVisible: true },
       relations: [
-        'serie',
-        'serie.brand',
-        'colors',
-        'colors.images',
-        'options',
-        'serie.brand.icon',
+      'serie',
+      'serie.brand',
+      'colors',
+      'colors.images',
+      'options',
+      'serie.brand.icon',
       ],
-      order: { colors: { images: { sortOrder: 'ASC' } } },
+      order: {
+      options: {
+        id: 'ASC',
+      },
+      colors: {
+        images: {
+          sortOrder: 'ASC',
+        },
+      },
+      },
     });
     if (!car) {
       throw new NotFoundException('Car not found');

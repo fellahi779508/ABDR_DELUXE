@@ -26,7 +26,7 @@ export class OptionService {
     return await this.optionRepo.save(option);
   }
   async GetAllOptionsOfCar(carId: string) {
-    return await this.optionRepo.find({ where: { car: { id: carId } } });
+    return await this.optionRepo.find({ where: { car: { id: carId } } ,order: { id: 'DESC' }});
   }
   async removeOption(optionId: number) {
     const option = await this.GetOptionById(optionId);

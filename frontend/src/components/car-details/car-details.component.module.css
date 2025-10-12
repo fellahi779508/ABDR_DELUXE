@@ -425,28 +425,32 @@ s .price_note {
 }
 
 .specs_grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-	gap: 1.2rem;
+	display : flex;
+	gap: 1rem;
+	flex-wrap: wrap;
+	flex-grow: 1;
+	flex: 1;
 }
 
 .spec_item {
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	padding: 1rem;
 	background: var(--background);
+	gap: 0.5rem;
+	align-items: center;
 	border-radius: 10px;
 	border: 1px solid var(--border);
 }
 
 .spec_label {
 	font-weight: 500;
-	color: var(--text-secondary);
+	color: var(--text);
 }
 
 .spec_value {
 	font-weight: 600;
-	color: var(--text);
+	color: var(--text-secondary);
 }
 
 .description {

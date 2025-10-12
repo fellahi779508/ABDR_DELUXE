@@ -152,6 +152,10 @@ function AddNewCar() {
 			toast.error("Please add at least one color");
 			return;
 		}
+		if (car.status !== "new" && car.status !== "used") {
+			toast.error("Status must be either 'new' or 'used'");
+			return;
+		}
 
 		setLoading((prev) => ({ ...prev, createCar: true }));
 
@@ -187,7 +191,7 @@ function AddNewCar() {
 		} catch (error) {
 			toast.error("Error creating car");
 		} finally {
-			setTimeout(() => redirect("/admin/dashboard/cars"), 2000);
+			
 			setLoading((prev) => ({ ...prev, createCar: false }));
 		}
 	}
