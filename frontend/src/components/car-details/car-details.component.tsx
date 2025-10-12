@@ -692,17 +692,6 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						</span>
 						<span className={styles.spec_value}>{data.Année}</span>
 					</motion.div>
-					<motion.div
-						className={styles.spec_item}
-						initial={{ opacity: 0, scale: 0.9 }}
-						animate={{ opacity: 1, scale: 1 }}
-						transition={{ delay: 1.55, duration: 0.3 }}
-					>
-						<span className={styles.spec_label}>
-							{t("carDetails.specs.color")} : 
-						</span>
-						<span className={styles.spec_value}>{data.colors[0].name}</span>
-					</motion.div>
 					{data.options?.map((option, index) => (
 						<motion.div
 							className={styles.spec_item}
