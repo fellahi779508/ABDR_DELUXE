@@ -81,4 +81,11 @@ export class BrandService {
     console.log(brand);
     return await this.brandRepo.save(brand);
   }
+  async updateBrandIcon(brandId: number, file: Express.Multer.File) {
+    const brand = await this.GetBrandById(brandId);
+    if (brand.icon) await this.iconService.deleteIcon(brand.icon.publicId);
+    const icon = await this.iconService.addIcons(brand, file);
+    brand.icon = icon;
+    return await this.brandRepo.save(brand);
+  }
 }

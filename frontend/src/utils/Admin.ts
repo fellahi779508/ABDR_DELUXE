@@ -1125,3 +1125,21 @@ export async function IncrementViews(slug: string) {
 		return [];
 	}
 }
+export async function UpdateBrandLogo(id: number, file: File) {
+	const token = (await cookies()).get("access_token")?.value;
+	const formData = new FormData();
+	formData.append("file", file);
+	try {
+		const response = await api.put(`/brand/icons/${id}`, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			return response.data;
+		}
+	} catch (error: any) {
+		return error.response.data.message;
+	}
+}

@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   UploadedFile,
   UseGuards,
@@ -52,6 +53,16 @@ export class BrandController {
   ) {
     if (!file) throw new BadRequestException('No file uploaded');
     return this.service.uploadBrandIcon(id, file);
+  }
+  @Put('icons/:id')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(FileInterceptor('file', multerOptions))
+  updateBrandIcon(
+    @Param('id', ParseIntPipe) id: number,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    if (!file) throw new BadRequestException('No file uploaded');
+    return this.service.updateBrandIcon(id, file);
   }
 
   @Get('UsedCars')

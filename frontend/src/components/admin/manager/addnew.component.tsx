@@ -376,24 +376,33 @@ function AddNewCar() {
 									)}
 								</button>
 								{selectedBrand && (
-									<button
-										className={styles.addButton}
-										style={{
-											marginTop: "10px",
-											backgroundColor: "rgba(255, 0, 10, 0.8)",
-										}}
-										onClick={() => handleDeleteBrand(selectedBrand.id)}
-										disabled={loading.createBrand}
-									>
-										{loading.deleteBrand ? (
-											"Deleteing..."
-										) : (
-											<>
-												<Minus size={16} />
-												Delete Brand
-											</>
-										)}
-									</button>
+									<>
+										<button
+											className={styles.addButton}
+											style={{
+												marginTop: "10px",
+												backgroundColor: "rgba(255, 0, 10, 0.8)",
+											}}
+											onClick={() => handleDeleteBrand(selectedBrand.id)}
+											disabled={loading.createBrand}
+										>
+											{loading.deleteBrand ? (
+												"Deleteing..."
+											) : (
+												<>
+													<Minus size={16} />
+													Delete Brand
+												</>
+											)}
+										</button>
+										<input
+											type="file"
+											onChange={(e) => setBrandIcon(e.target.files![0])}
+										>
+											{" "}
+											Update Brand's Icon
+										</input>
+									</>
 								)}
 							</div>
 						</div>
