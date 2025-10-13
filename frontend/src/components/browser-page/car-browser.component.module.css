@@ -13,7 +13,7 @@
 	bottom: 0;
 	background: url("../../../public/images/logo.png") no-repeat center center;
 	background-size: clamp(100px, 60vw, 950px);
-	opacity: 0.2;
+	opacity: 0.15;
 	pointer-events: none;
 	background-position: center center center;
 	z-index: -2;
@@ -249,14 +249,11 @@
 }
 
 .statusBadge {
-	background: var(--primary);
 	color: white;
 }
 
 .stockBadge {
-	background: var(--surface);
-	color: var(--text);
-	border: 1px solid var(--border);
+	color: white;
 }
 
 /* Car Info */

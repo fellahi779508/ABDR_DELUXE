@@ -19,7 +19,7 @@
 	bottom: 0;
 	background: url("../../../public/images/logo.png") no-repeat center center;
 	background-size: clamp(100px, 100vw, 950px, 100vh);
-	opacity: 0.2;
+	opacity: 0.15;
 	pointer-events: none;
 	background-position: center center center;
 	z-index: -2;
@@ -425,7 +425,7 @@ s .price_note {
 }
 
 .specs_grid {
-	display : flex;
+	display: flex;
 	gap: 1rem;
 	flex-wrap: wrap;
 	flex-grow: 1;

@@ -331,8 +331,8 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 										<Image
 											src={brand.icon.url ?? ""}
 											alt={brand.name}
-											width={20}
-											height={18}
+											width={25}
+											height={23}
 											className={styles.brandIcon}
 										/>
 										{brand.name}
@@ -402,12 +402,27 @@ function CarBrowserComp({ SVbrands, AllCars }: CarBrowserProps) {
 									</div>
 
 									<div className={styles.badges}>
-										<span className={`${styles.badge} ${styles.statusBadge}`}>
+										<span
+											className={`${styles.badge} ${styles.statusBadge}`}
+											style={{
+												backgroundColor:
+													car.status === "new"
+														? "var(--primary)"
+														: "rgba(85, 0, 10, 1)",
+											}}
+										>
 											{car.status === "new"
 												? t("carBrowser.badges.status.new")
 												: t("carBrowser.badges.status.used")}
 										</span>
-										<span className={`${styles.badge} ${styles.stockBadge}`}>
+										<span
+											className={`${styles.badge} ${styles.stockBadge}`}
+											style={{
+												backgroundColor: car.isShiped
+													? "rgba(0, 118, 131, 1)"
+													: "rgba(131, 46, 0, 1)",
+											}}
+										>
 											{car.isShiped
 												? t("carBrowser.badges.stock.in")
 												: t("carBrowser.badges.stock.order")}

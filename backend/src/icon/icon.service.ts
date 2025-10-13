@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Icon } from './icon.entity';
 import { Repository } from 'typeorm';
@@ -26,6 +26,9 @@ export class IconService {
     return this.iconRepo.save(icon);
   }
   async deleteIcon(publicId: string) {
+    const icon = await this.iconRepo.findOne({ where: { publicId } });
+    if (!icon) throw new NotFoundException('Icon not found');
+    await this.iconRepo.remove(icon);
     return await this.cloudinaryService.deleteFile(publicId);
   }
 }

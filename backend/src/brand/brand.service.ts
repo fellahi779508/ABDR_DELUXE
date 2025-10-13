@@ -86,6 +86,7 @@ export class BrandService {
     if (brand.icon) await this.iconService.deleteIcon(brand.icon.publicId);
     const icon = await this.iconService.addIcons(brand, file);
     brand.icon = icon;
+    console.log(brand);
     return await this.brandRepo.save(brand);
   }
 }

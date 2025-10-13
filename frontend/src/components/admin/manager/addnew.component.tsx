@@ -16,6 +16,7 @@ import {
 	DeleteSerieById,
 	FetchAllBrands,
 	FetchSeriesByBrand,
+	UpdateBrandLogo,
 	UpdateColorName,
 	UpdateOption,
 	UploadBrandIcon,
@@ -191,7 +192,6 @@ function AddNewCar() {
 		} catch (error) {
 			toast.error("Error creating car");
 		} finally {
-			
 			setLoading((prev) => ({ ...prev, createCar: false }));
 		}
 	}
@@ -347,6 +347,18 @@ function AddNewCar() {
 	}, [selectedBrand]);
 	const [brandIcon, setBrandIcon] = useState<File>();
 
+	async function handleChangeIcon(id: number): Promise<void> {
+		if (brandIcon) {
+			const resp = await UpdateBrandLogo(id, brandIcon);
+			if (resp) {
+				toast.success("Icon updated successfully");
+				setBrandIcon(undefined);
+			}
+		} else {
+			toast.error("Please select a brand icon image");
+		}
+	}
+
 	return (
 		<div className={styles.overlay}>
 			<div className={styles.container}>
@@ -395,13 +407,33 @@ function AddNewCar() {
 												</>
 											)}
 										</button>
-										<input
-											type="file"
-											onChange={(e) => setBrandIcon(e.target.files![0])}
+										<div
+											style={{
+												display: "flex",
+												alignItems: "center",
+												justifyContent: "center",
+											}}
 										>
-											{" "}
-											Update Brand's Icon
-										</input>
+											<input
+												type="file"
+												onChange={(e) => setBrandIcon(e.target.files![0])}
+												accept="image/*"
+												disabled={loading.createBrand}
+												placeholder="Change icon"
+												style={{
+													marginTop: "10px",
+												}}
+											/>
+											<button
+												className={styles.addButton}
+												onClick={() => (
+													handleChangeIcon(selectedBrand.id),
+													setBrandIcon(undefined)
+												)}
+											>
+												Change icon
+											</button>
+										</div>
 									</>
 								)}
 							</div>

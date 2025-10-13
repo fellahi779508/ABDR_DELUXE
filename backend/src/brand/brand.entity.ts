@@ -22,7 +22,11 @@ export class Brand {
     nullable: true,
   })
   series: Serie[];
-  @OneToOne(() => Icon, (icon) => icon.brand, { cascade: true, nullable: true })
+  @OneToOne(() => Icon, (icon) => icon.brand, {
+    cascade: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
   @JoinColumn({ name: 'icon_id' })
   icon: Icon;
 }

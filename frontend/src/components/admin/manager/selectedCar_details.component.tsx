@@ -25,6 +25,10 @@ type CarProps = {
 
 function SelectedCarDetails({ car }: CarProps) {
 	async function updateCar(id: string, data: any) {
+		if (data.status !== "new" && data.status !== "used") {
+			toast.error("Status must be either 'new' or 'used'");
+			return;
+		}
 		try {
 			const response = await UpdateCarById(id, data);
 			if (response.id) {
@@ -275,6 +279,23 @@ function SelectedCarDetails({ car }: CarProps) {
 									</button>
 								</div>
 							);
+						if (key === "description") {
+							return (
+								<div key={key} className={styles.detail_item}>
+									<span className={styles.detail_label}>Description</span>
+									<textarea
+										className={styles.detail_value}
+										defaultValue={value}
+										onChange={(e) =>
+											setUpdatedCar({
+												...updatedCar,
+												[key]: e.target.value,
+											})
+										}
+									/>
+								</div>
+							);
+						}
 						return (
 							<div key={key} className={styles.detail_item}>
 								<span className={styles.detail_label}>

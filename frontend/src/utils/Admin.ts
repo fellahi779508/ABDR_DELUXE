@@ -1137,9 +1137,11 @@ export async function UpdateBrandLogo(id: number, file: File) {
 			},
 		});
 		if (response) {
-			return response.data;
+			console.log(response.data);
+			return true;
 		}
 	} catch (error: any) {
-		return error.response.data.message;
+		console.log(error.response);
+		return false;
 	}
 }
