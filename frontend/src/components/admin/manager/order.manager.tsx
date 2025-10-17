@@ -627,10 +627,6 @@ function OrderManger() {
 		);
 	}
 
-	async function ExportOrder(id: string) {
-		router.push();
-	}
-
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
@@ -693,12 +689,21 @@ function OrderManger() {
 					)
 				)}
 			</div>
-			<button
-				className={styles.deleteAllBtn}
-				onClick={() => handleDeleteAllOrders()}
-			>
-				Delete all
-			</button>
+			<div style={{ display: "flex", gap: "1rem" }}>
+				<button
+					className={styles.deleteAllBtn}
+					onClick={() => handleDeleteAllOrders()}
+				>
+					Delete all
+				</button>
+				<Link
+					className={styles.deleteAllBtn}
+					style={{ backgroundColor: "var(--primary)" }}
+					href={`${process.env.NEXT_PUBLIC_API_URL}/order/export/excel/`}
+				>
+					Export Orders
+				</Link>
+			</div>
 
 			<div id="scrollableDiv" className={styles.ordersContainer}>
 				{filteredOrders.length === 0 ? (
@@ -836,13 +841,6 @@ function OrderManger() {
 								>
 									Delete Order
 								</button>
-								<Link
-									className={styles.deleteBtn}
-									style={{ backgroundColor: "var(--primary)" }}
-									href={`${process.env.NEXT_PUBLIC_API_URL}/order/export/excel/${order.id}`}
-								>
-									Export Order
-								</Link>
 
 								<div className={styles.actionGroup}>
 									{/* NEW */}

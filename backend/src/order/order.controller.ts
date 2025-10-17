@@ -50,10 +50,10 @@ export class OrderController {
   ) {
     return await this.service.getAllOrders(page, limit);
   }
-  @Get('export/excel/:id')
+  @Get('export/excel')
   @UseGuards(AuthGuard)
-  async exportSingleOrder(@Param('id') id: string, @Res() res: Response) {
-    return this.service.exportSingleOrderToExcel(id, res);
+  async exportSingleOrder(@Res() res: Response) {
+    return this.service.exportAllOrdersToExcel(res);
   }
   @Put('accept/:id')
   @UseGuards(AuthGuard)

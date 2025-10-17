@@ -189,9 +189,9 @@ export class OrderService {
     return orders;
   }
 
-  async exportSingleOrderToExcel(id: string, res: any) {
-    const order = await this.orderRepo.findOne({
-      where: { id },
+  async exportAllOrdersToExcel(res: any) {
+    // Fetch all orders with their relations
+    const orders = await this.orderRepo.find({
       relations: [
         'cart',
         'cart.soldItem',
@@ -200,18 +200,22 @@ export class OrderService {
         'cart.soldItem.car.serie',
         'cart.soldItem.car.serie.brand',
       ],
+      order: {
+        createdAt: 'ASC', // Optional: sort by creation date
+      },
     });
 
-    if (!order) {
-      throw new NotFoundException('Order not found');
+    if (!orders || orders.length === 0) {
+      throw new NotFoundException('No orders found');
     }
 
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Order');
+    const worksheet = workbook.addWorksheet('All Orders');
 
-    // 🧾 Define table headers - Fixed duplicate keys
+    // Define table headers
     worksheet.columns = [
       { header: 'Order Number', key: 'orderCode', width: 15 },
+      { header: 'Order Date', key: 'orderDate', width: 15 },
       { header: 'Full Name', key: 'name', width: 20 },
       { header: 'Passport Number', key: 'passport', width: 18 },
       { header: 'Email', key: 'email', width: 25 },
@@ -224,60 +228,102 @@ export class OrderService {
       { header: 'VIN Number', key: 'vin', width: 25 },
       { header: 'Container Number', key: 'container', width: 20 },
       { header: 'Postal Number', key: 'postal', width: 20 },
-      { header: 'Car Price', key: 'carPrice', width: 15 }, // Changed key
-      { header: 'Global Price', key: 'globalPrice', width: 15 }, // Changed key
+      { header: 'Car Price', key: 'carPrice', width: 15 },
+      { header: 'Global Price', key: 'globalPrice', width: 15 },
       { header: 'Order Status', key: 'status', width: 15 },
     ];
 
-    let globalTotal = order.cart?.total || 0;
+    // Loop through all orders and their sold items
+    orders.forEach((order) => {
+      const globalTotal = order.cart?.total || 0;
+      const orderDate = order.createdAt
+        ? new Date(order.createdAt).toLocaleDateString()
+        : 'N/A';
 
-    // 🧠 Add only this single order's data
-    if (order.cart?.soldItem?.length) {
-      for (const item of order.cart.soldItem) {
-        const car = item.car;
-        const quantity = item.quantity || 1;
-        const carPrice = item.total; // Individual car price
+      // If order has cart and sold items
+      if (order.cart?.soldItem?.length) {
+        for (const item of order.cart.soldItem) {
+          const car = item.car;
+          const quantity = item.quantity || 1;
+          const carPrice = item.total; // Individual car price
 
+          worksheet.addRow({
+            orderDate: orderDate,
+            orderCode: order.OrderCode,
+            name: order.name,
+            passport: order.passport || 'N/A',
+            email: order.email,
+            phone: order.phone,
+            address: order.address,
+            model: car?.serie?.brand?.name
+              ? `${car.serie.brand.name} ${car.serie.name}`
+              : car?.serie?.name || 'N/A',
+            finition: car?.finition || 'N/A',
+            color: item.color || 'N/A',
+            quantity: quantity.toString(),
+            vin: 'N/A',
+            container: 'N/A',
+            postal: 'N/A',
+            carPrice: carPrice.toString(),
+            globalPrice: globalTotal.toString(),
+            status: order.status || 'N/A',
+          });
+        }
+      } else {
+        // Add a row for orders without sold items (empty cart)
         worksheet.addRow({
-          orderCode: order.OrderCode, // Fixed casing to match key
+          orderDate: orderDate,
+          orderCode: order.OrderCode,
           name: order.name,
-          passport: order.passport,
+          passport: order.passport || 'N/A',
           email: order.email,
           phone: order.phone,
           address: order.address,
-          model: car?.serie?.brand?.name
-            ? `${car.serie.brand.name} ${car.serie.name}`
-            : car?.serie?.name || 'N/A',
-          finition: car?.finition || 'N/A',
-          color: item.color,
-          quantity: quantity.toString(),
+          model: 'N/A',
+          finition: 'N/A',
+          color: 'N/A',
+          quantity: '0',
           vin: 'N/A',
           container: 'N/A',
           postal: 'N/A',
-          carPrice: carPrice.toString(), // Use the correct key
-          globalPrice: globalTotal.toString(), // Use the correct key
+          carPrice: '0',
+          globalPrice: '0',
           status: order.status || 'N/A',
         });
       }
+    });
 
-      // 🎨 Style header row
-      const headerRow = worksheet.getRow(1);
-      headerRow.font = { bold: true, size: 12 };
-      headerRow.alignment = { horizontal: 'center', vertical: 'justify' };
-      headerRow.height = 20;
+    // Style header row
+    const headerRow = worksheet.getRow(1);
+    headerRow.font = { bold: true, size: 12 };
+    headerRow.alignment = { horizontal: 'center', vertical: 'justify' };
+    headerRow.height = 20;
 
-      // 📥 Send file to browser
-      res.setHeader(
-        'Content-Type',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      );
-      res.setHeader(
-        'Content-Disposition',
-        `attachment; filename=order_${order.OrderCode}.xlsx`,
-      );
+    // Add some basic styling to the data
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber > 1) {
+        // Skip header row
+        row.alignment = { vertical: 'middle' };
+      }
+    });
 
-      await workbook.xlsx.write(res);
-      res.end();
-    }
+    // Auto-filter for easier data manipulation in Excel
+    worksheet.autoFilter = {
+      from: 'A1',
+      to: `Q${worksheet.rowCount}`,
+    };
+
+    // Send file to browser
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename=all_orders_${new Date().toISOString().split('T')[0]}.xlsx`,
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
   }
 }
