@@ -51,7 +51,6 @@ export class OrderController {
     return await this.service.getAllOrders(page, limit);
   }
   @Get('export/excel')
-  @UseGuards(AuthGuard)
   async exportSingleOrder(@Res() res: Response) {
     return this.service.exportAllOrdersToExcel(res);
   }
