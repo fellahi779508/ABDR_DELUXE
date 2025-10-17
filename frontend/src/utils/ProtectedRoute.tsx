@@ -23,9 +23,9 @@ export default async function ProtectedRoute() {
 	return true;
 }
 export async function OrderRoute() {
-		// const today = new Date().toISOString().split("T")[0];
-		// const oldOrderDate = (await cookies()).get("orderDate")?.value.split("T")[0];
-		// if (oldOrderDate === today) {
-		// 	return redirect("/order/oneTime");
-		// }
+	const today = new Date().toISOString().split("T")[0];
+	const oldOrderDate = (await cookies()).get("orderDate")?.value.split("T")[0];
+	if (oldOrderDate === today) {
+		return redirect("/order/oneTime");
+	}
 }

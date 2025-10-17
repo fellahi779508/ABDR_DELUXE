@@ -42,7 +42,31 @@ export class OrderService {
 
   async createNewOrder(dto: CreateOrderDto) {
     const { name, phone, address, email, cartId, passport } = dto;
+
+    // 🔍 Find the cart
     const cart = await this.cartService.getCartById(cartId);
+    if (!cart) {
+      throw new NotFoundException('Cart not found');
+    }
+
+    // 🔢 Find the last order to determine the next OrderCode
+    const lastOrder = await this.orderRepo
+      .createQueryBuilder('order')
+      .orderBy('order.OrderCode', 'DESC')
+      .getOne();
+
+    let nextNumber = 1;
+    if (lastOrder && lastOrder.OrderCode) {
+      const parsed = parseInt(lastOrder.OrderCode, 10);
+      if (!isNaN(parsed)) {
+        nextNumber = parsed + 1;
+      }
+    }
+
+    // 🧾 Format the OrderCode (e.g., 0001, 0002, 0003)
+    const orderCode = nextNumber.toString().padStart(4, '0');
+
+    // 🏗️ Create the order
     const order = this.orderRepo.create({
       name,
       phone,
@@ -50,19 +74,15 @@ export class OrderService {
       email,
       cart,
       passport,
+      OrderCode: orderCode,
     });
-    const orderCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const isFound = await this.orderRepo.findOne({
-      where: { OrderCode: orderCode },
-    });
-    if (isFound) {
-      const newCode = Math.floor(100000 + Math.random() * 900000).toString();
-      return await this.orderRepo.save({ ...order, OrderCode: newCode });
-    }
-    order.OrderCode = orderCode;
+
+    // 💾 Save it
     await this.orderRepo.save(order);
+
     return order.OrderCode;
   }
+
   async getOrderById(id: string) {
     const order = await this.orderRepo.findOne({
       where: { id },
@@ -203,9 +223,10 @@ export class OrderService {
       { header: 'Quantity', key: 'quantity', width: 15 },
       { header: 'VIN Number', key: 'vin', width: 25 },
       { header: 'Container Number', key: 'container', width: 20 },
+      { header: 'Postal Number', key: 'postal', width: 20 },
       { header: 'Car Price', key: 'carPrice', width: 15 }, // Changed key
       { header: 'Global Price', key: 'globalPrice', width: 15 }, // Changed key
-      { header: 'Status', key: 'status', width: 15 },
+      { header: 'Order Status', key: 'status', width: 15 },
     ];
 
     let globalTotal = order.cart?.total || 0;
@@ -229,11 +250,12 @@ export class OrderService {
             : car?.serie?.name || 'N/A',
           finition: car?.finition || 'N/A',
           color: item.color,
-          quantity: quantity,
+          quantity: quantity.toString(),
           vin: 'N/A',
           container: 'N/A',
-          carPrice: carPrice, // Use the correct key
-          globalPrice: globalTotal, // Use the correct key
+          postal: 'N/A',
+          carPrice: carPrice.toString(), // Use the correct key
+          globalPrice: globalTotal.toString(), // Use the correct key
           status: order.status || 'N/A',
         });
       }
