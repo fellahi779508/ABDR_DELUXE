@@ -1145,3 +1145,19 @@ export async function UpdateBrandLogo(id: number, file: File) {
 		return false;
 	}
 }
+export async function ExportOrderToExcel(id: string) {
+	const token = (await cookies()).get("access_token")?.value;
+	try {
+		const response = await api.get(`/order/export/excel/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response) {
+			return process.env.MAIN_API_URL + "/order/export/excel/" + id;
+		}
+	} catch (error: any) {
+		console.error(error.response);
+		return false;
+	}
+}

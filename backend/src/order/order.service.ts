@@ -4,8 +4,11 @@ import { ILike, Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Status } from 'src/utils/enums';
+import * as ExcelJS from 'exceljs';
+import { Response } from 'express';
 
 import { CartService } from 'src/cart/cart.service';
+import { SoldItem } from 'src/soldItem/soldItem.entity';
 
 export class OrderService {
   constructor(
@@ -164,5 +167,95 @@ export class OrderService {
       ],
     });
     return orders;
+  }
+
+  async exportSingleOrderToExcel(id: string, res: any) {
+    const order = await this.orderRepo.findOne({
+      where: { id },
+      relations: [
+        'cart',
+        'cart.soldItem',
+        'cart.soldItem.car',
+        'cart.soldItem.car.colors',
+        'cart.soldItem.car.serie',
+        'cart.soldItem.car.serie.brand',
+      ],
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Order');
+
+    // 🧾 Define table headers - Fixed duplicate keys
+    worksheet.columns = [
+      { header: 'Order Number', key: 'orderCode', width: 15 },
+      { header: 'Full Name', key: 'name', width: 20 },
+      { header: 'Passport Number', key: 'passport', width: 18 },
+      { header: 'Email', key: 'email', width: 25 },
+      { header: 'Phone Number', key: 'phone', width: 18 },
+      { header: 'Address', key: 'address', width: 25 },
+      { header: 'Model Car', key: 'model', width: 25 },
+      { header: 'Finition', key: 'finition', width: 15 },
+      { header: 'Color', key: 'color', width: 15 },
+      { header: 'Quantity', key: 'quantity', width: 15 },
+      { header: 'VIN Number', key: 'vin', width: 25 },
+      { header: 'Container Number', key: 'container', width: 20 },
+      { header: 'Car Price', key: 'carPrice', width: 15 }, // Changed key
+      { header: 'Global Price', key: 'globalPrice', width: 15 }, // Changed key
+      { header: 'Status', key: 'status', width: 15 },
+    ];
+
+    let globalTotal = order.cart?.total || 0;
+
+    // 🧠 Add only this single order's data
+    if (order.cart?.soldItem?.length) {
+      for (const item of order.cart.soldItem) {
+        const car = item.car;
+        const quantity = item.quantity || 1;
+        const carPrice = item.total; // Individual car price
+
+        worksheet.addRow({
+          orderCode: order.OrderCode, // Fixed casing to match key
+          name: order.name,
+          passport: order.passport,
+          email: order.email,
+          phone: order.phone,
+          address: order.address,
+          model: car?.serie?.brand?.name
+            ? `${car.serie.brand.name} ${car.serie.name}`
+            : car?.serie?.name || 'N/A',
+          finition: car?.finition || 'N/A',
+          color: item.color,
+          quantity: quantity,
+          vin: 'N/A',
+          container: 'N/A',
+          carPrice: carPrice, // Use the correct key
+          globalPrice: globalTotal, // Use the correct key
+          status: order.status || 'N/A',
+        });
+      }
+
+      // 🎨 Style header row
+      const headerRow = worksheet.getRow(1);
+      headerRow.font = { bold: true, size: 12 };
+      headerRow.alignment = { horizontal: 'center', vertical: 'justify' };
+      headerRow.height = 20;
+
+      // 📥 Send file to browser
+      res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      );
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename=order_${order.OrderCode}.xlsx`,
+      );
+
+      await workbook.xlsx.write(res);
+      res.end();
+    }
   }
 }

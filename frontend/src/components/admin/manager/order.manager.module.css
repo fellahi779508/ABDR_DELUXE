@@ -310,6 +310,8 @@
 	border-radius: 8px;
 	font-size: 14px;
 	transition: border-color 0.2s;
+	background-color: var(--surface);
+	color: var(--text);
 }
 
 .searchInput:focus {

@@ -11,6 +11,7 @@ import {
 	DeleteOrderById,
 	DeleteSoldItemById,
 	DeliverOrder,
+	ExportOrderToExcel,
 	GetAllOrders,
 	RefundOrder,
 	SearchOrders,
@@ -23,6 +24,7 @@ import { socketService } from "@/services/socket.service";
 import Image from "next/image";
 import { Color } from "@/utils/Types";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Car = {
 	id: string;
@@ -625,6 +627,10 @@ function OrderManger() {
 		);
 	}
 
+	async function ExportOrder(id: string) {
+		router.push();
+	}
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
@@ -830,6 +836,13 @@ function OrderManger() {
 								>
 									Delete Order
 								</button>
+								<Link
+									className={styles.deleteBtn}
+									style={{ backgroundColor: "var(--primary)" }}
+									href={`${process.env.NEXT_PUBLIC_API_URL}/order/export/excel/${order.id}`}
+								>
+									Export Order
+								</Link>
 
 								<div className={styles.actionGroup}>
 									{/* NEW */}

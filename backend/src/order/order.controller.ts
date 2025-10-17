@@ -10,7 +10,8 @@ import {
   Put,
   Query,
   UseGuards,
-  Inject, // Add this
+  Inject,
+  Res, // Add this
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { Status } from 'src/utils/enums';
@@ -48,6 +49,11 @@ export class OrderController {
     @Query('limit', ParseIntPipe) limit: number,
   ) {
     return await this.service.getAllOrders(page, limit);
+  }
+  @Get('export/excel/:id')
+  @UseGuards(AuthGuard)
+  async exportSingleOrder(@Param('id') id: string, @Res() res: Response) {
+    return this.service.exportSingleOrderToExcel(id, res);
   }
   @Put('accept/:id')
   @UseGuards(AuthGuard)
