@@ -242,34 +242,6 @@ function CarDetailsComponent(param: CarDetailsProps) {
 			</motion.div>
 
 			<motion.div
-				className={styles.title_container}
-				initial={{ y: 20, opacity: 0 }}
-				animate={{ y: 0, opacity: 1 }}
-				transition={{ delay: 0.1, duration: 0.5 }}
-			>
-				<h1 className={styles.title}>
-					{data.serie.brand.name} {data.serie.name} {data.finition}
-				</h1>
-				<div className={styles.car_meta}>
-					<span className={styles.meta_item}>
-						<Shield size={16} />{" "}
-						{data.isShiped
-							? t("carDetails.availability.available")
-							: t("carDetails.availability.byOrder")}
-					</span>
-					{data.status === "new" ? (
-						<span className={styles.meta_item}>
-							<Star size={16} /> {t("carDetails.status.new")}
-						</span>
-					) : (
-						<span className={styles.meta_item}>
-							<Bolt size={16} /> {t("carDetails.status.used")}
-						</span>
-					)}
-				</div>
-			</motion.div>
-
-			<motion.div
 				className={styles.details_container}
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
@@ -360,25 +332,59 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.5, duration: 0.5 }}
 					>
-						<div className={styles.price}>
-							{data.oldPrice !== 0 ? (
-								<>
-									<span>{t("carDetails.price.promo")} </span>
-									{formatPrice(data.price)} DZD
-								</>
-							) : (
-								<>
-									<span>{t("carDetails.price.oldPrice")} </span>
-									{formatPrice(data.price)} DZD
-								</>
+						<motion.div
+							className={styles.title_container}
+							initial={{ y: 20, opacity: 0 }}
+							animate={{ y: 0, opacity: 1 }}
+							transition={{ delay: 0.1, duration: 0.5 }}
+						>
+							<h1 className={styles.title}>
+								{data.serie.brand.name} {data.serie.name} {data.finition}
+							</h1>
+							<div className={styles.car_meta}>
+								<span className={styles.meta_item}>
+									<Shield size={16} />{" "}
+									{data.isShiped
+										? t("carDetails.availability.available")
+										: t("carDetails.availability.byOrder")}
+								</span>
+								{data.status === "new" ? (
+									<span className={styles.meta_item}>
+										<Star size={16} /> {t("carDetails.status.new")}
+									</span>
+								) : (
+									<span className={styles.meta_item}>
+										<Bolt size={16} /> {t("carDetails.status.used")}
+									</span>
+								)}
+							</div>
+						</motion.div>
+						<div
+							style={{
+								display: "flex",
+								flexDirection: "column",
+							}}
+						>
+							<div className={styles.price}>
+								{data.oldPrice !== 0 ? (
+									<>
+										<span>{t("carDetails.price.promo")} </span>
+										{formatPrice(data.price)} DZD
+									</>
+								) : (
+									<>
+										<span>{t("carDetails.price.oldPrice")} </span>
+										{formatPrice(data.price)} DZD
+									</>
+								)}
+							</div>
+							{data.oldPrice !== 0 && (
+								<div className={styles.OldPrice}>
+									<span>{t("carDetails.price.oldPrice")} </span>{" "}
+									{formatPrice(data.oldPrice)} DZD
+								</div>
 							)}
 						</div>
-						{data.oldPrice !== 0 && (
-							<div className={styles.OldPrice}>
-								<span>{t("carDetails.price.oldPrice")} </span>{" "}
-								{formatPrice(data.oldPrice)} DZD
-							</div>
-						)}
 					</motion.div>
 
 					<motion.div
@@ -644,7 +650,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						transition={{ delay: 1.3, duration: 0.3 }}
 					>
 						<span className={styles.spec_label}>
-							{t("carDetails.specs.engine")} : 
+							{t("carDetails.specs.engine")} :
 						</span>
 						<span className={styles.spec_value}>{data.Moteur}</span>
 					</motion.div>
@@ -655,7 +661,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						transition={{ delay: 1.35, duration: 0.3 }}
 					>
 						<span className={styles.spec_label}>
-							{t("carDetails.specs.transmission")} : 
+							{t("carDetails.specs.transmission")} :
 						</span>
 						<span className={styles.spec_value}>{data.Boite}</span>
 					</motion.div>
@@ -666,7 +672,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						transition={{ delay: 1.4, duration: 0.3 }}
 					>
 						<span className={styles.spec_label}>
-							{t("carDetails.specs.fuel")} : 
+							{t("carDetails.specs.fuel")} :
 						</span>
 						<span className={styles.spec_value}>{data.Energie}</span>
 					</motion.div>
@@ -677,7 +683,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						transition={{ delay: 1.45, duration: 0.3 }}
 					>
 						<span className={styles.spec_label}>
-							{t("carDetails.specs.mileage")} : 
+							{t("carDetails.specs.mileage")} :
 						</span>
 						<span className={styles.spec_value}>{data.Kilométrage} </span>
 					</motion.div>
@@ -688,7 +694,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						transition={{ delay: 1.5, duration: 0.3 }}
 					>
 						<span className={styles.spec_label}>
-							{t("carDetails.specs.year")} : 
+							{t("carDetails.specs.year")} :
 						</span>
 						<span className={styles.spec_value}>{data.Année}</span>
 					</motion.div>
@@ -715,7 +721,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 					transition={{ delay: 1.7, duration: 0.5 }}
 				>
 					<h2 className={styles.section_title}>
-						{t("carDetails.description.title")} : 
+						{t("carDetails.description.title")} :
 					</h2>
 					<motion.p
 						className={styles.description}

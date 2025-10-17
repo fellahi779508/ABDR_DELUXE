@@ -9,6 +9,7 @@
 	font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
 		sans-serif;
 	position: relative;
+	gap: 0.5rem;
 }
 .main::before {
 	content: "";
@@ -75,6 +76,10 @@
 
 .title_container {
 	padding: 1rem 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }
 
 .title {
@@ -117,10 +122,8 @@
 .DetailsSection {
 	display: flex;
 	flex-direction: column;
-	gap: 1.5rem;
 	width: 100%;
 	position: relative;
-	top: -130px;
 }
 
 .main_image_container {
@@ -198,6 +201,13 @@
 	border-radius: 20px;
 	font-size: 0.8rem;
 	z-index: 10;
+}
+.price_section {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	gap: 1rem;
 }
 
 .price {
@@ -401,7 +411,6 @@ s .price_note {
 	padding: 2rem;
 	margin-bottom: 0.6rem;
 	position: relative;
-	top: -80px;
 }
 
 .section_title {
@@ -550,6 +559,9 @@ s .price_note {
 	.right_arrow {
 		right: -15px;
 	}
+	.price_section {
+		flex-direction: column;
+	}
 }
 
 @media (max-width: 480px) {
@@ -573,6 +585,44 @@ s .price_note {
 	.specs_section,
 	.description_section {
 		padding: 1.5rem;
+	}
+
+	.mini_images_container {
+		gap: 0.5rem;
+	}
+
+	.mini_image {
+		width: 40px;
+		height: 40px;
+	}
+	.car_colors {
+		gap: 0.5rem;
+		padding: 0.5rem;
+		font-size: 0.8rem;
+	}
+}
+@media (max-width: 375px) {
+	.main {
+		padding: 1rem;
+		width: fit-content;
+	}
+
+	.title {
+		font-size: 1.3rem;
+	}
+
+	.price {
+		font-size: 1.1rem;
+	}
+	.OldPrice {
+		font-size: 0.9rem;
+	}
+	.price > span {
+		font-size: 1.1rem;
+	}
+	.specs_section,
+	.description_section {
+		padding: 1.3rem;
 	}
 
 	.mini_images_container {
