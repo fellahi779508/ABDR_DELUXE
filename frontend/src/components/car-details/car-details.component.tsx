@@ -12,6 +12,8 @@ import {
 	Bolt,
 	Shield,
 	Eye,
+	Monitor,
+	Fuel,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -110,22 +112,6 @@ const addToCart = (slug: string, quantity: number = 1, color: string): void => {
 	}
 };
 
-const clearCart = (): void => {
-	if (typeof window === "undefined") return;
-
-	try {
-		localStorage.removeItem(CART_STORAGE_KEY);
-		window.dispatchEvent(new Event("cartUpdated"));
-	} catch (error) {
-		console.error("Error clearing cart:", error);
-	}
-};
-
-const getCartItemCount = (): number => {
-	const cart = getCartFromStorage();
-	return cart.reduce((total, item) => total + item.quantity, 0);
-};
-
 function CarDetailsComponent(param: CarDetailsProps) {
 	const { data } = param;
 	const [images, setImages] = useState<any>(data.colors[0].images);
@@ -141,7 +127,6 @@ function CarDetailsComponent(param: CarDetailsProps) {
 	);
 	const [isLoading, setIsLoading] = useState(false);
 
-	// Mock translation function - replace with your actual i18n implementation
 	const t = useTranslations("carDetails");
 
 	function rightArrowClick() {
@@ -210,6 +195,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 					sortOrder: 0,
 				}
 		);
+		setStartIndex(0);
 		setImages(color.images);
 		setClickedColor({ color: color.name });
 		setSelectedImageIndex(0);
@@ -247,6 +233,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 				animate={{ opacity: 1 }}
 				transition={{ delay: 0.2, duration: 0.5 }}
 			>
+				{/* Images Section */}
 				<motion.div className={styles.section} transition={{ duration: 0.2 }}>
 					<div className={styles.main_image_container}>
 						<motion.div
@@ -265,6 +252,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 								height={2000}
 								alt={`${data.serie.brand.name} ${data.serie.name}`}
 								priority
+								className={styles.main_image_img}
 							/>
 						</motion.div>
 					</div>
@@ -278,6 +266,7 @@ function CarDetailsComponent(param: CarDetailsProps) {
 							<MoveLeft
 								onClick={() => leftArrowClick()}
 								className={styles.left_arrow}
+								size={18}
 							/>
 						)}
 
@@ -315,60 +304,55 @@ function CarDetailsComponent(param: CarDetailsProps) {
 							<MoveRight
 								onClick={() => rightArrowClick()}
 								className={styles.right_arrow}
+								size={18}
 							/>
 						) : null}
 					</motion.div>
 				</motion.div>
 
+				{/* Details Section */}
 				<motion.div
-					className={styles.DetailsSection}
+					className={styles.details_section}
 					initial={{ opacity: 0, x: 20 }}
 					animate={{ opacity: 1, x: 0 }}
 					transition={{ delay: 0.4, duration: 0.5 }}
 				>
+					{/* Title and Price */}
 					<motion.div
-						className={styles.price_section}
+						className={styles.title_price_section}
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.5, duration: 0.5 }}
 					>
-						<motion.div
-							className={styles.title_container}
-							initial={{ y: 20, opacity: 0 }}
-							animate={{ y: 0, opacity: 1 }}
-							transition={{ delay: 0.1, duration: 0.5 }}
-						>
+						<div className={styles.title_container}>
 							<h1 className={styles.title}>
 								{data.serie.brand.name} {data.serie.name} {data.finition}
 							</h1>
 							<div className={styles.car_meta}>
 								<span className={styles.meta_item}>
-									<Shield size={16} />{" "}
+									<Shield size={14} />{" "}
 									{data.isShiped
 										? t("carDetails.availability.available")
 										: t("carDetails.availability.byOrder")}
 								</span>
 								{data.status === "new" ? (
 									<span className={styles.meta_item}>
-										<Star size={16} /> {t("carDetails.status.new")}
+										<Star size={14} /> {t("carDetails.status.new")}
 									</span>
 								) : (
 									<span className={styles.meta_item}>
-										<Bolt size={16} /> {t("carDetails.status.used")}
+										<Bolt size={14} /> {t("carDetails.status.used")}
 									</span>
 								)}
 							</div>
-						</motion.div>
-						<div
-							style={{
-								display: "flex",
-								flexDirection: "column",
-							}}
-						>
+						</div>
+						<div className={styles.price_container}>
 							<div className={styles.price}>
 								{data.oldPrice !== 0 ? (
 									<>
-										<span>{t("carDetails.price.promo")} </span>
+										<span className={styles.promo_badge}>
+											{t("carDetails.price.promo")}
+										</span>
 										{formatPrice(data.price)} DZD
 									</>
 								) : (
@@ -379,100 +363,26 @@ function CarDetailsComponent(param: CarDetailsProps) {
 								)}
 							</div>
 							{data.oldPrice !== 0 && (
-								<div className={styles.OldPrice}>
-									<span>{t("carDetails.price.oldPrice")} </span>{" "}
+								<div className={styles.old_price}>
 									{formatPrice(data.oldPrice)} DZD
 								</div>
 							)}
 						</div>
 					</motion.div>
 
-					<motion.div
-						className={styles.car_colors}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 0.6, duration: 0.5 }}
-					>
-						<div
-							style={{
-								fontWeight: "bold",
-								fontSize: "20px",
-								color: "var(--primary)",
-								marginBottom: "1rem",
-							}}
-						>
-							{t("carDetails.colors.title")}
-						</div>
-						<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-							{data.colors.map((color: any, index: number) => {
-								const isSelected = clickedColor.color === color.name;
-								return (
-									<motion.button
-										key={index}
-										onClick={() => handleColorClick(color)}
-										whileHover={{ scale: 1.05, y: -2 }}
-										whileTap={{ scale: 0.95 }}
-										initial={{ opacity: 0, y: 10 }}
-										animate={{ opacity: 1, y: 0 }}
-										transition={{ delay: 0.1 * index, duration: 0.3 }}
-										style={{
-											padding: "0.75rem 1.5rem",
-											border: `2px solid ${
-												isSelected ? "var(--primary)" : "var(--border)"
-											}`,
-											backgroundColor: isSelected
-												? "var(--primary)"
-												: "var(--surface)",
-											color: isSelected ? "white" : "var(--text)",
-											borderRadius: "var(--radius)",
-											fontWeight: "600",
-											fontSize: "0.9rem",
-											cursor: "pointer",
-											transition: "all 0.3s ease",
-											boxShadow: isSelected
-												? "0 4px 12px rgba(0, 0, 0, 0.15)"
-												: "none",
-											transform: isSelected ? "translateY(-2px)" : "none",
-										}}
-									>
-										{color.name}
-									</motion.button>
-								);
-							})}
-						</div>
-						{clickedColor.color && (
-							<motion.div
-								initial={{ opacity: 0, y: 10 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.7, duration: 0.3 }}
-								style={{
-									marginTop: "1rem",
-									padding: "0.5rem",
-									backgroundColor: "var(--primary)",
-									color: "white",
-									borderRadius: "var(--radius)",
-									fontSize: "0.9rem",
-									fontWeight: "600",
-									textAlign: "center",
-								}}
-							>
-								{t("carDetails.colors.selected")} {clickedColor.color}
-							</motion.div>
-						)}
-					</motion.div>
-
+					{/* Quick Features */}
 					<motion.div
 						className={styles.feature_highlights}
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
-						transition={{ delay: 0.7, duration: 0.5 }}
+						transition={{ delay: 0.6, duration: 0.5 }}
 					>
 						<motion.div
 							className={styles.feature}
 							whileHover={{ scale: 1.05 }}
 							transition={{ duration: 0.2 }}
 						>
-							<Zap size={20} />
+							<Fuel size={16} />
 							<span>{data.Energie}</span>
 						</motion.div>
 						<motion.div
@@ -482,8 +392,8 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
+								width="16"
+								height="16"
 								viewBox="0 0 24 24"
 								fill="none"
 								stroke="currentColor"
@@ -496,7 +406,6 @@ function CarDetailsComponent(param: CarDetailsProps) {
 								<line x1="10" y1="7" x2="10" y2="15"></line>
 								<line x1="10" y1="11" x2="10" y2="11"></line>
 							</svg>
-							<span>{t("carDetails.specs.transmission")} </span>
 							<span>{data.Boite}</span>
 						</motion.div>
 						<motion.div
@@ -504,86 +413,77 @@ function CarDetailsComponent(param: CarDetailsProps) {
 							whileHover={{ scale: 1.05 }}
 							transition={{ duration: 0.2 }}
 						>
-							<ParkingMeter size={20} />
-							<span>{data.Kilométrage} </span>
+							<ParkingMeter size={16} />
+							<span>{data.Kilométrage}</span>
 						</motion.div>
 						<motion.div
 							className={styles.feature}
 							whileHover={{ scale: 1.05 }}
 							transition={{ duration: 0.2 }}
 						>
-							<Eye size={20} />
-							<span>
-								{t("carDetails.specs.views")} {data.views}{" "}
-							</span>
+							<Zap size={16} />
+							<span>{data.Moteur}</span>
+						</motion.div>
+						<motion.div
+							className={styles.feature}
+							whileHover={{ scale: 1.05 }}
+							transition={{ duration: 0.2 }}
+						>
+							<Eye size={16} />
+							<span>{t("carDetails.specs.views")}</span>
+							<span>{data.views}</span>
 						</motion.div>
 					</motion.div>
 
+					{/* Colors */}
 					<motion.div
-						className={styles.details_card}
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 0.8, duration: 0.5 }}
-						whileHover={{ y: -5 }}
+						className={styles.car_colors}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 0.7, duration: 0.5 }}
 					>
-						<h3 className={styles.details_title}>
-							{t("carDetails.details.title")}
-						</h3>
-						<div className={styles.details}>
-							<motion.div
-								className={styles.detail_item}
-								initial={{ opacity: 0, x: -10 }}
-								animate={{ opacity: 1, x: 0 }}
-								transition={{ delay: 0.9, duration: 0.3 }}
-							>
-								<span className={styles.detail_label}>
-									{t("carDetails.details.brand")}
-								</span>
-								<span className={styles.detail_value}>
-									{data.serie.brand.name}
-								</span>
-							</motion.div>
-							<motion.div
-								className={styles.detail_item}
-								initial={{ opacity: 0, x: -10 }}
-								animate={{ opacity: 1, x: 0 }}
-								transition={{ delay: 0.95, duration: 0.3 }}
-							>
-								<span className={styles.detail_label}>
-									{t("carDetails.details.model")}
-								</span>
-								<span className={styles.detail_value}>{data.serie.name}</span>
-							</motion.div>
-							<motion.div
-								className={styles.detail_item}
-								initial={{ opacity: 0, x: -10 }}
-								animate={{ opacity: 1, x: 0 }}
-								transition={{ delay: 1.0, duration: 0.3 }}
-							>
-								<span className={styles.detail_label}>
-									{t("carDetails.details.finish")}
-								</span>
-								<span className={styles.detail_value}>{data.finition}</span>
-							</motion.div>
-							<motion.div
-								className={styles.detail_item}
-								initial={{ opacity: 0, x: -10 }}
-								animate={{ opacity: 1, x: 0 }}
-								transition={{ delay: 1.05, duration: 0.3 }}
-							>
-								<span className={styles.detail_label}>
-									{t("carDetails.details.year")}
-								</span>
-								<span className={styles.detail_value}>{data.Année}</span>
-							</motion.div>
+						<div className={styles.colors_title}>
+							{t("carDetails.colors.title")}
 						</div>
+						<div className={styles.colors_grid}>
+							{data.colors.map((color: any, index: number) => {
+								const isSelected = clickedColor.color === color.name;
+								return (
+									<motion.button
+										key={index}
+										onClick={() => handleColorClick(color)}
+										whileHover={{ scale: 1.05, y: -2 }}
+										whileTap={{ scale: 0.95 }}
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										transition={{ delay: 0.1 * index, duration: 0.3 }}
+										className={`${styles.color_button} ${
+											isSelected ? styles.color_button_selected : ""
+										}`}
+									>
+										{color.name}
+									</motion.button>
+								);
+							})}
+						</div>
+						{clickedColor.color && (
+							<motion.div
+								initial={{ opacity: 0, y: 10 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.8, duration: 0.3 }}
+								className={styles.selected_color}
+							>
+								{t("carDetails.colors.selected")} {clickedColor.color}
+							</motion.div>
+						)}
 					</motion.div>
 
+					{/* Actions */}
 					<motion.div
 						className={styles.actions}
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 1.1, duration: 0.5 }}
+						transition={{ delay: 0.9, duration: 0.5 }}
 					>
 						<motion.button
 							className={`${styles.btn} ${styles.primary_btn}`}
@@ -591,10 +491,6 @@ function CarDetailsComponent(param: CarDetailsProps) {
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 							disabled={isLoading || clickedColor.color === ""}
-							style={{
-								opacity: clickedColor.color === "" ? 0.6 : 1,
-								cursor: clickedColor.color === "" ? "not-allowed" : "pointer",
-							}}
 						>
 							{isLoading
 								? t("carDetails.actions.redirecting")
@@ -606,10 +502,6 @@ function CarDetailsComponent(param: CarDetailsProps) {
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 							disabled={isLoading || clickedColor.color === ""}
-							style={{
-								opacity: clickedColor.color === "" ? 0.6 : 1,
-								cursor: clickedColor.color === "" ? "not-allowed" : "pointer",
-							}}
 						>
 							{isLoading
 								? t("carDetails.actions.adding")
@@ -620,14 +512,8 @@ function CarDetailsComponent(param: CarDetailsProps) {
 						<motion.div
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
-							transition={{ delay: 1.2, duration: 0.3 }}
-							style={{
-								textAlign: "center",
-								color: "#dc2626",
-								fontSize: "0.9rem",
-								marginTop: "1rem",
-								fontWeight: "500",
-							}}
+							transition={{ delay: 1.0, duration: 0.3 }}
+							className={styles.color_warning}
 						>
 							{t("carDetails.errors.mustSelectColor")}
 						</motion.div>
@@ -635,105 +521,82 @@ function CarDetailsComponent(param: CarDetailsProps) {
 				</motion.div>
 			</motion.div>
 
-			<motion.div
-				className={styles.specs_section}
-				initial={{ opacity: 0, y: 20 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ delay: 1.2, duration: 0.5 }}
-			>
-				<h2 className={styles.section_title}>{t("carDetails.specs.title")}</h2>
-				<div className={styles.specs_grid}>
-					<motion.div
-						className={styles.spec_item}
-						initial={{ opacity: 0, scale: 0.9 }}
-						animate={{ opacity: 1, scale: 1 }}
-						transition={{ delay: 1.3, duration: 0.3 }}
-					>
-						<span className={styles.spec_label}>
-							{t("carDetails.specs.engine")} :
-						</span>
-						<span className={styles.spec_value}>{data.Moteur}</span>
-					</motion.div>
-					<motion.div
-						className={styles.spec_item}
-						initial={{ opacity: 0, scale: 0.9 }}
-						animate={{ opacity: 1, scale: 1 }}
-						transition={{ delay: 1.35, duration: 0.3 }}
-					>
-						<span className={styles.spec_label}>
-							{t("carDetails.specs.transmission")} :
-						</span>
-						<span className={styles.spec_value}>{data.Boite}</span>
-					</motion.div>
-					<motion.div
-						className={styles.spec_item}
-						initial={{ opacity: 0, scale: 0.9 }}
-						animate={{ opacity: 1, scale: 1 }}
-						transition={{ delay: 1.4, duration: 0.3 }}
-					>
-						<span className={styles.spec_label}>
-							{t("carDetails.specs.fuel")} :
-						</span>
-						<span className={styles.spec_value}>{data.Energie}</span>
-					</motion.div>
-					<motion.div
-						className={styles.spec_item}
-						initial={{ opacity: 0, scale: 0.9 }}
-						animate={{ opacity: 1, scale: 1 }}
-						transition={{ delay: 1.45, duration: 0.3 }}
-					>
-						<span className={styles.spec_label}>
-							{t("carDetails.specs.mileage")} :
-						</span>
-						<span className={styles.spec_value}>{data.Kilométrage} </span>
-					</motion.div>
-					<motion.div
-						className={styles.spec_item}
-						initial={{ opacity: 0, scale: 0.9 }}
-						animate={{ opacity: 1, scale: 1 }}
-						transition={{ delay: 1.5, duration: 0.3 }}
-					>
-						<span className={styles.spec_label}>
-							{t("carDetails.specs.year")} :
-						</span>
-						<span className={styles.spec_value}>{data.Année}</span>
-					</motion.div>
-					{data.options?.map((option, index) => (
-						<motion.div
-							className={styles.spec_item}
-							key={option.id}
-							initial={{ opacity: 0, scale: 0.9 }}
-							animate={{ opacity: 1, scale: 1 }}
-							transition={{ delay: 1.6 + index * 0.05, duration: 0.3 }}
-						>
-							<span className={styles.spec_label}>{option.title} : </span>
-							<span className={styles.spec_value}>{option.value}</span>
-						</motion.div>
-					))}
-				</div>
-			</motion.div>
-
-			{data.description && (
+			{/* Additional Details Grid */}
+			<div className={styles.details_grid}>
+				{/* Specifications */}
 				<motion.div
-					className={styles.description_section}
+					className={styles.specs_section}
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 1.7, duration: 0.5 }}
+					transition={{ delay: 1.1, duration: 0.5 }}
 				>
 					<h2 className={styles.section_title}>
-						{t("carDetails.description.title")} :
+						{t("carDetails.specs.title")}
 					</h2>
-					<motion.p
-						className={styles.description}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 1.8, duration: 0.5 }}
-					>
-						{data.description}
-					</motion.p>
+					<div className={styles.specs_grid}>
+						<div className={styles.spec_row}>
+							<span className={styles.spec_label}>
+								{t("carDetails.specs.engine")}
+							</span>
+							<span className={styles.spec_value}>{data.Moteur}</span>
+						</div>
+						<div className={styles.spec_row}>
+							<span className={styles.spec_label}>
+								{t("carDetails.specs.transmission")}
+							</span>
+							<span className={styles.spec_value}>{data.Boite}</span>
+						</div>
+						<div className={styles.spec_row}>
+							<span className={styles.spec_label}>
+								{t("carDetails.specs.fuel")}
+							</span>
+							<span className={styles.spec_value}>{data.Energie}</span>
+						</div>
+						<div className={styles.spec_row}>
+							<span className={styles.spec_label}>
+								{t("carDetails.specs.mileage")}
+							</span>
+							<span className={styles.spec_value}>{data.Kilométrage}</span>
+						</div>
+						<div className={styles.spec_row}>
+							<span className={styles.spec_label}>
+								{t("carDetails.specs.year")}
+							</span>
+							<span className={styles.spec_value}>{data.Année}</span>
+						</div>
+						{data.options?.map((option, index) => (
+							<div className={styles.spec_row} key={option.id}>
+								<span className={styles.spec_label}>{option.title}</span>
+								<span className={styles.spec_value}>{option.value}</span>
+							</div>
+						))}
+					</div>
 				</motion.div>
-			)}
-			<ToastContainer />
+
+				{/* Description */}
+				{data.description && (
+					<motion.div
+						className={styles.description_section}
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 1.2, duration: 0.5 }}
+					>
+						<h2 className={styles.section_title}>
+							{t("carDetails.description.title")}
+						</h2>
+						<motion.p
+							className={styles.description}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{ delay: 1.3, duration: 0.5 }}
+						>
+							{data.description}
+						</motion.p>
+					</motion.div>
+				)}
+			</div>
+
+			<ToastContainer position="bottom-right" />
 		</motion.div>
 	);
 }
