@@ -23,7 +23,7 @@ import {
 	UploadImages,
 	UploadPrimaryImage,
 } from "@/utils/Admin";
-import Select from "react-select";
+import Select, { StylesConfig } from "react-select";
 import { toast, ToastContainer } from "react-toastify";
 import { redirect } from "next/navigation";
 
@@ -358,6 +358,55 @@ function AddNewCar() {
 			toast.error("Please select a brand icon image");
 		}
 	}
+	const dot = (color = "transparent") => ({
+		alignItems: "center",
+		display: "flex",
+
+		":before": {
+			backgroundColor: color,
+			borderRadius: 10,
+			content: '" "',
+			display: "block",
+			marginRight: 8,
+			height: 10,
+			width: 10,
+		},
+	});
+
+	const colourStyles: StylesConfig<any> = {
+		control: (styles: any) => ({
+			...styles,
+			backgroundColor: "var(--background)",
+			color: "var(--text)",
+		}),
+		option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+			return {
+				...styles,
+				backgroundColor: isDisabled
+					? undefined
+					: isSelected
+					? "var(--surface)"
+					: isFocused
+					? "var(--surface)"
+					: "var(--background)",
+				color: isDisabled ? "var(--text)" : isSelected,
+
+				cursor: isDisabled ? "not-allowed" : "default",
+
+				":active": {
+					...styles[":active"],
+					backgroundColor: !isDisabled
+						? isSelected
+							? "var(--surface)"
+							: "var(--background)"
+						: undefined,
+				},
+			};
+		},
+		input: (styles) => ({ ...styles, ...dot() }),
+		placeholder: (styles) => ({ ...styles, color: "var(--text)" }),
+		singleValue: (styles, { data }) => ({ ...styles, color: "var(--text)" }),
+	};
 
 	return (
 		<div className={styles.overlay}>
@@ -483,6 +532,7 @@ function AddNewCar() {
 									setSelectedBrand(brand || null);
 								}}
 								placeholder="Select a brand"
+								styles={colourStyles}
 							/>
 						)}
 					</div>
@@ -573,6 +623,7 @@ function AddNewCar() {
 									selectedBrand ? "Select a serie" : "First select a brand"
 								}
 								isDisabled={!selectedBrand}
+								styles={colourStyles}
 							/>
 						)}
 					</div>
