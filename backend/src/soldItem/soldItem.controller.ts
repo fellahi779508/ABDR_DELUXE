@@ -32,7 +32,6 @@ export class SoldItemController {
   @Delete(':id')
   @UseGuards(AuthGuard)
   async DeleteSoldItemById(@Param('id', ParseIntPipe) id: number) {
-    console.log(id);
     return await this.service.DeleteSoldItemById(id);
   }
 }

@@ -58,7 +58,7 @@ const CartIcon = () => {
 		if (typeof window === "undefined") return [];
 		try {
 			const cart = localStorage.getItem("carDealershipCart");
-			return cart ? JSON.parse(cart) : [];
+			return cart != null ? JSON.parse(cart) : [];
 		} catch (error) {
 			return [];
 		}

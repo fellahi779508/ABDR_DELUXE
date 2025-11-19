@@ -2,17 +2,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './order.entity';
 import { ILike, Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/createOrder.dto';
-import { NotFoundException } from '@nestjs/common';
+import { forwardRef, Inject, NotFoundException } from '@nestjs/common';
 import { Status } from 'src/utils/enums';
 import * as ExcelJS from 'exceljs';
-import { Response } from 'express';
-
 import { CartService } from 'src/cart/cart.service';
-import { SoldItem } from 'src/soldItem/soldItem.entity';
 
 export class OrderService {
   constructor(
     @InjectRepository(Order) private readonly orderRepo: Repository<Order>,
+    @Inject(forwardRef(() => CartService))
     private readonly cartService: CartService,
   ) {}
 

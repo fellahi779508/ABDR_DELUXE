@@ -1,9 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SoldItem } from './soldItem.entity';
 import { createSoldItemDto } from './dto/createSoldItem.dto';
 import { CarService } from 'src/car/car.service';
+import { CartService } from 'src/cart/cart.service';
 
 @Injectable()
 export class SoldItemService {
@@ -11,6 +17,8 @@ export class SoldItemService {
     @InjectRepository(SoldItem)
     private readonly soldItemRepo: Repository<SoldItem>,
     private readonly carService: CarService,
+    @Inject(forwardRef(() => CartService))
+    private readonly cartService: CartService,
   ) {}
   async CreateSoldItem(createSoldItemDto: createSoldItemDto) {
     const { quantity, carSlug, color } = createSoldItemDto;
@@ -32,13 +40,19 @@ export class SoldItemService {
       relations: ['cart', 'cart.soldItem', 'cart.soldItem.car'],
     });
     if (!soldItem) throw new NotFoundException('SoldItem not found');
-    console.log(soldItem.id);
-    return await this.soldItemRepo.remove(soldItem);
+    await this.soldItemRepo.remove(soldItem);
+    return this.cartService.updateCartTotal(soldItem.cart.id);
   }
   async UpdateSoldItemById(id: number, quantity: number) {
-    const soldItem = await this.soldItemRepo.findOne({ where: { id } });
+    const soldItem = await this.soldItemRepo.findOne({
+      where: { id },
+      relations: ['car', 'cart', 'cart.order'],
+    });
     if (!soldItem) throw new NotFoundException('SoldItem not found');
+    const car = await this.carService.GetCarById(soldItem.car.id);
     soldItem.quantity = quantity;
-    return await this.soldItemRepo.save(soldItem);
+    soldItem.calculateTotal();
+    await this.soldItemRepo.save(soldItem);
+    return this.cartService.updateCartTotal(soldItem.cart.id);
   }
 }

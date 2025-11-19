@@ -53,6 +53,7 @@ export class AdminService {
     if (!admin) {
       throw new NotFoundException('Admin not found');
     }
+
     return await this.AdminRepo.remove(admin);
   }
 }

@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cart } from './cart.entity';
@@ -30,6 +35,13 @@ export class CartService {
       soldItems.push(soldItem);
     }
     const cart = this.cartRepo.create({ soldItem: soldItems });
+    return await this.cartRepo.save(cart);
+  }
+  async updateCartTotal(id: number) {
+    const cart = await this.getCartById(id);
+    cart.total = 0;
+    cart.soldItem.forEach((item) => (cart.total += item.total));
+    console.log('total', cart.total);
     return await this.cartRepo.save(cart);
   }
 }
