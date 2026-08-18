@@ -40,14 +40,17 @@ function Dashboard_Component() {
           <span>Manage Promotions</span>
         </Link>
         <Link
-          href="https://abr-deluxe-management.vercel.app/"
+          href="/0218213/dashboard/gallery"
           className={styles.option}
           target="_blank"
         >
           <GalleryThumbnails />
           <span>Manage Gallery</span>
         </Link>
-        <Link href="/0218213/dashboard/gallery" className={styles.option}>
+        <Link
+          href="https://abr-deluxe-management.vercel.app/"
+          className={styles.option}
+        >
           <Workflow />
           <span>Open manager</span>
         </Link>
